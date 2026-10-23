@@ -185,3 +185,10 @@ button:focus-visible,a:focus-visible{outline:3px solid var(--amarelo);outline-of
 button,a,label,[data-act],summary{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
 @media (prefers-reduced-motion:reduce){.card:hover{transform:none}}
 section[id]{scroll-margin-top:90px}
+/* botão voltar ao topo (canto esquerdo; o WhatsApp fica no direito) */
+.topo-btn{position:fixed;left:20px;bottom:24px;z-index:60;width:52px;height:52px;border-radius:50%;border:none;cursor:pointer;background:var(--c-escuro);color:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 10px 24px -8px rgba(0,0,0,.45);opacity:0;transform:translateY(16px);pointer-events:none;transition:opacity .25s ease,transform .25s ease;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+.topo-btn.ver{opacity:1;transform:none;pointer-events:auto}
+.topo-btn:focus-visible{outline:3px solid var(--c-destaque);outline-offset:3px}
+@media (hover:hover) and (pointer:fine){.topo-btn:hover{background:var(--c-escuro2)}}
+@media (max-width:480px){.topo-btn{left:14px;bottom:22px;width:48px;height:48px}}
+@media (prefers-reduced-motion:reduce){.topo-btn{transition:none}}

@@ -937,6 +937,14 @@ function init(){
       // a página pode mudar de altura enquanto rola (filtro, fotos): confere no fim e acerta
       setTimeout(function(){ var t=alvo.getBoundingClientRect().top; if(Math.abs(t-90)>30) alvo.scrollIntoView({block:'start'}); },900); });
   },true);
+  // botão "voltar ao topo": fica fora do #app para não ser recriado pelos renders
+  var topo=document.createElement('button'); topo.type='button'; topo.className='topo-btn'; topo.setAttribute('aria-label','Voltar ao topo da página'); topo.title='Voltar ao topo';
+  topo.innerHTML='<svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>';
+  topo.addEventListener('click',function(){ var r=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches; window.scrollTo({top:0,behavior:r?'auto':'smooth'}); });
+  document.body.appendChild(topo);
+  var vendoTopo=false;
+  function olhaTopo(){ var v=window.scrollY>600&&!state.sacola&&!state.conta; if(v!==vendoTopo){ vendoTopo=v; topo.classList.toggle('ver',v); topo.tabIndex=v?0:-1; } }
+  topo.tabIndex=-1; window.addEventListener('scroll',olhaTopo,{passive:true}); setInterval(olhaTopo,800);
   carregar();
   var app=el('app');
   app.addEventListener('click', onClick);
