@@ -54,10 +54,11 @@ function situacao(l){
   function pt(t){ var x=partes.find(function(p){return p.type===t;}); return x?x.value:''; }
   var dia=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].indexOf(pt('weekday'));
   var minuto=parseInt(pt('hour'),10)*60+parseInt(pt('minute'),10);
-  var util=dia>=1&&dia<=6, fecha=960;
+  // seg. a sex. até 16h; sábado até 13h (as duas lojas)
+  var util=dia>=1&&dia<=6, fecha=dia===6?780:960;
   if(util&&minuto>=l.abre&&minuto<fecha){
     var falta=fecha-minuto;
-    return {aberto:true, texto:falta<=60?('Aberto · fecha em '+falta+' min'):'Aberto agora · fecha às 16h', cor:'#4cc27f', fundo:'#e3f5ea', tinta:'#146b3f'};
+    return {aberto:true, texto:falta<=60?('Aberto · fecha em '+falta+' min'):('Aberto agora · fecha às '+(dia===6?'13h':'16h')), cor:'#4cc27f', fundo:'#e3f5ea', tinta:'#146b3f'};
   }
   var quando='amanhã';
   if(util&&minuto<l.abre) quando='hoje'; else if(dia===6) quando='segunda';
@@ -320,7 +321,7 @@ function fillHero(c){
   var slides = loja.id==='vks' ? [
     {selo:'VKS Condimentos',titulo:'Alho roxo nacional',destaque:'em caixa de 10 kg',texto:'Para restaurantes, açougues e revenda. Entrega somente por Lalamove, Uber ou retirada na Avenida Mercúrio, 330.',botao:'Ver produtos',link:'#produtos'},
     {selo:'Varejo e atacado',titulo:'Temperos a granel',destaque:'no Brás',texto:'Fardos fechados ou a quantidade que você precisar, pesada na hora.',botao:'Ver produtos',link:'#produtos'},
-    {selo:'Aberto às 6h',titulo:'Segunda a sábado,',destaque:'das 6h às 16h',texto:'Avenida Mercúrio, 330 – Brás. Pertinho da D’Lu Empório.',botao:'Como chegar',link:'#visite'}
+    {selo:'Aberto às 6h',titulo:'Seg. a sex. das 6h às 16h,',destaque:'sábado até 13h',texto:'Avenida Mercúrio, 330 – Brás. Pertinho da D’Lu Empório.',botao:'Como chegar',link:'#visite'}
   ] : [
     {selo:'Varejo e atacado',titulo:'Temperos a granel',destaque:'do jeito que você precisa',texto:'De 250 g ao fardo fechado. Temperos, ervas e misturas da casa, pesados na hora.',botao:'Ver produtos',link:'#produtos'},
     {selo:'Misturas da casa',titulo:'Ana Maria, Edu Guedes,',destaque:'Gaúcho e muito mais',texto:'As misturas que os clientes mais pedem, prontas para temperar.',botao:'Ver produtos',link:'#produtos'},
@@ -351,6 +352,15 @@ function fillHero(c){
     +'</div></section>';
 }
 
+/* destaques: mesmos cartões do catálogo; a ordem fica presa ao produto (ou ao grupo), para trocar o tipo não embaralhar */
+function destaquesDe(c){
+  function comFoto(p){ var m=p.grupoInfo?c.todos.filter(function(x){return x.grupo===p.grupoInfo.nome;}):[p]; return (m.some(function(x){return x.foto;})?2:0)+(p.top||m.some(function(x){return x.top;})?1:0); }
+  return c.produtos.slice().sort(function(a,b){return comFoto(b)-comFoto(a);}).slice(0,6);
+}
+function renderDestaques(){
+  var c=ctx(), d=destaquesDe(c);
+  Array.prototype.forEach.call(document.querySelectorAll('[data-dest]'),function(n){ var p=d[+n.getAttribute('data-dest')]; if(p) n.innerHTML=cartaoHTML(p); });
+}
 function fillCorpo(c){
   var loja=c.loja, produtos=c.produtos;
   // fita
@@ -372,9 +382,8 @@ function fillCorpo(c){
     return '<a class="circ revela" href="#produtos" data-act="cat" data-cat="'+at(cat)+'" style="text-decoration:none;display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center">'+dot+'<span style="display:flex;flex-direction:column;gap:2px"><span style="font-weight:800;font-size:14px;text-transform:uppercase;letter-spacing:.04em;color:var(--c-escuro)">'+esc(cat)+'</span><span style="font-size:12px;color:var(--c-mudo)">'+ps.length+(ps.length===1?' produto':' produtos')+'</span></span></a>';
   }).join('');
   // destaques
-  function comFoto(p){return (p.foto?2:0)+(p.top?1:0);}
-  var destaques=produtos.slice().sort(function(a,b){return comFoto(b)-comFoto(a);}).slice(0,6);
-  var destHTML=destaques.map(function(p){return '<div class="revela cel">'+cartaoHTML(p)+'</div>';}).join('');
+  var destaques=destaquesDe(c);
+  var destHTML=destaques.map(function(p,i){return '<div class="revela cel" data-dest="'+i+'">'+cartaoHTML(p)+'</div>';}).join('');
   // galeria
   var comF=produtos.filter(function(p){return p.foto&&!p.recorte;});
   var galeria=comF.filter(function(p){return p.cat==='Misturas da casa';}).slice(0,5);
@@ -453,7 +462,7 @@ function fillVisite(c){
 function fillRodape(c){
   var loja=c.loja;
   var cats=c.cats.map(function(cat){return '<a href="#produtos" data-act="cat" data-cat="'+at(cat)+'" style="color:var(--c-texto-esc);text-decoration:none">'+esc(cat)+'</a>';}).join('');
-  return '<footer style="background:var(--c-escuro);color:var(--c-texto-esc);font-size:14px"><svg aria-hidden="true" viewBox="0 0 1440 48" preserveAspectRatio="none" style="display:block;width:100%;height:36px;background:var(--c-fundo)"><path d="M0 48 C 240 0 480 0 720 24 C 960 48 1200 48 1440 8 L1440 48 Z" style="fill:var(--c-escuro)"></path></svg><div class="wrap foot" style="padding-top:40px;padding-bottom:32px"><div style="display:flex;flex-direction:column;gap:14px"><img src="'+LOGO[loja.id]+'" alt="'+at(loja.nome)+'" style="height:76px;width:auto;align-self:flex-start;background:#fff;border-radius:16px;padding:8px"><p style="margin:0;max-width:34ch">Temperos, ervas, misturas da casa, pimentas e molhos no Brás. Varejo e atacado, pesado na hora.</p><a class="btn-wa" href="'+at(waGeralDe(loja))+'" target="_blank" rel="noopener" style="align-self:flex-start;text-decoration:none;background:#1b7a4b;color:#fff;font-weight:800;font-size:14px;padding:11px 18px;border-radius:999px;min-height:44px;display:inline-flex;align-items:center">Pedir no WhatsApp</a></div><div style="display:flex;flex-direction:column;gap:8px"><strong style="color:var(--c-destaque);text-transform:uppercase;letter-spacing:.1em;font-size:12px">Categorias</strong>'+cats+'</div><div style="display:flex;flex-direction:column;gap:8px"><strong style="color:var(--c-destaque);text-transform:uppercase;letter-spacing:.1em;font-size:12px">D’Lu Empório</strong><span>Rua Santa Rosa, 244 – Brás</span><span>Seg. a sáb. · 5h30 às 16h</span><span style="font-variant-numeric:tabular-nums">(11) 3313-6697</span></div><div style="display:flex;flex-direction:column;gap:8px"><strong style="color:var(--c-destaque);text-transform:uppercase;letter-spacing:.1em;font-size:12px">VKS Condimentos</strong><span>Avenida Mercúrio, 330 – Brás</span><span>Seg. a sáb. · 6h às 16h</span><span style="font-variant-numeric:tabular-nums">(11) 3311-7153</span></div></div><div class="wrap" style="border-top:1px solid var(--c-linha-esc2);padding-top:16px;padding-bottom:22px;font-size:13px">São Paulo – SP · Site do catálogo. Os pedidos são conferidos e pesados na loja.</div></footer>';
+  return '<footer style="background:var(--c-escuro);color:var(--c-texto-esc);font-size:14px"><svg aria-hidden="true" viewBox="0 0 1440 48" preserveAspectRatio="none" style="display:block;width:100%;height:36px;background:var(--c-fundo)"><path d="M0 48 C 240 0 480 0 720 24 C 960 48 1200 48 1440 8 L1440 48 Z" style="fill:var(--c-escuro)"></path></svg><div class="wrap foot" style="padding-top:40px;padding-bottom:32px"><div style="display:flex;flex-direction:column;gap:14px"><img src="'+LOGO[loja.id]+'" alt="'+at(loja.nome)+'" style="height:76px;width:auto;align-self:flex-start;background:#fff;border-radius:16px;padding:8px"><p style="margin:0;max-width:34ch">Temperos, ervas, misturas da casa, pimentas e molhos no Brás. Varejo e atacado, pesado na hora.</p><a class="btn-wa" href="'+at(waGeralDe(loja))+'" target="_blank" rel="noopener" style="align-self:flex-start;text-decoration:none;background:#1b7a4b;color:#fff;font-weight:800;font-size:14px;padding:11px 18px;border-radius:999px;min-height:44px;display:inline-flex;align-items:center">Pedir no WhatsApp</a></div><div style="display:flex;flex-direction:column;gap:8px"><strong style="color:var(--c-destaque);text-transform:uppercase;letter-spacing:.1em;font-size:12px">Categorias</strong>'+cats+'</div><div style="display:flex;flex-direction:column;gap:8px"><strong style="color:var(--c-destaque);text-transform:uppercase;letter-spacing:.1em;font-size:12px">D’Lu Empório</strong><span>Rua Santa Rosa, 244 – Brás</span><span>Seg. a sex. 5h30 às 16h · Sáb. 5h30 às 13h</span><span style="font-variant-numeric:tabular-nums">(11) 3313-6697</span></div><div style="display:flex;flex-direction:column;gap:8px"><strong style="color:var(--c-destaque);text-transform:uppercase;letter-spacing:.1em;font-size:12px">VKS Condimentos</strong><span>Avenida Mercúrio, 330 – Brás</span><span>Seg. a sex. 6h às 16h · Sáb. 6h às 13h</span><span style="font-variant-numeric:tabular-nums">(11) 3311-7153</span></div></div><div class="wrap" style="border-top:1px solid var(--c-linha-esc2);padding-top:16px;padding-bottom:22px;font-size:13px">São Paulo – SP · Site do catálogo. Os pedidos são conferidos e pesados na loja.</div></footer>';
 }
 
 /* ---------- sacola: textos, documento, mensagem ---------- */
@@ -769,9 +778,9 @@ function onClick(e){
       var j=opA?novo.opcoes.findIndex(function(o){return o.r===opA.r;}):-1;
       if(j>=0) state.sel[novo.chave]=j;
     }
-    state.tipo[g]=ti; renderCatalogo(); return;
+    state.tipo[g]=ti; renderCatalogo(); renderDestaques(); return;
   }
-  if(act==='opt'){ var k=t.getAttribute('data-key'); state.sel[k]=+t.getAttribute('data-oi'); renderCatalogo(); return; }
+  if(act==='opt'){ var k=t.getAttribute('data-key'); state.sel[k]=+t.getAttribute('data-oi'); renderCatalogo(); renderDestaques(); return; }
   if(act==='add'){
     e.preventDefault();
     var key=t.getAttribute('data-key');

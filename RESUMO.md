@@ -70,7 +70,7 @@ No `Main.dc.html`, a lógica fica no `<script type="text/x-dc">` no fim do arqui
 
 ## 3. O que já funciona (no design)
 - Troca entre as lojas D’Lu e VKS no topo: muda logo, endereço, horário, WhatsApp, catálogo, fotos, textos de atacado e banner.
-- **Aberto agora / Fechado**, calculado no fuso de São Paulo (seg. a sáb.; D’Lu 5h30–16h, VKS 6h–16h; "fecha em X min" na última hora).
+- **Aberto agora / Fechado**, calculado no fuso de São Paulo (seg. a sex. até 16h e sábado até 13h; abre D’Lu 5h30, VKS 6h; "fecha em X min" na última hora).
 - Busca por nome, categoria ou marca; filtro por categoria (menu, botões e círculos).
 - Banner com 3 destaques que trocam sozinhos; fita animada com nomes dos produtos; galeria de fotos das misturas (só aparece com 5+ fotos da loja).
 - Cartões com escolha de quantidade/tamanho, escala de ardência, selo de marca ("Marca Nativa", "Marca Aroma D’Minas", "Marca Muniz", "Marca Jomil") e selos "Da casa", "Saco 25 kg", "Caixa 10 kg", "Pacote 1 kg".
@@ -174,5 +174,5 @@ As cores do site são variáveis CSS (`--c-escuro`, `--c-acento`, `--c-destaque`
 - "Tem tempero pra tudo".
 
 ## 7. Dados das lojas
-- **D’Lu Empório** — Rua Santa Rosa, 244, Brás, São Paulo/SP — seg. a sáb., 5h30 às 16h — WhatsApp (11) 3313-6697.
-- **VKS Condimentos** — Avenida Mercúrio, 330, Brás, São Paulo/SP — seg. a sáb., 6h às 16h — WhatsApp (11) 3311-7153.
+- **D’Lu Empório** — Rua Santa Rosa, 244, Brás, São Paulo/SP — seg. a sex. 5h30 às 16h, sáb. 5h30 às 13h — WhatsApp (11) 3313-6697.
+- **VKS Condimentos** — Avenida Mercúrio, 330, Brás, São Paulo/SP — seg. a sex. 6h às 16h, sáb. 6h às 13h — WhatsApp (11) 3311-7153.
