@@ -262,6 +262,7 @@ window.CATALOGO = {
       { nome: 'Amendoim crocante com bacon', grupo: 'Amendoim crocante', tipo: 'Bacon', cat: 'Grãos e sementes', cor: '#b0603a', uso: 'Amendoim crocante sabor bacon, a granel, para petiscar.', so: 'dlu' },
       { nome: 'Amendoim crocante com pimenta', grupo: 'Amendoim crocante', tipo: 'Pimenta', ard: 2, cat: 'Grãos e sementes', cor: '#b8401c', uso: 'Amendoim crocante apimentado, a granel, para petiscar.', so: 'dlu' },
       { nome: 'Amendoim ovinho', grupo: 'Amendoim crocante', tipo: 'Ovinho', cat: 'Grãos e sementes', cor: '#d8a860', uso: 'Amendoim ovinho (com casquinha crocante), a granel, para petiscar.', so: 'dlu' },
+      { nome: 'Amendoim crocante natural', grupo: 'Amendoim crocante', tipo: 'Natural', cat: 'Grãos e sementes', cor: '#d8b070', uso: 'Amendoim crocante sem sabor (natural), a granel, para petiscar.', so: 'dlu' },
       { nome: 'Cuscuz marroquino', cat: 'Grãos e sementes', cor: '#e0c88a', uso: 'Cuscuz marroquino de preparo rápido, para saladas, acompanhamentos e tabule.', tamanhos: ['500 g'], emb: true, so: 'dlu' },
       { nome: 'Óleo de gergelim', marca: 'Tani', cat: 'Diversos', cor: '#b8863a', uso: 'Óleo de gergelim natural para pratos orientais, saladas e finalizações.', tamanhos: ['250 ml'], emb: true, so: 'dlu' },
       { nome: 'Creme de cebola', marca: 'Tempera Bem', cat: 'Misturas da casa', cor: '#d6bc8a', uso: 'Creme de cebola em pó, em pacote, para sopas, patês, molhos e chips.', tamanhos: ['pacote 500 g'], emb: true, so: 'dlu' },
