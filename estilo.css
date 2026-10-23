@@ -19,7 +19,8 @@ img{max-width:100%}
 button{font-family:inherit}
 
 .wrap{max-width:1240px;margin:0 auto;padding-left:clamp(16px,3vw,32px);padding-right:clamp(16px,3vw,32px)}
-.disp{font-family:'Archivo','Arial Narrow',sans-serif;font-stretch:72%;text-transform:uppercase;letter-spacing:-0.01em}
+.disp{font-family:'Archivo','Arial Narrow',sans-serif;font-stretch:72%;letter-spacing:-0.015em}
+.caps{text-transform:uppercase;letter-spacing:-0.01em}
 .eyebrow{display:inline-flex;align-items:center;gap:10px;font-size:13px;font-weight:800;letter-spacing:.14em;text-transform:uppercase}
 .eyebrow::before{content:"";width:28px;height:3px;border-radius:3px;background:currentColor}
 .head-row{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:28px;align-items:center}
@@ -192,3 +193,88 @@ section[id]{scroll-margin-top:90px}
 @media (hover:hover) and (pointer:fine){.topo-btn:hover{background:var(--c-escuro2)}}
 @media (max-width:480px){.topo-btn{left:14px;bottom:22px;width:48px;height:48px}}
 @media (prefers-reduced-motion:reduce){.topo-btn{transition:none}}
+
+/* ===== redesenho 2026-10: celular compacto, folha do produto, menos caixa-alta ===== */
+.hero{padding-top:56px;padding-bottom:92px;position:relative}
+.hero-h1{margin:0;font-weight:900;font-size:clamp(46px,6.6vw,88px);line-height:.9;text-wrap:balance}
+.hero-p{margin:0;font-size:19px;color:var(--c-texto-esc);max-width:42ch}
+.hero-btns{display:flex;flex-wrap:wrap;gap:12px;padding-top:6px}
+.hero-nav{display:flex;align-items:center;gap:10px;padding-top:14px}
+.nome-prod{margin:0;font-family:'Archivo','Arial Narrow',sans-serif;font-stretch:82%;font-weight:800;font-size:22px;line-height:1.1;letter-spacing:-.005em}
+/* barra das lojas */
+.barra-lojas{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:6px 16px;padding-top:6px;padding-bottom:6px}
+.barra-esq{display:flex;align-items:center;gap:6px;flex-wrap:wrap;min-width:0}
+.loja-pill{font:inherit;font-weight:800;font-size:13px;padding:5px 13px;min-height:32px;border-radius:999px;border:1px solid;cursor:pointer;white-space:nowrap}
+.barra-status{font-weight:700;display:inline-flex;align-items:center;gap:8px;white-space:nowrap}
+.so-sm{display:none}
+@media (max-width:1180px){.st-hor{display:none!important}}
+@media (max-width:960px){.lbl-lojas{display:none!important}}
+/* paginação e nota das lojas */
+.ver-mais{display:flex;flex-direction:column;align-items:center;gap:8px;padding-top:6px}
+.btn-mais{font:inherit;font-weight:800;font-size:16px;padding:13px 28px;min-height:52px;border-radius:999px;border:2px solid var(--c-escuro);background:#fff;color:var(--c-escuro);cursor:pointer}
+.btn-mais span{font-weight:600;color:var(--c-mudo)}
+.ver-mais-info{font-size:13px;color:var(--c-mudo)}
+.nota-lojas{margin:0;padding:14px 18px;border-radius:16px;background:#fff;box-shadow:0 0 0 1px var(--c-borda);color:var(--c-mudo);font-size:14px;line-height:1.5}
+.nota-lojas b{color:var(--c-escuro)}
+.nota-lojas button{font:inherit;font-weight:800;color:var(--c-acento);background:none;border:0;padding:10px 2px;margin:-10px 0;cursor:pointer;line-height:1.5}
+@media (hover:hover) and (pointer:fine){.btn-mais:hover{background:var(--c-escuro);color:#fff}.btn-mais:hover span{color:var(--c-texto-esc)}}
+/* cartão compacto (celular) */
+.card-mini{height:100%;background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 0 0 1px var(--c-borda)}
+.mini-abrir{font:inherit;color:inherit;border:0;margin:0;padding:0;background:none;width:100%;height:100%;text-align:left;cursor:pointer;display:flex;flex-direction:column}
+.mini-midia{position:relative;display:flex;align-items:center;justify-content:center;width:100%;aspect-ratio:5/4;overflow:hidden}
+.mini-mais{position:absolute;right:8px;bottom:8px;width:38px;height:38px;border-radius:50%;background:var(--c-escuro);color:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 14px -6px rgba(0,0,0,.5)}
+.mini-txt{display:flex;flex-direction:column;gap:3px;padding:10px 12px 13px;flex:1}
+.mini-marca{font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--c-acento)}
+.mini-nome{font-weight:800;font-size:15px;line-height:1.22;color:var(--c-escuro);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.mini-preco{margin-top:auto;padding-top:4px;font-weight:800;font-size:15px;color:var(--c-escuro);font-variant-numeric:tabular-nums}
+.mini-preco small{font-weight:600;font-size:12px;color:var(--c-mudo)}
+.mini-consulta{font-size:13px;color:var(--c-mudo);font-weight:700}
+.mini-falta{font-size:13px;color:var(--c-acento-esc)}
+.mini-abrir:focus-visible{outline:3px solid var(--c-destaque);outline-offset:-3px;border-radius:16px}
+/* folha do produto */
+html.folha-aberta,html.folha-aberta body{overflow:hidden}
+.folha-camada{position:fixed;inset:0;z-index:90}
+.folha-fundo{position:absolute;inset:0;border:0;padding:0;background:rgba(15,18,38,.55);cursor:pointer;animation:fundoEntra .25s ease both}
+.folha{position:absolute;left:0;right:0;bottom:0;margin:0 auto;max-width:560px;max-height:92vh;max-height:92dvh;background:#fff;border-radius:22px 22px 0 0;display:flex;flex-direction:column;box-shadow:0 -20px 40px -20px rgba(0,0,0,.5);animation:folhaSobe .32s cubic-bezier(.2,.8,.2,1) both;transition:transform .2s ease;padding-bottom:env(safe-area-inset-bottom)}
+@keyframes folhaSobe{from{transform:translateY(100%)}to{transform:none}}
+.folha-pega{flex:none;height:24px;display:flex;align-items:center;justify-content:center;touch-action:none;cursor:grab}
+.folha-pega span{width:44px;height:5px;border-radius:9px;background:var(--c-borda2)}
+.folha-x{position:absolute;top:32px;right:14px;z-index:3;width:44px;height:44px;border-radius:50%;border:none;background:rgba(255,255,255,.94);box-shadow:0 2px 12px rgba(0,0,0,.2);color:var(--c-escuro);display:flex;align-items:center;justify-content:center;cursor:pointer}
+.folha-rolar{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
+.card-folha{box-shadow:none!important;border-radius:0!important;transform:none!important;height:auto!important}
+.card-folha > div:first-child{max-height:44vh}
+.card-folha [data-act=opt],.card-folha .chip-tipo{min-height:44px!important;padding:8px 15px!important;font-size:14px!important}
+.card-folha [data-act=add]{min-height:52px!important;font-size:16px!important}
+.card-folha .btn-wa{width:52px!important;height:52px!important}
+@media (prefers-reduced-motion:reduce){.folha,.folha-fundo{animation:none}}
+.topo-btn.com-fab{bottom:96px}
+@media (max-width:760px){
+  .so-sm{display:inline}
+  .barra-lojas{flex-wrap:nowrap;gap:8px;padding-top:7px;padding-bottom:7px}
+  .barra-esq{flex-wrap:nowrap;gap:5px}
+  .loja-pill{font-size:12.5px;padding:6px 10px;min-height:40px}
+  .navlink{min-height:44px!important}
+  .barra-status{font-size:12px;gap:6px;margin-left:auto}
+  .topo-barra{max-height:none!important;animation:none!important;opacity:1!important}
+  .hero{padding-top:22px;padding-bottom:44px;gap:20px}
+  .hero > div:first-child{gap:14px!important}
+  .hero-h1{font-size:clamp(34px,10.6vw,44px);line-height:.95}
+  .hero-p{font-size:16px;line-height:1.45}
+  .hero-btns{flex-wrap:nowrap;gap:8px;padding-top:2px}
+  .hero-btns a{padding:12px 16px!important;font-size:14px!important;min-height:48px!important;flex:1 1 auto;justify-content:center;white-space:nowrap}
+  .hero-nav{padding-top:0}
+  .bowls{max-width:250px}
+  .selo-250{width:84px!important;height:84px!important}
+  .selo-250 .disp{font-size:22px!important}
+  .prods{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+  .carrossel{display:grid;grid-template-columns:none;grid-auto-flow:column;grid-auto-columns:calc((100% - 12px) / 2.2);overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;gap:12px;margin:0 calc(-1 * clamp(16px,3vw,32px));padding:2px clamp(16px,3vw,32px) 10px;scroll-padding:0 clamp(16px,3vw,32px)}
+  .carrossel::-webkit-scrollbar{display:none}
+  .carrossel > *{scroll-snap-align:start}
+  .sec-dest{padding-top:30px!important;padding-bottom:36px!important}
+  .sec-dest .wrap{gap:18px!important}
+  .nome-prod{font-size:21px}
+  .trust{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:10px}
+  .trust > div{flex-direction:column;align-items:flex-start!important;gap:10px!important;padding:14px!important}
+  .trust > div > span:first-child{width:40px!important;height:40px!important}
+}
+@media (max-width:360px){.loja-pill{font-size:11.5px;padding:6px 8px}.barra-status{font-size:11px}}

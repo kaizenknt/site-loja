@@ -15,8 +15,10 @@ var state = {
   historico:[], apagarOk:false, limparOk:false,
   sel:{}, tipo:{}, agora:Date.now(),
   enviando:false, enviado:null, erroEnvio:'', statusPed:{},
-  pag:'pix'
+  pag:'pix',
+  limite:24, folha:null, mob:false
 };
+var POR_PAGINA=24;
 var PRECOS = null;         // { itens:{ chave:{kg|op} }, indisponivel:[chaves], _exemplo:bool }
 var PRECOS_CACHE = {};     // preços por loja (cada loja publica os seus pelo Balcão)
 var avisoTimer=null, relogio=null, slideTimer=null;
@@ -60,13 +62,13 @@ function situacao(l){
   var abreHoje=dia===6?abreSab:l.abre;
   if(util&&minuto>=abreHoje&&minuto<fecha){
     var falta=fecha-minuto;
-    return {aberto:true, texto:falta<=60?('Aberto · fecha em '+falta+' min'):('Aberto agora · fecha às '+(dia===6?'13h':'16h')), cor:'#4cc27f', fundo:'#e3f5ea', tinta:'#146b3f'};
+    return {aberto:true, curto:falta<=60?('Fecha em '+falta+' min'):('Aberto até '+(dia===6?'13h':'16h')), texto:falta<=60?('Aberto · fecha em '+falta+' min'):('Aberto agora · fecha às '+(dia===6?'13h':'16h')), cor:'#4cc27f', fundo:'#e3f5ea', tinta:'#146b3f'};
   }
   var quando='amanhã', hora=l.abreTxt;
   if(util&&minuto<abreHoje){ quando='hoje'; if(dia===6) hora=abreSabTxt; }
   else if(dia===6) quando='segunda';
   else if(dia===5) hora=abreSabTxt; // sexta depois das 16h: abre sábado
-  return {aberto:false, texto:'Fechado · abre '+quando+' às '+hora, cor:'#f26b5b', fundo:'#fde6e2', tinta:'#9b2a1c'};
+  return {aberto:false, curto:'Abre '+(quando==='hoje'?'às ':(quando==='amanhã'?'amanhã ':'seg. '))+hora, texto:'Fechado · abre '+quando+' às '+hora, cor:'#f26b5b', fundo:'#fde6e2', tinta:'#9b2a1c'};
 }
 
 /* ---------- preços ---------- */
@@ -182,8 +184,10 @@ function esc(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,
 function at(s){ return esc(s).replace(/'/g,'&#39;'); }
 
 /* ---------- cartão de produto ---------- */
-function cartaoHTML(p){
-  var sel=Math.min(state.sel[p.chave]||0, Math.max(p.opcoes.length-1,0));
+function selDe(p){ return Math.min(state.sel[p.chave]||0, Math.max(p.opcoes.length-1,0)); }
+/* foto (ou desenho) + selo do produto; usada no cartão completo, no cartão compacto e na folha */
+function midiaDe(p){
+  var sel=selDe(p);
   var opEsc=p.opcoes[sel]||{}, fotoTam=p.fotosTam&&p.fotosTam[state.loja]?p.fotosTam[state.loja][opEsc.r]:'';
   var midia='';
   if(fotoTam) midia='<img class="midia-img foto-tam" src="'+at(fotoTam)+'" alt="'+at(p.nome+' '+(p.marca||'')+' '+opEsc.r+(opEsc.liq?' drenado (pote de '+opEsc.liq+')':''))+'" loading="lazy" style="position:absolute;left:0;right:0;top:6%;bottom:5%;margin:auto;max-width:84%;max-height:89%;width:auto;height:auto;object-fit:contain;display:block;filter:drop-shadow(0 14px 14px rgba(29,34,64,.28))">';
@@ -203,7 +207,12 @@ function cartaoHTML(p){
       +'<div style="position:relative;width:100%;flex:1;border-radius:0 0 14px 14px;background:'+p.brilho+';box-shadow:0 16px 22px -12px rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center">'
       +'<div style="width:92%;padding:9px 4px;background:var(--c-fundo3);border-radius:4px;text-align:center;display:flex;flex-direction:column;gap:2px;box-shadow:0 2px 4px rgba(0,0,0,.15)"><span style="font-size:8px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--c-acento)">'+esc(p.rotulo)+'</span><span style="font-family:\'Archivo\',\'Arial Narrow\',sans-serif;font-stretch:68%;font-weight:900;font-size:13px;line-height:1;text-transform:uppercase;color:var(--c-escuro)">'+esc(p.curto)+'</span></div></div></div>';
 
-  var selo = p.temSelo?('<span style="position:absolute;z-index:1;left:12px;top:12px;background:'+p.seloBg+';color:'+p.seloCor+';font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;padding:5px 10px;border-radius:999px;transform:rotate(-3deg);box-shadow:0 4px 10px -4px rgba(0,0,0,.35)">'+esc(p.selo)+'</span>'):'';
+  var selo = p.temSelo?('<span class="selo-card" style="position:absolute;z-index:1;left:12px;top:12px;background:'+p.seloBg+';color:'+p.seloCor+';font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;padding:5px 10px;border-radius:999px;transform:rotate(-3deg);box-shadow:0 4px 10px -4px rgba(0,0,0,.35)">'+esc(p.selo)+'</span>'):'';
+  return {midia:midia, selo:selo};
+}
+function cartaoHTML(p,o){
+  o=o||{};
+  var sel=selDe(p), opEsc=p.opcoes[sel]||{}, md=midiaDe(p), midia=md.midia, selo=md.selo;
 
   var ard = p.temArd?('<div style="display:flex;align-items:center;gap:8px"><span style="display:flex;gap:1px" aria-hidden="true">'
       +p.pimentas.map(function(c){return '<svg width="16" height="16" viewBox="0 0 24 24"><path d="M14 3c0 2 1 3 3 3-1 1-1.5 2-1.5 3.5C15.5 15 11 21 5 21c-1 0-1.5-.6-1-1.2C7 16 8 12 10 9.5 11 8 12.5 7.6 14 8c0-1.6-.6-3-2-4z" fill="'+c+'"></path></svg>';}).join('')
@@ -244,21 +253,58 @@ function cartaoHTML(p){
     precoHTML='<span class="preco-consulta">Preço sob consulta</span>';
   }
 
-  return '<article class="card" style="height:100%;background:#fff;border-radius:20px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 0 0 1px var(--c-borda)">'
+  return '<article class="card'+(o.folha?' card-folha':'')+'" style="height:100%;background:#fff;border-radius:20px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 0 0 1px var(--c-borda)">'
     +'<div style="position:relative;aspect-ratio:4/3;max-width:100%;background:'+p.fundo+';overflow:hidden;display:flex;align-items:center;justify-content:center">'+midia+selo+'</div>'
     +'<div style="padding:16px 18px 18px;display:flex;flex-direction:column;gap:8px;flex:1">'
       +'<span style="font-size:11px;font-weight:800;color:var(--c-acento);text-transform:uppercase;letter-spacing:.12em">'+esc(p.cat)+'</span>'
-      +'<h3 style="margin:0;font-family:\'Archivo\',\'Arial Narrow\',sans-serif;font-stretch:75%;font-weight:900;font-size:22px;line-height:1.02;text-transform:uppercase">'+esc(p.titulo||p.nome)+'</h3>'
+      +'<h3'+(o.folha?' id="folhaTitulo"':'')+' class="nome-prod">'+esc(p.titulo||p.nome)+'</h3>'
       +'<p style="margin:0;font-size:14px;color:var(--c-mudo);flex:1">'+esc(p.uso)+'</p>'
       +ard
       +tiposHTML
       +'<div style="display:flex;flex-direction:column;gap:6px"><span style="font-size:11px;font-weight:800;color:var(--c-mudo);text-transform:uppercase;letter-spacing:.1em">'+esc(p.rotuloOpcoes)+'</span><div style="display:flex;flex-wrap:wrap;gap:6px" role="group" aria-label="'+at(p.rotuloOpcoes)+'">'+opc+'</div>'+(opEsc.liq?'<span class="peso-liq">Peso drenado (só a pimenta, sem o líquido). Pote de '+esc(opEsc.liq).replace(/ /g,'\u00a0')+' no rótulo.</span>':'')+'</div>'
       +precoHTML
       +'<div style="display:flex;gap:8px;margin-top:4px">'
-        +'<button type="button" data-act="add" data-key="'+at(p.chave)+'"'+(falta?' disabled aria-disabled="true"':'')+' style="flex:1;font:inherit;cursor:'+(falta?'not-allowed':'pointer')+';opacity:'+(falta?'.45':'1')+';border:none;background:var(--c-escuro);color:#fff;font-weight:800;font-size:14px;text-transform:uppercase;letter-spacing:.06em;padding:12px;border-radius:999px;min-height:46px;display:flex;align-items:center;justify-content:center;gap:8px;transition:background .2s"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 8h14l-1.2 12H6.2L5 8z"></path><path d="M9 8V6a3 3 0 0 1 6 0v2"></path></svg><span class="add-txt">Adicionar</span></button>'
+        +'<button type="button" data-act="add" data-key="'+at(p.chave)+'"'+(falta?' disabled aria-disabled="true"':'')+' style="flex:1;font:inherit;cursor:'+(falta?'not-allowed':'pointer')+';opacity:'+(falta?'.45':'1')+';border:none;background:var(--c-escuro);color:#fff;font-weight:800;font-size:14px;padding:12px;border-radius:999px;min-height:46px;display:flex;align-items:center;justify-content:center;gap:8px;transition:background .2s"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 8h14l-1.2 12H6.2L5 8z"></path><path d="M9 8V6a3 3 0 0 1 6 0v2"></path></svg><span class="add-txt">Adicionar</span></button>'
         +'<a class="btn-wa" href="'+at(p.wa)+'" target="_blank" rel="noopener" aria-label="Pedir só '+at(p.nome)+' pelo WhatsApp" title="Pedir só este produto" style="flex:none;width:46px;height:46px;border-radius:50%;background:#1b7a4b;color:#fff;display:flex;align-items:center;justify-content:center"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.4L3 21l2.1-5.4A8.4 8.4 0 1 1 21 11.5z"></path></svg></a>'
       +'</div>'
     +'</div></article>';
+}
+
+/* ---------- cartão compacto (celular): foto, marca, nome, preço e "+"; o resto fica na folha ---------- */
+function compactoHTML(p){
+  var md=midiaDe(p), falta=emFalta(p);
+  var precos=p.opcoes.map(function(o){return precoOpcao(p,o);}).filter(function(x){return x!=null;});
+  var min=precos.length?Math.min.apply(null,precos):null;
+  var precoTxt;
+  if(falta) precoTxt='<span class="mini-preco mini-falta">Em falta</span>';
+  else if(min==null) precoTxt='<span class="mini-preco mini-consulta">Preço sob consulta</span>';
+  else if(p.opcoes.length>1||p.grupoInfo) precoTxt='<span class="mini-preco"><small>a partir de</small> '+brl(min)+'</span>';
+  else precoTxt='<span class="mini-preco">'+brl(min)+' <small>· '+esc((p.opcoes[0]||{}).r||'')+'</small></span>';
+  var marca=p.marca?('<span class="mini-marca">'+esc(p.marca)+'</span>'):(p.grupoInfo?('<span class="mini-marca">'+p.grupoInfo.membros.length+' tipos</span>'):'');
+  var g=p.grupoInfo?(' data-grupo="'+at(p.grupoInfo.nome)+'"'):'';
+  return '<article class="card card-mini">'
+    +'<button type="button" class="mini-abrir" data-act="abrirFolha" data-key="'+at(p.chave)+'"'+g+' aria-haspopup="dialog" aria-label="'+at((p.titulo||p.nome)+(p.marca?' '+p.marca:'')+': escolher quantidade')+'">'
+      +'<span class="mini-midia" style="background:'+p.fundo+'">'+md.midia
+        +'<span class="mini-mais" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M12 5v14M5 12h14"></path></svg></span></span>'
+      +'<span class="mini-txt">'+marca+'<span class="mini-nome">'+esc(p.titulo||p.nome)+'</span>'+precoTxt+'</span>'
+    +'</button></article>';
+}
+function cardFor(p){ return state.mob?compactoHTML(p):cartaoHTML(p); }
+/* produto mostrado na folha: segue o grupo (trocar o Tipo troca o produto) */
+function produtoDaFolha(c){
+  var f=state.folha; if(!f) return null;
+  if(f.grupo) return c.produtos.find(function(p){return p.grupoInfo&&p.grupoInfo.nome===f.grupo;})||null;
+  return c.produtos.find(function(p){return p.chave===f.chave;})||c.todos.find(function(p){return p.chave===f.chave;})||null;
+}
+function folhaHTML(c){
+  var p=produtoDaFolha(c); if(!p) return '';
+  return '<div class="folha-camada">'
+    +'<button type="button" class="folha-fundo" data-act="fecharFolha" aria-label="Fechar" tabindex="-1"></button>'
+    +'<div class="folha" role="dialog" aria-modal="true" aria-labelledby="folhaTitulo">'
+      +'<div class="folha-pega" aria-hidden="true"><span></span></div>'
+      +'<button type="button" class="folha-x" data-act="fecharFolha" aria-label="Fechar"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"></path></svg></button>'
+      +'<div class="folha-rolar">'+cartaoHTML(p,{folha:true})+'</div>'
+    +'</div></div>';
 }
 
 /* ================= REGIÕES ================= */
@@ -273,7 +319,8 @@ function ctx(){
   var q=norm(state.busca.trim());
   var lista=sel==='Todos'?produtos:produtos.filter(function(p){return p.cat===sel;});
   if(q) lista=lista.filter(function(p){return norm((p.textoBusca||p.nome)+' '+p.cat+' '+(p.marca||'')).indexOf(q)>=0;});
-  return {loja:loja, produtos:produtos, todos:todos, cats:cats, sel:sel, q:q, lista:lista, sit:situacao(loja)};
+  var visivel=q?lista:lista.slice(0,Math.max(state.limite||POR_PAGINA,POR_PAGINA));
+  return {loja:loja, produtos:produtos, todos:todos, cats:cats, sel:sel, q:q, lista:lista, visivel:visivel, sit:situacao(loja)};
 }
 function waGeralDe(loja){ return 'https://wa.me/'+loja.waNum+'?text='+encodeURIComponent('Olá, '+loja.nome+'! Gostaria de fazer um pedido:\n'); }
 
@@ -290,15 +337,15 @@ function fillTopo(c){
   var loja=c.loja, sit=c.sit;
   var abasLoja=Object.keys(LOJAS).map(function(id){
     var l=LOJAS[id], on=id===loja.id;
-    return '<button type="button" data-act="loja" data-loja="'+id+'" aria-pressed="'+on+'" style="font:inherit;font-weight:800;font-size:13px;padding:5px 13px;min-height:32px;border-radius:999px;border:1px solid '+(on?'var(--c-destaque)':'var(--c-linha-esc)')+';background:'+(on?'var(--c-destaque)':'transparent')+';color:'+(on?'var(--c-escuro)':'var(--c-texto-esc)')+';cursor:pointer">'+esc(l.nome)+'</button>';
+    return '<button type="button" class="loja-pill" data-act="loja" data-loja="'+id+'" aria-pressed="'+on+'" style="border-color:'+(on?'var(--c-destaque)':'var(--c-linha-esc)')+';background:'+(on?'var(--c-destaque)':'transparent')+';color:'+(on?'var(--c-escuro)':'var(--c-texto-esc)')+'">'+esc(l.nome)+'</button>';
   }).join('');
   var qtd=(state.carrinhos[loja.id]||[]).length;
   var nome=state.nome.trim().split(' ')[0];
   var logo = '<img class="logo-img" src="'+LOGO[loja.id]+'" alt="'+at(loja.nome)+'" style="height:58px;width:auto;display:block">';
   return ''
-  +'<div class="topo-barra" style="background:var(--c-escuro);color:var(--c-texto-esc);font-size:13px"><div class="wrap" style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:6px 16px;padding-top:6px;padding-bottom:6px">'
-    +'<div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap" role="group" aria-label="Escolha a loja"><span style="margin-right:2px">Você está na loja:</span>'+abasLoja+'</div>'
-    +'<span style="font-weight:700;display:inline-flex;align-items:center;gap:8px"><span class="ponto-vivo" aria-hidden="true" style="width:8px;height:8px;border-radius:50%;background:'+sit.cor+'"></span>'+esc(sit.texto)+'<span class="hide-sm" style="font-weight:600;color:var(--c-mudo-esc)">· '+esc(loja.horarioCurto)+'</span></span>'
+  +'<div class="topo-barra" style="background:var(--c-escuro);color:var(--c-texto-esc);font-size:13px"><div class="wrap barra-lojas">'
+    +'<div class="barra-esq" role="group" aria-label="Escolha a loja"><span class="hide-sm lbl-lojas" style="margin-right:2px">Duas lojas vizinhas no Brás, cada uma com seu catálogo:</span>'+abasLoja+'</div>'
+    +'<span class="barra-status" title="'+at(sit.texto+' · '+loja.horarioCurto)+'"><span class="ponto-vivo" aria-hidden="true" style="width:8px;height:8px;flex:none;border-radius:50%;background:'+sit.cor+'"></span><span class="hide-sm">'+esc(sit.texto)+'</span><span class="so-sm">'+esc(sit.curto)+'</span><span class="hide-sm st-hor" style="font-weight:600;color:var(--c-mudo-esc)">· '+esc(loja.horarioCurto)+'</span></span>'
   +'</div></div>'
   +'<header style="background:#fff;border-bottom:1px solid var(--c-borda)"><div class="wrap head-row head-pad" style="padding-top:12px;padding-bottom:12px">'
     +'<a href="#inicio" style="text-decoration:none;display:flex;align-items:center">'+logo+'</a>'
@@ -316,7 +363,7 @@ function fillTopo(c){
 function navCatsHTML(c){
   return ['Todos'].concat(c.cats).map(function(cat){
     var on=cat===c.sel&&!c.q;
-    return '<a class="navlink" href="#produtos" data-act="cat" data-cat="'+at(cat)+'" aria-current="'+on+'" style="text-decoration:none;white-space:nowrap;color:'+(on?'#ffffff':'#ffffff')+';background:'+(on?'var(--c-destaque)':'transparent')+';color:'+(on?'var(--c-escuro)':'#ffffff')+';font-weight:800;font-size:13px;text-transform:uppercase;letter-spacing:.06em;padding:9px 14px;border-radius:999px;min-height:38px;display:inline-flex;align-items:center">'+esc(cat)+'</a>';
+    return '<a class="navlink" href="#produtos" data-act="cat" data-cat="'+at(cat)+'" aria-current="'+on+'" style="text-decoration:none;white-space:nowrap;color:'+(on?'#ffffff':'#ffffff')+';background:'+(on?'var(--c-destaque)':'transparent')+';color:'+(on?'var(--c-escuro)':'#ffffff')+';font-weight:700;font-size:14px;letter-spacing:.01em;padding:9px 14px;border-radius:999px;min-height:40px;display:inline-flex;align-items:center">'+esc(cat)+'</a>';
   }).join('');
 }
 
@@ -344,13 +391,13 @@ function fillHero(c){
   var pontos=slides.map(function(_,i){var on=i===si;return '<button type="button" data-act="slide" data-i="'+i+'" aria-label="Ir para o destaque '+(i+1)+'" aria-current="'+on+'" style="width:'+(on?'28px':'10px')+';height:10px;border-radius:999px;border:none;background:'+(on?'var(--c-destaque)':'var(--c-linha-esc)')+';cursor:pointer;padding:0"></button>';}).join('');
   return '<section id="inicio" aria-roledescription="carrossel" aria-label="Destaques" style="background:radial-gradient(1200px 500px at 85% 20%, var(--c-escuro3) 0%, var(--c-escuro) 60%);color:#fff;position:relative;overflow:hidden">'
     +'<svg class="gira" aria-hidden="true" viewBox="0 0 400 400" style="position:absolute;right:-120px;bottom:-160px;width:620px;height:620px;opacity:.18"><circle cx="200" cy="200" r="190" fill="none" style="stroke:var(--c-destaque)" stroke-width="2" stroke-dasharray="2 10"></circle><circle cx="200" cy="200" r="140" fill="none" style="stroke:var(--c-destaque)" stroke-width="2" stroke-dasharray="2 10"></circle></svg>'
-    +'<div class="wrap hero" style="padding-top:56px;padding-bottom:92px;position:relative">'
+    +'<div class="wrap hero">'
       +'<div style="display:flex;flex-direction:column;gap:20px">'
-        +'<div class="entra d1" style="display:flex;flex-wrap:wrap;align-items:center;gap:10px 18px"><span style="display:inline-flex;align-items:center;gap:8px;background:'+sit.fundo+';color:'+sit.tinta+';font-size:13px;font-weight:800;padding:6px 12px;border-radius:999px"><span class="ponto-vivo" aria-hidden="true" style="width:8px;height:8px;border-radius:50%;background:'+sit.cor+'"></span>'+esc(sit.texto)+'</span><span class="eyebrow" style="color:var(--c-destaque)">'+esc(s.selo)+'</span></div>'
-        +'<h1 class="disp entra d2" style="margin:0;font-weight:900;font-size:clamp(46px,6.6vw,88px);line-height:.9;text-wrap:balance">'+esc(s.titulo)+' <span style="color:var(--c-destaque)">'+esc(s.destaque)+'</span></h1>'
-        +'<p class="entra d3" style="margin:0;font-size:19px;color:var(--c-texto-esc);max-width:42ch">'+esc(s.texto)+'</p>'
-        +'<div class="entra d4" style="display:flex;flex-wrap:wrap;gap:12px;padding-top:6px"><a class="btn-y" href="'+at(s.link)+'" style="text-decoration:none;background:var(--c-destaque);color:var(--c-escuro);font-weight:800;font-size:15px;text-transform:uppercase;letter-spacing:.06em;padding:16px 28px;border-radius:999px;min-height:52px;display:inline-flex;align-items:center;gap:10px">'+esc(s.botao)+' <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></a><a class="btn-ghost" href="'+at(waGeralDe(loja))+'" target="_blank" rel="noopener" style="text-decoration:none;border:2px solid #fff;color:#fff;font-weight:800;font-size:15px;text-transform:uppercase;letter-spacing:.06em;padding:14px 26px;border-radius:999px;min-height:52px;display:inline-flex;align-items:center">Pedir no WhatsApp</a></div>'
-        +'<div class="entra d5" style="display:flex;align-items:center;gap:10px;padding-top:14px"><button type="button" data-act="slidePrev" aria-label="Destaque anterior" style="width:44px;height:44px;border-radius:50%;border:1px solid var(--c-linha-esc);background:transparent;color:#fff;cursor:pointer;display:inline-flex;align-items:center;justify-content:center"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M15 5l-7 7 7 7"></path></svg></button>'+pontos+'<button type="button" data-act="slideNext" aria-label="Próximo destaque" style="width:44px;height:44px;border-radius:50%;border:1px solid var(--c-linha-esc);background:transparent;color:#fff;cursor:pointer;display:inline-flex;align-items:center;justify-content:center"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M9 5l7 7-7 7"></path></svg></button></div>'
+        +'<div class="entra d1" style="display:flex;flex-wrap:wrap;align-items:center;gap:10px 18px"><span class="eyebrow" style="color:var(--c-destaque)">'+esc(s.selo)+'</span></div>'
+        +'<h1 class="disp caps hero-h1 entra d2">'+esc(s.titulo)+' <span style="color:var(--c-destaque)">'+esc(s.destaque)+'</span></h1>'
+        +'<p class="entra d3 hero-p">'+esc(s.texto)+'</p>'
+        +'<div class="entra d4 hero-btns"><a class="btn-y" href="'+at(s.link)+'" style="text-decoration:none;background:var(--c-destaque);color:var(--c-escuro);font-weight:800;font-size:15px;padding:16px 28px;border-radius:999px;min-height:52px;display:inline-flex;align-items:center;gap:10px">'+esc(s.botao)+' <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></a><a class="btn-ghost" href="'+at(waGeralDe(loja))+'" target="_blank" rel="noopener" style="text-decoration:none;border:2px solid #fff;color:#fff;font-weight:800;font-size:15px;padding:14px 26px;border-radius:999px;min-height:52px;display:inline-flex;align-items:center">Pedir no WhatsApp</a></div>'
+        +'<div class="entra d5 hero-nav"><button type="button" data-act="slidePrev" aria-label="Destaque anterior" style="width:44px;height:44px;border-radius:50%;border:1px solid var(--c-linha-esc);background:transparent;color:#fff;cursor:pointer;display:inline-flex;align-items:center;justify-content:center"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M15 5l-7 7 7 7"></path></svg></button>'+pontos+'<button type="button" data-act="slideNext" aria-label="Próximo destaque" style="width:44px;height:44px;border-radius:50%;border:1px solid var(--c-linha-esc);background:transparent;color:#fff;cursor:pointer;display:inline-flex;align-items:center;justify-content:center"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M9 5l7 7-7 7"></path></svg></button></div>'
       +'</div>'
       +'<div class="bowls">'+tig+'<span class="selo-250" style="position:absolute;right:2%;top:4%;width:112px;height:112px;border-radius:50%;background:var(--c-destaque);color:var(--c-escuro);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;transform:rotate(12deg);box-shadow:0 14px 28px -12px rgba(0,0,0,.5);line-height:1"><span class="disp" style="font-weight:900;font-size:30px">250 g</span><span style="font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;padding-top:4px">pesado<br>na hora</span></span></div>'
     +'</div></section>';
@@ -367,7 +414,7 @@ function destaquesDe(c){
 }
 function renderDestaques(){
   var c=ctx(), d=destaquesDe(c);
-  Array.prototype.forEach.call(document.querySelectorAll('[data-dest]'),function(n){ var p=d[+n.getAttribute('data-dest')]; if(p) por(n,cartaoHTML(p)); });
+  Array.prototype.forEach.call(document.querySelectorAll('[data-dest]'),function(n){ var p=d[+n.getAttribute('data-dest')]; if(p) por(n,cardFor(p)); });
 }
 function fillCorpo(c){
   var loja=c.loja, produtos=c.produtos;
@@ -386,12 +433,12 @@ function fillCorpo(c){
   var circ=cats.map(function(cat){
     var ps=nCat(cat); var fc=(ps.find(function(p){return p.foto&&!p.recorte;})||{}).foto||'';
     var on=cat===c.sel&&!c.q;
-    var dot=fc?('<img class="dot" src="'+at(fc)+'" alt="" style="width:100%;max-width:150px;aspect-ratio:1;object-fit:cover;border-radius:50%;border:5px solid '+(on?'var(--c-destaque)':'#ffffff')+';box-shadow:0 0 0 1px var(--c-borda);display:block">'):('<span class="dot" aria-hidden="true" style="width:100%;max-width:150px;aspect-ratio:1;border-radius:50%;background:'+grao((ps[0]||{}).cor||'#cccccc')+';border:5px solid '+(on?'var(--c-destaque)':'#ffffff')+';box-shadow:0 0 0 1px var(--c-borda);display:block"></span>');
-    return '<a class="circ revela" href="#produtos" data-act="cat" data-cat="'+at(cat)+'" style="text-decoration:none;display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center">'+dot+'<span style="display:flex;flex-direction:column;gap:2px"><span style="font-weight:800;font-size:14px;text-transform:uppercase;letter-spacing:.04em;color:var(--c-escuro)">'+esc(cat)+'</span><span style="font-size:12px;color:var(--c-mudo)">'+ps.length+(ps.length===1?' produto':' produtos')+'</span></span></a>';
+    var dot=fc?('<img class="dot" src="'+at(fc)+'" alt="" loading="lazy" decoding="async" width="150" height="150" style="width:100%;max-width:150px;aspect-ratio:1;object-fit:cover;border-radius:50%;border:5px solid '+(on?'var(--c-destaque)':'#ffffff')+';box-shadow:0 0 0 1px var(--c-borda);display:block">'):('<span class="dot" aria-hidden="true" style="width:100%;max-width:150px;aspect-ratio:1;border-radius:50%;background:'+grao((ps[0]||{}).cor||'#cccccc')+';border:5px solid '+(on?'var(--c-destaque)':'#ffffff')+';box-shadow:0 0 0 1px var(--c-borda);display:block"></span>');
+    return '<a class="circ revela" href="#produtos" data-act="cat" data-cat="'+at(cat)+'" style="text-decoration:none;display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center">'+dot+'<span style="display:flex;flex-direction:column;gap:2px"><span style="font-weight:800;font-size:15px;color:var(--c-escuro);line-height:1.2">'+esc(cat)+'</span><span style="font-size:12px;color:var(--c-mudo)">'+ps.length+(ps.length===1?' produto':' produtos')+'</span></span></a>';
   }).join('');
   // destaques
   var destaques=destaquesDe(c);
-  var destHTML=destaques.map(function(p,i){return '<div class="revela cel" data-dest="'+i+'">'+cartaoHTML(p)+'</div>';}).join('');
+  var destHTML=destaques.map(function(p,i){return '<div class="'+(state.mob?'':'revela ')+'cel" data-dest="'+i+'">'+cardFor(p)+'</div>';}).join('');
   // galeria
   var comF=produtos.filter(function(p){return p.foto&&!p.recorte;});
   var galeria=comF.filter(function(p){return p.cat==='Misturas da casa';}).slice(0,5);
@@ -399,15 +446,15 @@ function fillCorpo(c){
   if(galeria.length>=5){
     galeriaHTML='<sectionwrap><section style="background:var(--c-escuro);color:#fff">'
       +'<svg aria-hidden="true" viewBox="0 0 1440 48" preserveAspectRatio="none" style="display:block;width:100%;height:36px;background:#fff"><path d="M0 48 C 240 0 480 0 720 24 C 960 48 1200 48 1440 8 L1440 48 Z" style="fill:var(--c-escuro)"></path></svg>'
-      +'<div class="wrap" style="padding-top:40px;padding-bottom:72px;display:flex;flex-direction:column;gap:28px"><div style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:16px"><div class="revela-esq" style="display:flex;flex-direction:column;gap:6px;max-width:640px"><span class="eyebrow" style="color:var(--c-destaque)">Misturas da casa</span><h2 class="disp" style="margin:0;font-weight:900;font-size:clamp(36px,4.6vw,56px);line-height:.95">Direto da bandeja para a sua cozinha</h2><p style="margin:0;color:var(--c-texto-esc);font-size:17px">Misturas montadas aqui na loja, do jeito que os clientes pedem há anos.</p></div><a class="btn-y" href="#produtos" data-act="cat" data-cat="Misturas da casa" style="text-decoration:none;background:var(--c-destaque);color:var(--c-escuro);font-weight:800;font-size:14px;text-transform:uppercase;letter-spacing:.06em;padding:14px 24px;border-radius:999px;min-height:48px;display:inline-flex;align-items:center">Ver todas as misturas</a></div>'
-      +'<div class="bento">'+galeria.map(function(g){return '<a class="bento-item revela" href="#produtos" data-act="cat" data-cat="Misturas da casa" style="position:relative;display:block;border-radius:22px;overflow:hidden;text-decoration:none;min-height:0"><img src="'+at(g.foto)+'" alt="'+at(g.nome)+'" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block"><span style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(20,24,48,0) 45%,rgba(20,24,48,.85) 100%)"></span><span class="disp" style="position:absolute;left:18px;right:18px;bottom:14px;font-weight:900;font-size:26px;line-height:1;color:#fff">'+esc(g.nome)+'</span></a>';}).join('')+'</div></div>'
+      +'<div class="wrap" style="padding-top:40px;padding-bottom:72px;display:flex;flex-direction:column;gap:28px"><div style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:16px"><div class="revela-esq" style="display:flex;flex-direction:column;gap:6px;max-width:640px"><span class="eyebrow" style="color:var(--c-destaque)">Misturas da casa</span><h2 class="disp" style="margin:0;font-weight:900;font-size:clamp(36px,4.6vw,56px);line-height:.95">Direto da bandeja para a sua cozinha</h2><p style="margin:0;color:var(--c-texto-esc);font-size:17px">Misturas montadas aqui na loja, do jeito que os clientes pedem há anos.</p></div><a class="btn-y" href="#produtos" data-act="cat" data-cat="Misturas da casa" style="text-decoration:none;background:var(--c-destaque);color:var(--c-escuro);font-weight:800;font-size:14px;padding:14px 24px;border-radius:999px;min-height:48px;display:inline-flex;align-items:center">Ver todas as misturas</a></div>'
+      +'<div class="bento">'+galeria.map(function(g){return '<a class="bento-item revela" href="#produtos" data-act="cat" data-cat="Misturas da casa" style="position:relative;display:block;border-radius:22px;overflow:hidden;text-decoration:none;min-height:0"><img src="'+at(g.foto)+'" alt="'+at(g.nome)+'" loading="lazy" decoding="async" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block"><span style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(20,24,48,0) 45%,rgba(20,24,48,.85) 100%)"></span><span class="disp" style="position:absolute;left:18px;right:18px;bottom:14px;font-weight:900;font-size:26px;line-height:1;color:#fff">'+esc(g.nome)+'</span></a>';}).join('')+'</div></div>'
       +'<svg aria-hidden="true" viewBox="0 0 1440 48" preserveAspectRatio="none" style="display:block;width:100%;height:36px;background:var(--c-fundo)"><path d="M0 0 L1440 0 L1440 24 C 1200 48 960 0 720 20 C 480 40 240 48 0 16 Z" style="fill:var(--c-escuro)"></path></svg>'
       +'</section></sectionwrap>';
   }
   return '<div class="fita" aria-hidden="true"><div class="fita-faixa"><div class="fita-trilho">'+fita+'</div></div></div>'
+    +'<section class="sec-dest" style="padding-top:40px;padding-bottom:56px"><div class="wrap" style="display:flex;flex-direction:column;gap:28px"><div style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:12px"><div class="revela-esq" style="display:flex;flex-direction:column;gap:6px"><span class="eyebrow" style="color:var(--c-acento)">'+(loja.id==='vks'?'Os mais pedidos da VKS':'Os mais vendidos da D’Lu')+'</span><h2 class="disp" style="margin:0;font-weight:900;font-size:clamp(36px,4.6vw,56px);line-height:.95">'+(loja.id==='vks'?'Destaques da semana':'Os queridinhos')+'</h2></div><a href="#produtos" style="font-weight:800;font-size:15px;display:inline-flex;align-items:center;gap:8px">Ver todos os produtos <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></a></div><div class="prods'+(state.mob?' carrossel':'')+'">'+destHTML+'</div></div></section>'
     +'<section style="padding-top:26px;padding-bottom:8px"><div class="wrap trust revela">'+trust+'</div></section>'
     +'<section style="padding-top:56px;padding-bottom:28px"><div class="wrap" style="display:flex;flex-direction:column;gap:32px"><div class="revela" style="display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center"><span class="eyebrow" style="color:var(--c-acento)">Compre por categoria</span><h2 class="disp" style="margin:0;font-weight:900;font-size:clamp(36px,4.6vw,56px);line-height:.95;color:var(--c-escuro)">Tem tempero pra tudo</h2></div><div class="circles">'+circ+'</div></div></section>'
-    +'<section style="padding-top:40px;padding-bottom:64px"><div class="wrap" style="display:flex;flex-direction:column;gap:28px"><div style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:12px"><div class="revela-esq" style="display:flex;flex-direction:column;gap:6px"><span class="eyebrow" style="color:var(--c-acento)">'+(loja.id==='vks'?'Os mais pedidos da VKS':'Os mais vendidos da D’Lu')+'</span><h2 class="disp" style="margin:0;font-weight:900;font-size:clamp(36px,4.6vw,56px);line-height:.95">'+(loja.id==='vks'?'Destaques da semana':'Os queridinhos')+'</h2></div><a href="#produtos" style="font-weight:800;font-size:15px;display:inline-flex;align-items:center;gap:8px">Ver todos os produtos <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></a></div><div class="prods">'+destHTML+'</div></div></section>'
     +galeriaHTML;
 }
 function vItem(path,titulo,texto,stroke){
@@ -420,7 +467,11 @@ function fillCatalogo(c){
     var on=(cat===c.sel)&&!c.q;
     return '<button type="button" data-act="cat" data-cat="'+at(cat)+'" aria-pressed="'+on+'" style="font:inherit;white-space:nowrap;font-weight:800;font-size:13px;padding:9px 16px;min-height:40px;border-radius:999px;border:1px solid var(--c-borda2);background:'+(on?'var(--c-escuro)':'#ffffff')+';color:'+(on?'#ffffff':'var(--c-escuro)')+';cursor:pointer">'+esc(cat)+'</button>';
   }).join('');
-  var grid=c.lista.map(function(p){return '<div class="revela cel">'+cartaoHTML(p)+'</div>';}).join('');
+  var grid=c.visivel.map(function(p){return '<div class="'+(state.mob?'':'revela ')+'cel">'+cardFor(p)+'</div>';}).join('');
+  var resta=c.lista.length-c.visivel.length;
+  var verMais=resta>0?('<div class="ver-mais"><button type="button" data-act="verMais" class="btn-mais">Ver mais produtos <span>('+resta+(resta===1?' restante':' restantes')+')</span></button><span class="ver-mais-info">Mostrando '+c.visivel.length+' de '+c.lista.length+'</span></div>'):'';
+  var outra=Object.keys(LOJAS).filter(function(id){return id!==c.loja.id;})[0], lo=LOJAS[outra];
+  var notaLojas=lo?('<p class="nota-lojas">Este é o catálogo da <b>'+esc(c.loja.nome)+'</b>. A '+esc(lo.nome)+', nossa vizinha no Brás, tem catálogo e preços próprios. <button type="button" data-act="loja" data-loja="'+outra+'">Ver a '+esc(lo.nome)+' →</button></p>'):'';
   var vazio=c.lista.length===0?('<p style="margin:0;padding:36px;text-align:center;background:#fff;border-radius:20px;color:var(--c-mudo)">Não achamos esse produto no site. <a href="'+at(waGeralDe(c.loja))+'" target="_blank" rel="noopener" style="font-weight:800">Pergunte pelo WhatsApp</a>: temos muito mais na loja.</p>'):'';
   var limpar=temFiltro?('<button type="button" data-act="limpar" style="font:inherit;font-weight:800;font-size:14px;padding:10px 18px;min-height:44px;border-radius:999px;border:2px solid var(--c-escuro);background:#fff;color:var(--c-escuro);cursor:pointer">Limpar filtro ✕</button>'):'';
   var rd=regraDesconto();
@@ -430,7 +481,7 @@ function fillCatalogo(c){
     +'<div style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:12px"><div class="revela-esq" style="display:flex;flex-direction:column;gap:6px"><span class="eyebrow" style="color:var(--c-acento)">'+c.lista.length+(c.lista.length===1?' produto':' produtos')+'</span><h2 class="disp" style="margin:0;font-weight:900;font-size:clamp(36px,4.6vw,56px);line-height:.95">'+esc(c.q?'Resultado da busca':(c.sel==='Todos'?'Todos os produtos':c.sel))+'</h2></div>'+limpar+'</div>'
  +faixaDesc+exemplo
     +'<div class="catnav" style="gap:8px;padding-bottom:4px" role="group" aria-label="Filtrar por categoria">'+abas+'</div>'
-    +'<div class="prods">'+grid+'</div>'+vazio
+    +'<div class="prods'+(state.mob?' prods-mini':'')+'">'+grid+'</div>'+vazio+verMais+notaLojas
   +'</div></section>';
 }
 
@@ -438,7 +489,7 @@ function fillAtacado(c){
   var loja=c.loja;
   var quadros=loja.quadros.map(function(q){return '<div class="etiqueta" style="position:relative;background:var(--c-fundo2);color:var(--c-escuro);border-radius:16px 16px 20px 20px;padding:34px 12px 22px;text-align:center;display:flex;flex-direction:column;gap:6px;box-shadow:0 18px 30px -18px rgba(0,0,0,.6)"><span aria-hidden="true" style="position:absolute;top:12px;left:50%;transform:translateX(-50%);width:14px;height:14px;border-radius:50%;background:var(--c-acento);box-shadow:inset 0 2px 3px rgba(0,0,0,.4)"></span><span class="disp" style="font-weight:900;font-size:clamp(30px,3.4vw,46px);line-height:1;color:var(--c-acento)">'+esc(q.n)+'</span><span style="font-size:13px;font-weight:700;color:var(--c-escuro);line-height:1.3">'+esc(q.t)+'</span></div>';}).join('');
   var waAtacado='https://wa.me/'+loja.waNum+'?text='+encodeURIComponent('Olá, '+loja.nome+'! Quero um orçamento de atacado:\n');
-  return '<section style="background:var(--c-acento);color:#fff;position:relative;overflow:hidden"><div aria-hidden="true" style="position:absolute;inset:0;opacity:.5;background:radial-gradient(circle at 30% 35%, var(--c-ponto1) 0 1.5px, transparent 2.4px) 0 0 / 14px 14px, radial-gradient(circle at 60% 70%, var(--c-ponto2) 0 1.6px, transparent 2.6px) 5px 7px / 17px 17px"></div><div class="wrap atacado" style="padding-top:72px;padding-bottom:72px;position:relative"><div class="revela-esq" style="display:flex;flex-direction:column;gap:16px"><span class="eyebrow" style="color:var(--c-destaque)">Atacado '+esc(loja.nome)+'</span><h2 class="disp" style="margin:0;font-weight:900;font-size:clamp(40px,5.4vw,68px);line-height:.92">Compra para o seu negócio? A gente abastece.</h2><p style="margin:0;color:var(--c-acento-bg2);font-size:18px;max-width:46ch">'+esc(loja.textoAtacado)+'</p><a class="btn-y" href="'+at(waAtacado)+'" target="_blank" rel="noopener" style="align-self:flex-start;text-decoration:none;background:var(--c-destaque);color:var(--c-escuro);font-weight:800;font-size:15px;text-transform:uppercase;letter-spacing:.06em;padding:16px 28px;border-radius:999px;min-height:52px;display:inline-flex;align-items:center;gap:10px">Pedir orçamento de atacado <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></a></div><div class="tags revela">'+quadros+'</div></div></section>';
+  return '<section style="background:var(--c-acento);color:#fff;position:relative;overflow:hidden"><div aria-hidden="true" style="position:absolute;inset:0;opacity:.5;background:radial-gradient(circle at 30% 35%, var(--c-ponto1) 0 1.5px, transparent 2.4px) 0 0 / 14px 14px, radial-gradient(circle at 60% 70%, var(--c-ponto2) 0 1.6px, transparent 2.6px) 5px 7px / 17px 17px"></div><div class="wrap atacado" style="padding-top:72px;padding-bottom:72px;position:relative"><div class="revela-esq" style="display:flex;flex-direction:column;gap:16px"><span class="eyebrow" style="color:var(--c-destaque)">Atacado '+esc(loja.nome)+'</span><h2 class="disp" style="margin:0;font-weight:900;font-size:clamp(40px,5.4vw,68px);line-height:.92">Compra para o seu negócio? A gente abastece.</h2><p style="margin:0;color:var(--c-acento-bg2);font-size:18px;max-width:46ch">'+esc(loja.textoAtacado)+'</p><a class="btn-y" href="'+at(waAtacado)+'" target="_blank" rel="noopener" style="align-self:flex-start;text-decoration:none;background:var(--c-destaque);color:var(--c-escuro);font-weight:800;font-size:15px;padding:16px 28px;border-radius:999px;min-height:52px;display:inline-flex;align-items:center;gap:10px">Pedir orçamento de atacado <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></a></div><div class="tags revela">'+quadros+'</div></div></section>';
 }
 
 function fillPedir(c){
@@ -448,7 +499,7 @@ function fillPedir(c){
     +passo('1','Escolha os temperos','No site ou perguntando pelo que precisa. No varejo, a partir de 250 g por produto.')
     +passo('2','Monte sua sacola','Escolha a quantidade e toque em “Adicionar” em cada produto. No fim, abra a sacola e envie direto para a loja (ou pelo WhatsApp, se preferir).')
     +passo('3','A gente pesa e separa','Conferimos o pedido, pesamos na hora e avisamos quando estiver pronto.')
-    +'</ol><a class="btn-wa" href="'+at(waGeralDe(loja))+'" target="_blank" rel="noopener" style="align-self:flex-start;text-decoration:none;background:#1b7a4b;color:#fff;font-weight:800;font-size:15px;text-transform:uppercase;letter-spacing:.06em;padding:16px 28px;border-radius:999px;min-height:52px;display:inline-flex;align-items:center">Fazer meu pedido</a></div>'
+    +'</ol><a class="btn-wa" href="'+at(waGeralDe(loja))+'" target="_blank" rel="noopener" style="align-self:flex-start;text-decoration:none;background:#1b7a4b;color:#fff;font-weight:800;font-size:15px;padding:16px 28px;border-radius:999px;min-height:52px;display:inline-flex;align-items:center">Fazer meu pedido</a></div>'
     +'<figure class="revela" aria-label="Exemplo de conversa de pedido" style="margin:0;background:var(--c-borda4);border-radius:28px;padding:18px;box-shadow:0 30px 50px -30px rgba(29,34,64,.45)"><div style="background:var(--c-borda3);border-radius:18px;overflow:hidden"><div style="background:#1b7a4b;color:#fff;padding:14px 16px;display:flex;align-items:center;gap:12px"><span style="width:38px;height:38px;border-radius:50%;background:#fff;color:var(--c-escuro2);display:flex;align-items:center;justify-content:center;font-weight:900;font-size:13px" class="disp">'+(loja.id==='vks'?'VKS':'D’Lu')+'</span><span style="display:flex;flex-direction:column;line-height:1.2"><strong style="font-size:15px">'+esc(loja.nome)+'</strong><span style="font-size:12px;color:#d3f0df">conta comercial</span></span></div><div style="padding:18px 14px 22px;display:flex;flex-direction:column;gap:10px;font-size:15px"><div class="bolha b1" style="align-self:flex-end;max-width:82%;background:#d9fdd3;color:#1a2a1f;border-radius:14px 14px 4px 14px;padding:10px 12px;white-space:pre-line;box-shadow:0 1px 1px rgba(0,0,0,.08)">Bom dia! Quero:\nCominho – 500 g\nPáprica defumada – 1 kg</div><div class="bolha b2" style="align-self:flex-start;max-width:82%;background:#fff;color:#1a2a1f;border-radius:14px 14px 14px 4px;padding:10px 12px;box-shadow:0 1px 1px rgba(0,0,0,.08)">Bom dia! Já estamos separando. Avisamos assim que estiver pesado e pronto.</div><div class="bolha b3" style="align-self:flex-end;max-width:82%;background:#d9fdd3;color:#1a2a1f;border-radius:14px 14px 4px 14px;padding:10px 12px;box-shadow:0 1px 1px rgba(0,0,0,.08)">Perfeito, obrigado!</div></div></div></figure></div></section>';
 }
 function passo(n,t,d){return '<li style="display:flex;gap:18px;align-items:flex-start"><span class="disp" style="flex:none;width:52px;height:52px;border-radius:50%;background:var(--c-destaque);color:var(--c-escuro);font-weight:900;font-size:26px;display:flex;align-items:center;justify-content:center">'+n+'</span><span style="display:flex;flex-direction:column;gap:2px;padding-top:4px"><strong style="font-size:18px">'+esc(t)+'</strong><span style="color:var(--c-mudo)">'+esc(d)+'</span></span></li>';}
@@ -464,7 +515,7 @@ function fillVisite(c){
       +'<div style="display:flex;flex-wrap:wrap;gap:10px"><a class="btn-wa" href="'+at(wa)+'" target="_blank" rel="noopener" style="text-decoration:none;background:#1b7a4b;color:#fff;font-weight:800;font-size:15px;padding:13px 22px;border-radius:999px;min-height:48px;display:inline-flex;align-items:center">Pedir na '+esc(l.nome)+'</a><button type="button" data-act="loja" data-loja="'+id+'" style="font:inherit;font-weight:800;font-size:15px;padding:13px 22px;min-height:48px;border-radius:999px;border:2px solid var(--c-escuro);background:#fff;color:var(--c-escuro);cursor:pointer">Ver produtos desta loja</button></div>'
     +'</article>';
   }).join('');
-  return '<section id="visite" style="padding-top:72px;padding-bottom:80px;background:var(--c-fundo)"><div class="wrap" style="display:flex;flex-direction:column;gap:32px"><div class="revela" style="display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center"><span class="eyebrow" style="color:var(--c-acento)">Duas lojas no Brás</span><h2 class="disp" style="margin:0;font-weight:900;font-size:clamp(36px,4.6vw,56px);line-height:.95">Visite nossas lojas</h2></div><div class="lojas">'+cards+'</div></div></section>';
+  return '<section id="visite" style="padding-top:72px;padding-bottom:80px;background:var(--c-fundo)"><div class="wrap" style="display:flex;flex-direction:column;gap:32px"><div class="revela" style="display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center"><span class="eyebrow" style="color:var(--c-acento)">Duas lojas no Brás</span><h2 class="disp" style="margin:0;font-weight:900;font-size:clamp(36px,4.6vw,56px);line-height:.95">Visite nossas lojas</h2><p style="margin:6px 0 0;max-width:56ch;color:var(--c-mudo);font-size:16px">São vizinhas, pertinho uma da outra no Brás: a <b>D’Lu Empório</b> fica na Rua Santa Rosa, 244 e a <b>VKS Condimentos</b> na Avenida Mercúrio, 330. Cada uma tem seu catálogo, seus preços e seu WhatsApp.</p></div><div class="lojas">'+cards+'</div></div></section>';
 }
 
 function fillRodape(c){
@@ -514,7 +565,7 @@ function fillOverlay(c){
   if(state._aviso) hAviso='<div class="aviso" role="status" style="position:fixed;left:50%;bottom:24px;transform:translateX(-50%);z-index:60;background:var(--c-escuro);color:#fff;padding:12px 18px;border-radius:999px;display:flex;align-items:center;gap:12px;box-shadow:0 14px 30px -10px rgba(0,0,0,.5);max-width:calc(100% - 32px)"><span aria-hidden="true" style="width:24px;height:24px;flex:none;border-radius:50%;background:#4cc27f;display:flex;align-items:center;justify-content:center"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"></path></svg></span><span style="font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Na sacola: <b>'+esc(state._aviso)+'</b></span><button type="button" data-act="abrirSacola" style="font:inherit;cursor:pointer;border:none;background:var(--c-destaque);color:var(--c-escuro);font-weight:800;font-size:13px;padding:7px 12px;border-radius:999px;min-height:34px;white-space:nowrap">Ver pedido</button></div>';
   // FAB sacola
   var qtd=(state.carrinhos[loja.id]||[]).length;
-  if(qtd>0) hFab='<button type="button" data-act="abrirSacola" style="position:fixed;left:20px;bottom:20px;z-index:50;font:inherit;cursor:pointer;border:none;background:var(--c-escuro);color:#fff;padding:0 20px 0 14px;height:58px;border-radius:999px;display:flex;align-items:center;gap:10px;box-shadow:0 12px 24px -8px rgba(0,0,0,.45)"><span style="width:34px;height:34px;border-radius:50%;background:var(--c-destaque);color:var(--c-escuro);font-weight:900;font-size:15px;display:flex;align-items:center;justify-content:center">'+qtd+'</span><span style="font-weight:800;font-size:14px;text-transform:uppercase;letter-spacing:.06em">Ver meu pedido</span></button>';
+  if(qtd>0) hFab='<button type="button" data-act="abrirSacola" style="position:fixed;left:20px;bottom:20px;z-index:50;font:inherit;cursor:pointer;border:none;background:var(--c-escuro);color:#fff;padding:0 20px 0 14px;height:58px;border-radius:999px;display:flex;align-items:center;gap:10px;box-shadow:0 12px 24px -8px rgba(0,0,0,.45)"><span style="width:34px;height:34px;border-radius:50%;background:var(--c-destaque);color:var(--c-escuro);font-weight:900;font-size:15px;display:flex;align-items:center;justify-content:center">'+qtd+'</span><span style="font-weight:800;font-size:14px">Ver meu pedido</span></button>';
   // FAB whatsapp
   hWa='<a class="btn-wa pulso" href="'+at(waGeralDe(loja))+'" target="_blank" rel="noopener" aria-label="Pedir pelo WhatsApp da '+at(loja.nome)+'" style="position:fixed;right:20px;bottom:20px;width:62px;height:62px;border-radius:50%;background:#1b7a4b;color:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 6px rgba(27,122,75,.18),0 12px 24px -8px rgba(0,0,0,.45);z-index:50"><svg aria-hidden="true" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.4L3 21l2.1-5.4A8.4 8.4 0 1 1 21 11.5z"></path></svg></a>';
   if(state.sacola) hGav=sacolaHTML(c);
@@ -591,7 +642,7 @@ function sacolaHTML(c){
     }
     var acao=erro
       ? '<p role="alert" style="margin:0;padding:10px 12px;border-radius:12px;background:#fde6e2;color:#9b2a1c;font-size:14px;font-weight:700">'+esc(erro)+'</p>'
-      : ('<button type="button" data-act="enviarLoja"'+(state.enviando?' disabled aria-busy="true"':'')+' style="font:inherit;cursor:'+(state.enviando?'wait':'pointer')+';border:none;background:var(--c-destaque);color:var(--c-escuro);font-weight:800;font-size:15px;text-transform:uppercase;letter-spacing:.06em;padding:15px;border-radius:999px;min-height:52px;display:flex;align-items:center;justify-content:center;gap:10px"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13"></path><path d="M22 2l-7 20-4-9-9-4 20-7z"></path></svg>'+(state.enviando?'Enviando…':'Enviar pedido para a loja · '+rotItens)+'</button>'
+      : ('<button type="button" data-act="enviarLoja"'+(state.enviando?' disabled aria-busy="true"':'')+' style="font:inherit;cursor:'+(state.enviando?'wait':'pointer')+';border:none;background:var(--c-destaque);color:var(--c-escuro);font-weight:800;font-size:15px;padding:15px;border-radius:999px;min-height:52px;display:flex;align-items:center;justify-content:center;gap:10px"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13"></path><path d="M22 2l-7 20-4-9-9-4 20-7z"></path></svg>'+(state.enviando?'Enviando…':'Enviar pedido para a loja · '+rotItens)+'</button>'
         +(state.erroEnvio?'<p role="alert" style="margin:0;padding:10px 12px;border-radius:12px;background:#fde6e2;color:#9b2a1c;font-size:14px;font-weight:700">'+esc(state.erroEnvio)+'</p>':'')
         +'<a class="btn-wa" href="'+at(mensagemWa(c))+'" data-act="registrar" target="_blank" rel="noopener" style="text-decoration:none;background:'+(state.erroEnvio?'#1b7a4b':'#fff')+';color:'+(state.erroEnvio?'#fff':'#1b7a4b')+';border:2px solid #1b7a4b;font-weight:800;font-size:14px;padding:11px;border-radius:999px;min-height:46px;display:flex;align-items:center;justify-content:center;gap:8px"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.4L3 21l2.1-5.4A8.4 8.4 0 1 1 21 11.5z"></path></svg>'+(state.erroEnvio?'Enviar pelo WhatsApp':'ou enviar pelo WhatsApp')+'</a>');
 
@@ -688,8 +739,22 @@ function renderAll(){
   por(el('visite'),fillVisite(c));
   por(el('rodape'),fillRodape(c));
   renderOverlay(c);
+  renderFolha(c);
 }
-function renderCatalogo(){ var c=ctx(); por(el('catalogo'),fillCatalogo(c)); por(el('catnav'),navCatsHTML(c)); }
+/* folha do produto (celular): abre por cima, com a mesma lógica do cartão completo */
+var folhaVinha=null;
+function renderFolha(c){
+  var f=el('folha'); if(!f) return;
+  if(!state.folha){ if(f.firstChild){ f.innerHTML=''; document.documentElement.classList.remove('folha-aberta'); if(folhaVinha&&document.contains(folhaVinha)){ try{folhaVinha.focus({preventScroll:true});}catch(e){} } folhaVinha=null; } return; }
+  var html=folhaHTML(c||ctx());
+  if(!html){ state.folha=null; f.innerHTML=''; document.documentElement.classList.remove('folha-aberta'); return; }
+  var nova=!f.firstChild;
+  por(f,html);
+  if(nova){ document.documentElement.classList.add('folha-aberta'); var x=f.querySelector('.folha-x'); if(x) try{ x.focus({preventScroll:true}); }catch(e){} }
+}
+function abrirFolha(chave,grupo,quem){ state.folha={chave:chave, grupo:grupo||''}; folhaVinha=quem||null; renderFolha(); }
+function fecharFolha(){ if(!state.folha) return; state.folha=null; renderFolha(); }
+function renderCatalogo(){ var c=ctx(); por(el('catalogo'),fillCatalogo(c)); por(el('catnav'),navCatsHTML(c)); if(state.folha) renderFolha(c); }
 function renderCorpo(){ por(el('corpo'),fillCorpo(ctx())); }
 // troca de slide (ou de loja) recria o destaque para tocar a animação de entrada; o resto só atualiza o que mudou
 function renderHero(c){ c=c||ctx(); var h=el('hero'), html=fillHero(c);
@@ -781,9 +846,15 @@ function onClick(e){
   // links que navegam/abrem whatsapp: deixa o navegador agir
   if(act==='busca'||act==='campo') return;
 
-  if(act==='loja'){ var id=t.getAttribute('data-loja'); if(id!==state.loja){ state.loja=id; state.cat='Todos'; state.busca=''; state.slide=0; state.sacola=false; state.conta=false; state.enviado=null; state.erroEnvio=''; PRECOS=PRECOS_CACHE[id]||null; renderAll(); carregarPrecos(); } return; }
-  if(act==='cat'){ state.cat=t.getAttribute('data-cat'); state.busca=''; renderAll(); return; }
-  if(act==='limpar'){ state.busca=''; state.cat='Todos'; renderAll(); return; }
+  if(act==='abrirFolha'){ abrirFolha(t.getAttribute('data-key'), t.getAttribute('data-grupo'), t); return; }
+  if(act==='fecharFolha'){ fecharFolha(); return; }
+  if(act==='verMais'){ state.limite=(state.limite||POR_PAGINA)+POR_PAGINA; renderCatalogo();
+    // o foco vai para o primeiro produto novo (teclado e leitores de tela)
+    var cels=document.querySelectorAll('#catalogo .prods > .cel'), alvo=cels[state.limite-POR_PAGINA]; if(alvo){ var b=alvo.querySelector('button,a'); if(b) try{ b.focus({preventScroll:true}); }catch(_){} }
+    return; }
+  if(act==='loja'){ var id=t.getAttribute('data-loja'); if(id!==state.loja){ state.loja=id; state.cat='Todos'; state.busca=''; state.slide=0; state.limite=POR_PAGINA; state.folha=null; state.sacola=false; state.conta=false; state.enviado=null; state.erroEnvio=''; PRECOS=PRECOS_CACHE[id]||null; renderAll(); carregarPrecos(); } return; }
+  if(act==='cat'){ state.cat=t.getAttribute('data-cat'); state.busca=''; state.limite=POR_PAGINA; renderAll(); return; }
+  if(act==='limpar'){ state.busca=''; state.cat='Todos'; state.limite=POR_PAGINA; renderAll(); return; }
   if(act==='slide'){ state.slide=+t.getAttribute('data-i'); renderHero(); return; }
   if(act==='slidePrev'){ state.slide=(state.slide+2)%3; renderHero(); return; }
   if(act==='slideNext'){ state.slide=(state.slide+1)%3; renderHero(); return; }
@@ -797,9 +868,9 @@ function onClick(e){
       var j=opA?novo.opcoes.findIndex(function(o){return o.r===opA.r;}):-1;
       if(j>=0) state.sel[novo.chave]=j;
     }
-    state.tipo[g]=ti; renderCatalogo(); renderDestaques(); return;
+    state.tipo[g]=ti; renderCatalogo(); renderDestaques(); renderFolha(); return;
   }
-  if(act==='opt'){ var k=t.getAttribute('data-key'); state.sel[k]=+t.getAttribute('data-oi'); renderCatalogo(); renderDestaques(); return; }
+  if(act==='opt'){ var k=t.getAttribute('data-key'); state.sel[k]=+t.getAttribute('data-oi'); renderCatalogo(); renderDestaques(); renderFolha(); return; }
   if(act==='add'){
     e.preventDefault();
     var key=t.getAttribute('data-key');
@@ -807,7 +878,10 @@ function onClick(e){
     if(prod){ addItem(prod);
       renderOverlay(); syncBadge();
       // feedback no botão (depois do re-render, para não ser desfeito na hora)
+      var naFolha=!!t.closest('.folha');
+      if(naFolha){ var bt=el('folha').querySelector('[data-act=add]'); if(bt) t=bt; }
       var span=t.querySelector('.add-txt'); if(span){ span.textContent='Adicionado ✓'; t.style.background='#1b7a4b'; setTimeout(function(){ try{span.textContent='Adicionar'; t.style.background='var(--c-escuro)';}catch(_){} },1400); }
+      if(naFolha) setTimeout(fecharFolha,700);
     }
     return;
   }
@@ -815,9 +889,9 @@ function onClick(e){
   if(act==='enviarLoja'){ enviarLoja(); return; }
   if(act==='verStatus'){ verStatus(t.getAttribute('data-cod'), t.getAttribute('data-loja')); return; }
   if(act==='novoPedido'){ state.enviado=null; state.sacola=false; renderAll(); return; }
-  if(act==='abrirSacola'){ state.sacola=true; state.conta=false; state.limparOk=false; renderOverlay(); return; }
+  if(act==='abrirSacola'){ state.folha=null; renderFolha(); state.sacola=true; state.conta=false; state.limparOk=false; renderOverlay(); return; }
   if(act==='fecharSacola'){ state.sacola=false; state.enviado=null; state.erroEnvio=''; renderOverlay(); return; }
-  if(act==='abrirConta'){ state.conta=true; state.sacola=false; state.apagarOk=false; renderOverlay(); return; }
+  if(act==='abrirConta'){ state.folha=null; renderFolha(); state.conta=true; state.sacola=false; state.apagarOk=false; renderOverlay(); return; }
   if(act==='fecharConta'){ state.conta=false; renderOverlay(); return; }
   if(act==='contaAba'){ state.contaAba=t.getAttribute('data-v'); renderOverlay(); return; }
 
@@ -844,7 +918,7 @@ function onClick(e){
 function onInput(e){
   var t=e.target.closest('[data-act]'); if(!t) return;
   var act=t.getAttribute('data-act');
-  if(act==='busca'){ state.busca=t.value; state.cat='Todos'; renderCatalogo(); return; }
+  if(act==='busca'){ state.busca=t.value; state.cat='Todos'; state.limite=POR_PAGINA; renderCatalogo(); return; }
   if(act==='campo'){
     var f=t.getAttribute('data-field');
     state[f]=t.value;
@@ -943,8 +1017,31 @@ function init(){
   topo.addEventListener('click',function(){ var r=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches; window.scrollTo({top:0,behavior:r?'auto':'smooth'}); });
   document.body.appendChild(topo);
   var vendoTopo=false;
-  function olhaTopo(){ var v=window.scrollY>600&&!state.sacola&&!state.conta; if(v!==vendoTopo){ vendoTopo=v; topo.classList.toggle('ver',v); topo.tabIndex=v?0:-1; } }
+  function olhaTopo(){ var v=window.scrollY>600&&!state.sacola&&!state.conta&&!state.folha; if(v!==vendoTopo){ vendoTopo=v; topo.classList.toggle('ver',v); topo.tabIndex=v?0:-1; }
+    topo.classList.toggle('com-fab',(state.carrinhos[state.loja]||[]).length>0); }
   topo.tabIndex=-1; window.addEventListener('scroll',olhaTopo,{passive:true}); setInterval(olhaTopo,800);
+  // celular x computador: no celular o catálogo usa cartões compactos e a folha do produto
+  var mq=window.matchMedia?window.matchMedia('(max-width:760px)'):null;
+  state.mob=!!(mq&&mq.matches);
+  if(mq){ var aoMudar=function(){ var m=mq.matches; if(m!==state.mob){ state.mob=m; if(!m) state.folha=null; renderAll(); } }; if(mq.addEventListener) mq.addEventListener('change',aoMudar); else if(mq.addListener) mq.addListener(aoMudar); }
+  // folha: Esc fecha, Tab fica preso dentro dela
+  document.addEventListener('keydown',function(e){
+    if(!state.folha) return;
+    if(e.key==='Escape'){ e.preventDefault(); fecharFolha(); return; }
+    if(e.key!=='Tab') return;
+    var dlg=document.querySelector('#folha .folha'); if(!dlg) return;
+    var f=[].filter.call(dlg.querySelectorAll('button:not([disabled]),a[href],input,select,textarea,[tabindex]:not([tabindex="-1"])'),function(x){return x.offsetParent!==null;});
+    if(!f.length) return;
+    var pri=f[0], ult=f[f.length-1];
+    if(!dlg.contains(document.activeElement)){ e.preventDefault(); pri.focus(); return; }
+    if(e.shiftKey&&document.activeElement===pri){ e.preventDefault(); ult.focus(); }
+    else if(!e.shiftKey&&document.activeElement===ult){ e.preventDefault(); pri.focus(); }
+  });
+  // folha: arrastar a alça (ou o topo) para baixo fecha
+  var arr=null;
+  document.addEventListener('touchstart',function(e){ var h=e.target.closest&&e.target.closest('.folha-pega'); if(!h||!state.folha) return; var d=document.querySelector('#folha .folha'); arr={y:e.touches[0].clientY, dy:0, d:d}; if(d) d.style.transition='none'; },{passive:true});
+  document.addEventListener('touchmove',function(e){ if(!arr) return; arr.dy=Math.max(0,e.touches[0].clientY-arr.y); if(arr.d) arr.d.style.transform='translateY('+arr.dy+'px)'; },{passive:true});
+  document.addEventListener('touchend',function(){ if(!arr) return; var a=arr; arr=null; if(a.d){ a.d.style.transition=''; a.d.style.transform=''; } if(a.dy>90) fecharFolha(); },{passive:true});
   carregar();
   var app=el('app');
   app.addEventListener('click', onClick);
