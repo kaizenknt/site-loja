@@ -246,6 +246,8 @@ window.CATALOGO = {
       { nome: 'Própolis verde com menta', cat: 'Mel, dendê e manteiga', cor: '#5a8a4a', uso: 'Própolis verde com menta, em frasco.', emb: true, so: 'dlu' },
       { nome: 'Polpa de malagueta', marca: 'Bella Minas', ard: 4, cat: 'Molhos', cor: '#b81e14', uso: 'Malagueta batida em polpa, para temperar carnes, molhos, caldos e feijão.', tamanhos: ['200 g'], emb: true, so: 'dlu' },
       { nome: 'Pimenta malagueta moída', ard: 4, cat: 'Pimentas e pápricas', cor: '#b02a18', uso: 'Malagueta seca e moída, a granel, para molhos, carnes e conservas.', so: 'dlu' },
+      { nome: 'Goma ice eucalipto', cat: 'Diversos', cor: '#4a9a8a', uso: 'Balas de goma sabor eucalipto, refrescantes, a granel.', so: 'dlu' },
+      { nome: 'Tempero sabor limão em pó', marca: 'Tempera Bem', cat: 'Misturas da casa', cor: '#cfc24a', uso: 'Sabor de limão em pó para peixe, frango, saladas e legumes.', tamanhos: ['pacote 500 g'], emb: true, so: 'dlu' },
       { nome: 'Pimenta malagueta', ard: 4, cat: 'Pimentas em conserva', cor: '#c4241b', uso: 'Malagueta em conserva, ardida e saborosa.', tamanhos: ['30 g', '90 g', '220 g', '450 g', '1 L'], emb: true, marca: 'Nativa', so: 'dlu' },
       { nome: 'Pimenta cumari', ard: 4, cat: 'Pimentas em conserva', cor: '#d6491a', uso: 'Pimentinha pequena e bem ardida, em conserva.', tamanhos: ['30 g', '90 g', '1 L'], emb: true, marca: 'Nativa', so: 'dlu' },
       { nome: 'Pimenta biquinho', ard: 0, cat: 'Pimentas em conserva', cor: '#e0662a', uso: 'Doce e sem ardência. Vai bem em saladas, petiscos e carnes.', tamanhos: ['90 g', '100 g', '180 g', '320 g', '1 L'], emb: true, marca: 'Nativa' },
