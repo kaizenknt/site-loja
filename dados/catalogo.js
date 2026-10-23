@@ -5,7 +5,7 @@
    Os preços NÃO ficam aqui: vêm de precos.json (publicado pelo Balcão PDV). */
 window.CATALOGO = {
   base:  [
-      { nome: 'Páprica defumada', queridinho: 8, fotosT: { dlu: 'imagens/dlu/paprica-defumada.webp' }, cat: 'Pimentas e pápricas', cor: '#8e2a16', uso: 'Sabor de churrasco em carnes, feijão, batatas e molhos.' },
+      { nome: 'Páprica defumada', fotosT: { dlu: 'imagens/dlu/paprica-defumada.webp' }, cat: 'Pimentas e pápricas', cor: '#8e2a16', uso: 'Sabor de churrasco em carnes, feijão, batatas e molhos.' },
       { nome: 'Páprica doce', fotosT: { dlu: 'imagens/dlu/paprica-doce.webp' }, cat: 'Pimentas e pápricas', cor: '#c8442a', uso: 'Cor e sabor suave para frango, arroz e maionese.' },
       { nome: 'Pimenta do reino moída', cat: 'Pimentas e pápricas', cor: '#3b332c', uso: 'A base de quase todo tempero do dia a dia.' },
       { nome: 'Lemon pepper', cat: 'Pimentas e pápricas', cor: '#c9b83a', uso: 'Pimenta com limão para peixe, frango e saladas.', fotosT: { vks: 'imagens/vks/lemon-pepper.webp' } },
@@ -20,7 +20,7 @@ window.CATALOGO = {
       { nome: 'Tempero Master Chef', queridinho: 6, foto: 'imagens/dlu/master-chef.jpg', cat: 'Misturas da casa', cor: '#7a3b1f', uso: 'Mistura pronta da casa. Pergunte a composição no WhatsApp.', so: 'dlu' },
       { nome: 'Edu Guedes tradicional', queridinho: 4, foto: 'imagens/dlu/edu-guedes.jpg', cat: 'Misturas da casa', cor: '#a0522d', uso: 'Mistura pronta da casa. Pergunte a composição no WhatsApp.', top: true, so: 'dlu' },
       { nome: 'Chimichurri tradicional', queridinho: 2, foto: 'imagens/dlu/chimichurri-tradicional.jpg', cat: 'Misturas da casa', cor: '#5e7a35', uso: 'Mistura de ervas para churrasco e marinadas.', so: 'dlu' },
-      { nome: 'Chimichurri especial', cat: 'Misturas da casa', cor: '#3f5a26', uso: 'A versão especial do chimichurri para o seu churrasco.', top: true },
+      { nome: 'Chimichurri especial', queridinho: 8, cat: 'Misturas da casa', cor: '#3f5a26', uso: 'A versão especial do chimichurri para o seu churrasco.', top: true },
       { nome: 'Mix gourmet', queridinho: 3, foto: 'imagens/dlu/mix-gourmet.jpg', cat: 'Misturas da casa', cor: '#c2872f', uso: 'Mistura pronta da casa. Pergunte a composição no WhatsApp.', so: 'dlu' },
       { nome: 'Tempero para feijão', foto: 'imagens/dlu/tempero-feijao.jpg', cat: 'Misturas da casa', cor: '#6b4a2b', uso: 'Mistura pronta para deixar o feijão mais saboroso.', top: true, so: 'dlu' },
       { nome: 'Tempero italiano', cat: 'Misturas da casa', cor: '#7d8f45', uso: 'Salsa, cebola e alho. Para molhos, massas e carnes.' },
@@ -31,7 +31,7 @@ window.CATALOGO = {
       { nome: 'Tempero mineiro', cat: 'Misturas da casa', cor: '#8c5a2b', uso: 'Mistura pronta da casa. Pergunte a composição no WhatsApp.', so: 'dlu' },
       { nome: 'Tempero paulista', foto: 'imagens/dlu/tempero-paulista.webp', cat: 'Misturas da casa', cor: '#9a4f2a', uso: 'Mistura pronta da casa. Pergunte a composição no WhatsApp.', so: 'dlu' },
       { nome: 'Tempero baiano sem pimenta', cat: 'Misturas da casa', cor: '#c46a1f', uso: 'Mistura no estilo baiano, sem ardência.', so: 'dlu' },
-      { nome: 'Tempero gaúcho', foto: 'imagens/dlu/tempero-gaucho.jpg', cat: 'Misturas da casa', cor: '#d8b21f', uso: 'Mistura no estilo do Sul para churrasco, carnes e frango.', top: true, so: 'dlu' },
+      { nome: 'Tempero gaúcho', queridinho: 7, foto: 'imagens/dlu/tempero-gaucho.jpg', cat: 'Misturas da casa', cor: '#d8b21f', uso: 'Mistura no estilo do Sul para churrasco, carnes e frango.', top: true, so: 'dlu' },
       { nome: 'Mix gourmet defumado', foto: 'imagens/dlu/mix-gourmet-defumado-2.webp', cat: 'Misturas da casa', cor: '#c4402a', uso: 'A versão defumada do mix gourmet, com sabor de churrasco.', so: 'dlu' },
       { nome: 'Tempero bife acebolado', foto: 'imagens/dlu/bife-acebolado-2.webp', cat: 'Misturas da casa', cor: '#8a4a2a', uso: 'Cebola tostada temperada para bifes, carne moída e arroz.', so: 'dlu' },
       { nome: 'Tempero Jacquin', fotosT: { dlu: 'imagens/dlu/tempero-jacquin.webp' }, cat: 'Misturas da casa', cor: '#8d4b33', uso: 'Mistura pronta da casa. Pergunte a composição no WhatsApp.', so: 'dlu' },
@@ -47,7 +47,7 @@ window.CATALOGO = {
       { nome: 'Coentro em pó', fotosT: { dlu: 'imagens/dlu/coentro-em-po.webp' }, cat: 'Especiarias', cor: '#9a8a52', uso: 'Para peixes, moquecas e pratos nordestinos.', so: 'dlu' },
       { nome: 'Coentro em grão', cat: 'Especiarias', cor: '#b3a06a', uso: 'Inteiro, para conservas, marinadas ou moer na hora.', so: 'dlu' },
       { nome: 'Salsa desidratada', fotosT: { dlu: 'imagens/dlu/salsa-desidratada.webp?v=2' }, cat: 'Ervas', cor: '#4e7a2f', uso: 'Salsa pronta para molhos, sopas e refogados.', so: 'dlu' },
-      { nome: 'Pimenta do reino em grão', queridinho: 7, cat: 'Pimentas e pápricas', cor: '#2f2925', uso: 'Pimenta inteira para moer na hora, marinadas e conservas.', so: 'dlu' },
+      { nome: 'Pimenta do reino em grão', cat: 'Pimentas e pápricas', cor: '#2f2925', uso: 'Pimenta inteira para moer na hora, marinadas e conservas.', so: 'dlu' },
       { nome: 'Tempero pega esposa', cat: 'Misturas da casa', cor: '#9c3b2c', uso: 'Mistura pronta da casa. Pergunte a composição no WhatsApp.', so: 'dlu' },
       { nome: 'Cominho em grão', cat: 'Especiarias', cor: '#8f7040', uso: 'Cominho inteiro para moer na hora ou tostar em pratos árabes e indianos.', so: 'dlu' },
       { nome: 'Tempero Delícia D’Lu', cat: 'Misturas da casa', cor: '#b0602a', uso: 'Mistura pronta da casa. Pergunte a composição no WhatsApp.', so: 'dlu' },
