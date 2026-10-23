@@ -118,6 +118,12 @@ O pedido agora vai **direto para a loja**, sem depender do WhatsApp (que continu
 - **Desconto:** 5% no Pix ou dinheiro para compras a partir de R$ 100 (percentual e mínimo ajustáveis no Balcão; publicado como `desconto`). A sacola pergunta a forma de pagamento. **A ponte recalcula o desconto** ao receber o pedido: o valor enviado pelo navegador não vale sozinho.
 - No Balcão, o pedido do site vai ao caixa com o preço de atacado travado nos itens marcados, a forma de pagamento escolhida e o desconto lançado.
 
+## 4.3 Conservas: peso drenado e foto por tamanho
+- Nas conservas com rótulo conferido, os botões mostram o **peso drenado** (só a pimenta); o peso líquido do rótulo fica em `liquido`, na mesma ordem, e aparece como "Pote de 120 g no rótulo".
+- `fotosTam` tem uma foto por tamanho (recortada da foto do conjunto): ao escolher o tamanho, o cartão mostra só aquele pote. Arquivos `imagens/vks/pote-<produto>-<drenado>.webp`.
+- Conferidos pelos rótulos (líquido → drenado): mista Aroma 120→60, 500→220, 850→430 · malagueta Aroma 75→30, 200→85, 480→220, 780→430 · cumari verde Aroma 200→85, 500→220, 850→430 · pimenta de bico 200→85, 780→420 · misturada Nativa 200→90, 880→420, 1 kg→450 · cumari do Pará 750→430 · cumari verde Nativa 80→30 · saborosa 300→170.
+- **Pendente:** as conservas Nativa da D’Lu (malagueta, cumari, biquinho, mista, de bode) ainda mostram o peso líquido, porque não há foto do rótulo.
+
 ## 5. Regras de negócio que devem ser mantidas
 - **Mínimo de 250 g** por produto a granel (o app de pesagem arredonda para 250 g).
 - **Fardos:** o botão no site diz só **"Fardo"**; o tamanho (10 ou 25 kg, ou "não vende em fardo") é escolhido **por produto** no Balcão, na tela "Ligar produtos ao site". Sem essa escolha, vale o selo do catálogo (ex.: "Fardo 25 kg" no caldo de galinha e no colorau caseiro) ou o padrão da loja (D’Lu 10 kg, VKS 25 kg).

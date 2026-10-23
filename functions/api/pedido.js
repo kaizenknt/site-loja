@@ -18,6 +18,7 @@ function limparItens(lista) {
     gramas: Math.max(0, Math.min(999999, Math.round(Number(i && i.g) || 0))),
     unidade: texto(i && i.un, 20),
     fechado: texto(i && i.fechado, 40),
+    liquido: texto(i && i.liquido, 20),
     quantidade: Math.max(1, Math.min(9999, Math.round(Number(i && i.n) || 1))),
     preco: i && i.preco != null && isFinite(i.preco) ? Math.max(0, Math.round(Number(i.preco))) : null,
     atacado: !!(i && i.atacado)

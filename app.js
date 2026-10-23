@@ -102,13 +102,13 @@ function extras(p,loja){
   var opcoes;
   if(p.nome==='Alho roxo nacional') opcoes=[{r:'Caixa 10 kg',un:'caixa de 10 kg'}];
   else if(p.nome==='Alho descascado') opcoes=[{r:'Pacote 1 kg',un:'pacote de 1 kg'}];
-  else if(p.emb) opcoes=(p.tamanhos||['Unidade']).map(function(t){return {r:t,un:'un'};});
+  else if(p.emb) opcoes=(p.tamanhos||['Unidade']).map(function(t,i){return {r:t,un:'un',liq:p.liquido?p.liquido[i]:''};});
   else { opcoes=[{r:'250 g',g:250},{r:'500 g',g:500},{r:'1 kg',g:1000}]; if(fardo) opcoes.push(fardo); }
   var ard = typeof p.ard==='number'?p.ard:null;
   var nomes=['Sem ardência','Suave','Média','Média-forte','Muito forte','Extrema'];
   var cores=['#3f7a3a','#3f7a3a','#b7791f','#c2410c','#b8321e','#7a1010'];
   return {
-    opcoes:opcoes, rotuloOpcoes:p.emb?'Tamanho':'Quantidade',
+    opcoes:opcoes, rotuloOpcoes:p.emb?(p.liquido?'Peso drenado':'Tamanho'):'Quantidade',
     temArd:ard!==null, ardTxt:ard!==null?(p.ardRotulo||nomes[ard]):'',
     ardCor:ard!==null?cores[ard]:'#1d2240',
     pimentas:ard!==null?[0,1,2,3,4].map(function(i){return i<ard?'#d6261a':'#e2d9c6';}):[]
@@ -161,8 +161,10 @@ function at(s){ return esc(s).replace(/'/g,'&#39;'); }
 /* ---------- cartão de produto ---------- */
 function cartaoHTML(p){
   var sel=Math.min(state.sel[p.chave]||0, Math.max(p.opcoes.length-1,0));
+  var opEsc=p.opcoes[sel]||{}, fotoTam=p.fotosTam&&p.fotosTam[state.loja]?p.fotosTam[state.loja][opEsc.r]:'';
   var midia='';
-  if(p.temFoto) midia='<img class="midia-img" src="'+at(p.foto)+'" alt="'+at(p.nome)+' a granel" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block">';
+  if(fotoTam) midia='<img class="midia-img foto-tam" src="'+at(fotoTam)+'" alt="'+at(p.nome+' '+(p.marca||'')+' '+opEsc.r+(opEsc.liq?' drenado (pote de '+opEsc.liq+')':''))+'" loading="lazy" style="position:absolute;left:0;right:0;top:6%;bottom:5%;margin:auto;max-width:84%;max-height:89%;width:auto;height:auto;object-fit:contain;display:block;filter:drop-shadow(0 14px 14px rgba(29,34,64,.28))">';
+  else if(p.temFoto) midia='<img class="midia-img" src="'+at(p.foto)+'" alt="'+at(p.nome)+' a granel" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block">';
   else if(p.temRecorte) midia='<img class="midia-img" src="'+at(p.foto)+'" alt="'+at(p.nome)+'" loading="lazy" style="position:absolute;left:0;right:0;top:7%;bottom:5%;margin:auto;max-width:84%;max-height:88%;width:auto;height:auto;object-fit:contain;display:block;filter:drop-shadow(0 14px 14px rgba(29,34,64,.28))">';
   else if(p.temGrao) midia='<div class="midia-img" aria-hidden="true" style="position:relative;width:70%;height:62%;display:flex;align-items:flex-end;justify-content:center">'
       +'<div style="position:absolute;bottom:4%;width:92%;height:18%;border-radius:50%;background:'+p.sombra+';opacity:.22;filter:blur(6px)"></div>'
@@ -218,7 +220,7 @@ function cartaoHTML(p){
       +'<h3 style="margin:0;font-family:\'Archivo\',\'Arial Narrow\',sans-serif;font-stretch:75%;font-weight:900;font-size:22px;line-height:1.02;text-transform:uppercase">'+esc(p.nome)+'</h3>'
       +'<p style="margin:0;font-size:14px;color:#5a5f78;flex:1">'+esc(p.uso)+'</p>'
       +ard
-      +'<div style="display:flex;flex-direction:column;gap:6px"><span style="font-size:11px;font-weight:800;color:#5a5f78;text-transform:uppercase;letter-spacing:.1em">'+esc(p.rotuloOpcoes)+'</span><div style="display:flex;flex-wrap:wrap;gap:6px" role="group" aria-label="'+at(p.rotuloOpcoes)+'">'+opc+'</div></div>'
+      +'<div style="display:flex;flex-direction:column;gap:6px"><span style="font-size:11px;font-weight:800;color:#5a5f78;text-transform:uppercase;letter-spacing:.1em">'+esc(p.rotuloOpcoes)+'</span><div style="display:flex;flex-wrap:wrap;gap:6px" role="group" aria-label="'+at(p.rotuloOpcoes)+'">'+opc+'</div>'+(opEsc.liq?'<span class="peso-liq">Peso drenado (só a pimenta, sem o líquido). Pote de '+esc(opEsc.liq).replace(/ /g,'\u00a0')+' no rótulo.</span>':'')+'</div>'
       +precoHTML
       +'<div style="display:flex;gap:8px;margin-top:4px">'
         +'<button type="button" data-act="add" data-key="'+at(p.chave)+'"'+(falta?' disabled aria-disabled="true"':'')+' style="flex:1;font:inherit;cursor:'+(falta?'not-allowed':'pointer')+';opacity:'+(falta?'.45':'1')+';border:none;background:#1d2240;color:#fff;font-weight:800;font-size:14px;text-transform:uppercase;letter-spacing:.06em;padding:12px;border-radius:999px;min-height:46px;display:flex;align-items:center;justify-content:center;gap:8px;transition:background .2s"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 8h14l-1.2 12H6.2L5 8z"></path><path d="M9 8V6a3 3 0 0 1 6 0v2"></path></svg><span class="add-txt">Adicionar</span></button>'
@@ -434,7 +436,7 @@ function itemProduto(x,loja){
 function linhaTxt(x){
   var nome=x.nome+(x.marca?' '+x.marca:'');
   if(x.g) return nome+(x.fechado?' ('+x.n+' '+x.fechado.replace(' ',(x.n>1?'s ':' '))+(x.n>1?'s':'')+')':'')+' – '+fmtG(x.g*x.n);
-  if(x.un==='un') return nome+' '+(x.r==='Unidade'?'':x.r+' ')+'– '+x.n+' un';
+  if(x.un==='un') return nome+' '+(x.r==='Unidade'?'':x.r+(x.liq?' drenado (pote de '+x.liq+')':'')+' ')+'– '+x.n+' un';
   return nome+' – '+x.n+' '+x.un.replace(/^(caixa|pacote)/,function(m){return x.n>1?m+'s':m;});
 }
 function unitItem(x){ return precoUnit({nome:x.nome, marca:x.marca},{r:x.r, g:x.g||null, fechado:x.fechado||''},x.n); }
@@ -485,10 +487,10 @@ function sacolaHTML(c){
   var loja=c.loja;
   var nItens=(state.carrinhos[loja.id]||[]).length, rotItens=nItens===1?'1 item':nItens+' itens';
   if(state.enviado&&state.enviado.loja===loja.id){
-    return '<div style="position:fixed;inset:0;z-index:80"><button type="button" class="gaveta-fundo" data-act="fecharSacola" aria-label="Fechar" style="position:absolute;inset:0;border:none;padding:0;background:rgba(15,18,38,.55);cursor:pointer"></button><aside class="gaveta" role="dialog" aria-label="Pedido enviado" style="position:absolute;top:0;right:0;bottom:0;width:min(440px,100%);background:#fff;display:flex;flex-direction:column;box-shadow:-20px 0 40px -20px rgba(0,0,0,.5)"><div style="display:flex;justify-content:flex-end;padding:16px 18px 0"><button type="button" data-act="fecharSacola" aria-label="Fechar" style="width:44px;height:44px;border-radius:50%;border:1px solid #ece5d6;background:#fff;color:#1d2240;cursor:pointer;font-size:20px;line-height:1">✕</button></div><div style="flex:1;overflow-y:auto;padding:0 22px 24px">'+confirmacaoHTML(loja)+'</div></aside></div>';
+    return '<div style="position:fixed;inset:0;z-index:80"><button type="button" class="gaveta-fundo" data-act="fecharSacola" aria-label="Fechar" style="position:absolute;inset:0;border:none;padding:0;background:rgba(15,18,38,.55);cursor:pointer"></button><aside class="gaveta" role="dialog" aria-label="Pedido enviado" style="position:absolute;top:0;right:0;bottom:0;width:min(440px,100%);background:#fff;display:flex;flex-direction:column;box-shadow:-20px 0 40px -20px rgba(0,0,0,.5)"><div style="display:flex;justify-content:flex-end;padding:16px 18px 0"><button type="button" data-act="fecharSacola" aria-label="Fechar" style="width:44px;height:44px;border-radius:50%;border:1px solid #ece5d6;background:#fff;color:#1d2240;cursor:pointer;font-size:20px;line-height:1">✕</button></div><div class="gaveta-rolar" style="flex:1;overflow-y:auto;padding:0 22px 24px">'+confirmacaoHTML(loja)+'</div></aside></div>';
   }
   var itens=(state.carrinhos[loja.id]||[]).map(function(x,i){
-    var resumo=x.g?(fmtG(x.g*x.n)+(x.n>1?' · '+x.n+'× '+x.r:'')):(x.n+'× '+x.r);
+    var resumo=x.g?(fmtG(x.g*x.n)+(x.n>1?' · '+x.n+'× '+x.r:'')):(x.n+'× '+x.r+(x.liq?' drenado · pote de '+x.liq:''));
     var cent=precoItem(x), u=unitItem(x), ra=regraAtacado(), prx=precoDe({nome:x.nome,marca:x.marca});
     var preco=cent!=null?('<span style="font-size:13px;font-weight:800;color:#1d2240">'+brl(cent)+(u&&u.at?' <span class="tag-atac">Atacado</span>':'')+'</span>'):'';
     if(ra&&prx&&u&&!u.at){
@@ -511,7 +513,7 @@ function sacolaHTML(c){
     var endBloco=entrega?('<label for="sacolaEnd" style="font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:#5a5f78">Endereço de entrega</label><input id="sacolaEnd" value="'+at(state.endereco)+'" data-act="campo" data-field="endereco" autocomplete="street-address" placeholder="Rua, número, bairro e cidade" style="font:inherit;font-size:16px;padding:11px 14px;border-radius:12px;border:1.5px solid #e2d9c6;background:#f8f3ea;color:#1d2240">'):'';
     var nfOp=[{v:'nao',t:'Não preciso'},{v:'sim',t:'Sim, quero nota'}].map(function(o){var on=state.nf===o.v;return '<button type="button" data-act="nf" data-v="'+o.v+'" aria-pressed="'+on+'" style="flex:1;font:inherit;cursor:pointer;font-size:13px;font-weight:800;padding:9px 10px;min-height:40px;border-radius:999px;border:1.5px solid #1d2240;background:'+(on?'#1d2240':'#ffffff')+';color:'+(on?'#ffffff':'#1d2240')+'">'+esc(o.t)+'</button>';}).join('');
     var docDica=!doc?'Digite só os números.':(docValido?(ehCnpj?'CNPJ válido ✓':'CPF válido ✓'):(doc.length<11?'Faltam números.':'Confira os números.'));
-    var nfBloco=querNf?('<div style="display:flex;flex-direction:column;gap:8px;padding:12px;border-radius:14px;background:#fdf6e8;border:1px solid #f0e2c0"><label for="sacolaDoc" style="font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:#5a5f78">CPF ou CNPJ</label><input id="sacolaDoc" value="'+at(state.doc)+'" data-act="campo" data-field="doc" inputmode="numeric" autocomplete="off" placeholder="Só os números" style="font:inherit;font-size:16px;padding:11px 14px;border-radius:12px;border:1.5px solid #e2d9c6;background:#f8f3ea;color:#1d2240"><span id="docDica" style="font-size:13px;font-weight:700;color:'+(doc&&docValido?'#1b7a4b':'#5a5f78')+'">'+esc(docDica)+'</span>'+(ehCnpj?('<label for="sacolaRazao" style="font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:#5a5f78">Razão social (opcional)</label><input id="sacolaRazao" value="'+at(state.razao)+'" data-act="campo" data-field="razao" placeholder="Nome da empresa" style="font:inherit;font-size:16px;padding:11px 14px;border-radius:12px;border:1.5px solid #e2d9c6;background:#f8f3ea;color:#1d2240">'):'')+'</div>'):'';
+    var nfBloco=querNf?('<div style="display:flex;flex-direction:column;gap:8px;padding:12px;border-radius:14px;background:#fdf6e8;border:1px solid #f0e2c0"><label for="sacolaDoc" style="font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:#5a5f78">CPF ou CNPJ</label><input id="sacolaDoc" value="'+at(state.doc)+'" data-act="campo" data-field="doc" inputmode="numeric" autocomplete="off" placeholder="Só os números" style="font:inherit;font-size:16px;padding:11px 14px;border-radius:12px;border:1.5px solid #e2d9c6;background:#f8f3ea;color:#1d2240"><span id="docDica" style="font-size:13px;font-weight:700;color:'+(doc&&docValido?'#1b7a4b':'#5a5f78')+'">'+esc(docDica)+'</span>'+('<div id="sacolaRazaoBox" style="display:'+(ehCnpj?'flex':'none')+';flex-direction:column;gap:8px">'+'<label for="sacolaRazao" style="font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:#5a5f78">Razão social (opcional)</label><input id="sacolaRazao" value="'+at(state.razao)+'" data-act="campo" data-field="razao" placeholder="Nome da empresa" style="font:inherit;font-size:16px;padding:11px 14px;border-radius:12px;border:1.5px solid #e2d9c6;background:#f8f3ea;color:#1d2240">'+'</div>')+'</div>'):'';
 
     var erro='';
     if(!state.nome.trim()) erro='Informe seu nome para a loja identificar o pedido.';
@@ -545,12 +547,12 @@ function sacolaHTML(c){
       +'<label for="sacolaFone" style="font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:#5a5f78">Seu WhatsApp</label><input id="sacolaFone" type="tel" value="'+at(state.fone)+'" data-act="campo" data-field="fone" autocomplete="tel" inputmode="tel" placeholder="(11) 90000-0000" style="font:inherit;font-size:16px;padding:11px 14px;border-radius:12px;border:1.5px solid #e2d9c6;background:#f8f3ea;color:#1d2240">'
       +'<input id="hpCampo" name="empresa_site" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">'
       +'<label for="sacolaObs" style="font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:#5a5f78">Observação (opcional)</label><input id="sacolaObs" value="'+at(state.obs)+'" data-act="campo" data-field="obs" placeholder="Ex.: separar em pacotes de 1 kg" style="font:inherit;font-size:16px;padding:11px 14px;border-radius:12px;border:1.5px solid #e2d9c6;background:#f8f3ea;color:#1d2240">'
-      +pagBloco+totalBloco+acao
+      +pagBloco+totalBloco+'<div id="sacolaAcao" style="display:flex;flex-direction:column;gap:12px">'+acao+'</div>'
       +'<button type="button" data-act="limpar2" style="align-self:center;font:inherit;cursor:pointer;border:none;background:transparent;color:#b8321e;font-weight:700;font-size:14px;padding:6px 10px;min-height:36px">'+(state.limparOk?'Toque de novo para esvaziar':'Esvaziar sacola')+'</button>'
     +'</div>';
   }
 
-  return '<div style="position:fixed;inset:0;z-index:80"><button type="button" class="gaveta-fundo" data-act="fecharSacola" aria-label="Fechar meu pedido" style="position:absolute;inset:0;border:none;padding:0;background:rgba(15,18,38,.55);cursor:pointer"></button><aside class="gaveta" role="dialog" aria-label="Meu pedido" style="position:absolute;top:0;right:0;bottom:0;width:min(440px,100%);background:#fff;display:flex;flex-direction:column;box-shadow:-20px 0 40px -20px rgba(0,0,0,.5)"><div style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:20px 22px;border-bottom:1px solid #ece5d6"><div style="display:flex;flex-direction:column;gap:2px"><span class="eyebrow" style="color:#b8321e">'+esc(loja.nome)+'</span><h2 class="disp" style="margin:0;font-weight:900;font-size:34px;line-height:1">Meu pedido</h2></div><button type="button" data-act="fecharSacola" aria-label="Fechar" style="width:44px;height:44px;border-radius:50%;border:1px solid #ece5d6;background:#fff;color:#1d2240;cursor:pointer;font-size:20px;line-height:1">✕</button></div><div style="flex:1;overflow-y:auto;padding:16px 22px 22px;display:flex;flex-direction:column;gap:12px">'+corpo+rodape+'</div></aside></div>';
+  return '<div style="position:fixed;inset:0;z-index:80"><button type="button" class="gaveta-fundo" data-act="fecharSacola" aria-label="Fechar meu pedido" style="position:absolute;inset:0;border:none;padding:0;background:rgba(15,18,38,.55);cursor:pointer"></button><aside class="gaveta" role="dialog" aria-label="Meu pedido" style="position:absolute;top:0;right:0;bottom:0;width:min(440px,100%);background:#fff;display:flex;flex-direction:column;box-shadow:-20px 0 40px -20px rgba(0,0,0,.5)"><div style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:20px 22px;border-bottom:1px solid #ece5d6"><div style="display:flex;flex-direction:column;gap:2px"><span class="eyebrow" style="color:#b8321e">'+esc(loja.nome)+'</span><h2 class="disp" style="margin:0;font-weight:900;font-size:34px;line-height:1">Meu pedido</h2></div><button type="button" data-act="fecharSacola" aria-label="Fechar" style="width:44px;height:44px;border-radius:50%;border:1px solid #ece5d6;background:#fff;color:#1d2240;cursor:pointer;font-size:20px;line-height:1">✕</button></div><div class="gaveta-rolar" style="flex:1;overflow-y:auto;padding:16px 22px 22px;display:flex;flex-direction:column;gap:12px">'+corpo+rodape+'</div></aside></div>';
 }
 
 function mensagemWa(c){
@@ -583,7 +585,7 @@ function contaHTML(c){
       +campoHTML('contaFone','WhatsApp','fone',state.fone,'(11) 90000-0000','tel')
       +campoHTML('contaDoc','CPF ou CNPJ (para nota fiscal)','doc',state.doc,'Só os números','off')
       +'<span id="docDica" style="font-size:13px;font-weight:700;color:'+(doc&&docValido?'#1b7a4b':'#5a5f78')+'">'+esc(docDica)+'</span>'
-      +(ehCnpj?campoHTML('contaRazao','Razão social','razao',state.razao,'Nome da empresa',''):'')
+      +'<div id="contaRazaoBox" style="display:'+(ehCnpj?'flex':'none')+';flex-direction:column;gap:10px">'+campoHTML('contaRazao','Razão social','razao',state.razao,'Nome da empresa','')+'</div>'
       +campoHTML('contaEnd','Endereço de entrega','endereco',state.endereco,'Rua, número, bairro e cidade','street-address')
       +'<span style="font-size:13px;color:#1b7a4b;font-weight:700">Salvo automaticamente ✓</span>'
       +'<button type="button" data-act="apagarDados" style="align-self:flex-start;margin-top:8px;font:inherit;cursor:pointer;border:none;background:transparent;color:#b8321e;font-weight:700;font-size:14px;padding:6px 0;min-height:36px">'+(state.apagarOk?'Toque de novo para apagar tudo':'Apagar meus dados deste aparelho')+'</button>';
@@ -599,7 +601,7 @@ function contaHTML(c){
       return '<div style="padding:14px;border-radius:16px;background:#f8f3ea;display:flex;flex-direction:column;gap:6px"><div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap"><strong style="font-size:15px">'+esc(lojaNome)+'</strong><span style="font-size:13px;color:#5a5f78;font-variant-numeric:tabular-nums">'+esc(dataTxt)+'</span></div><span style="font-size:14px;color:#5a5f78">'+(hh.itens.length===1?'1 item':hh.itens.length+' itens')+' · '+esc(resumo)+'</span>'+codHTML+'<button type="button" data-act="repetir" data-hi="'+i+'" style="align-self:flex-start;font:inherit;cursor:pointer;border:2px solid #1d2240;background:#fff;color:#1d2240;font-weight:800;font-size:14px;padding:8px 16px;border-radius:999px;min-height:40px">Pedir de novo</button></div>';
     }).join('');
   }
-  return '<div style="position:fixed;inset:0;z-index:80"><button type="button" class="gaveta-fundo" data-act="fecharConta" aria-label="Fechar minha conta" style="position:absolute;inset:0;border:none;padding:0;background:rgba(15,18,38,.55);cursor:pointer"></button><aside class="gaveta" role="dialog" aria-label="Minha conta" style="position:absolute;top:0;right:0;bottom:0;width:min(440px,100%);background:#fff;display:flex;flex-direction:column;box-shadow:-20px 0 40px -20px rgba(0,0,0,.5)"><div style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:20px 22px 0"><div style="display:flex;flex-direction:column;gap:2px"><span class="eyebrow" style="color:#b8321e">D’Lu e VKS</span><h2 class="disp" style="margin:0;font-weight:900;font-size:34px;line-height:1">Minha conta</h2></div><button type="button" data-act="fecharConta" aria-label="Fechar" style="width:44px;height:44px;border-radius:50%;border:1px solid #ece5d6;background:#fff;color:#1d2240;cursor:pointer;font-size:20px;line-height:1">✕</button></div><div role="tablist" style="display:flex;gap:18px;padding:14px 22px 0;border-bottom:1px solid #ece5d6">'+abas+'</div><div style="flex:1;overflow-y:auto;padding:18px 22px 24px;display:flex;flex-direction:column;gap:10px">'+corpo+'</div></aside></div>';
+  return '<div style="position:fixed;inset:0;z-index:80"><button type="button" class="gaveta-fundo" data-act="fecharConta" aria-label="Fechar minha conta" style="position:absolute;inset:0;border:none;padding:0;background:rgba(15,18,38,.55);cursor:pointer"></button><aside class="gaveta" role="dialog" aria-label="Minha conta" style="position:absolute;top:0;right:0;bottom:0;width:min(440px,100%);background:#fff;display:flex;flex-direction:column;box-shadow:-20px 0 40px -20px rgba(0,0,0,.5)"><div style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:20px 22px 0"><div style="display:flex;flex-direction:column;gap:2px"><span class="eyebrow" style="color:#b8321e">D’Lu e VKS</span><h2 class="disp" style="margin:0;font-weight:900;font-size:34px;line-height:1">Minha conta</h2></div><button type="button" data-act="fecharConta" aria-label="Fechar" style="width:44px;height:44px;border-radius:50%;border:1px solid #ece5d6;background:#fff;color:#1d2240;cursor:pointer;font-size:20px;line-height:1">✕</button></div><div role="tablist" style="display:flex;gap:18px;padding:14px 22px 0;border-bottom:1px solid #ece5d6">'+abas+'</div><div class="gaveta-rolar" style="flex:1;overflow-y:auto;padding:18px 22px 24px;display:flex;flex-direction:column;gap:10px">'+corpo+'</div></aside></div>';
 }
 function campoHTML(id,label,field,val,ph,ac){
   var extra = field==='doc'?' inputmode="numeric"':'';
@@ -620,12 +622,34 @@ function renderAll(){
   el('pedir').innerHTML=fillPedir(c);
   el('visite').innerHTML=fillVisite(c);
   el('rodape').innerHTML=fillRodape(c);
-  el('overlay').innerHTML=fillOverlay(c);
+  renderOverlay(c);
 }
 function renderCatalogo(){ var c=ctx(); el('catalogo').innerHTML=fillCatalogo(c); el('catnav').innerHTML=navCatsHTML(c); }
 function renderCorpo(){ el('corpo').innerHTML=fillCorpo(ctx()); }
 function renderHero(){ el('hero').innerHTML=fillHero(ctx()); }
-function renderOverlay(){ el('overlay').innerHTML=fillOverlay(ctx()); }
+var gavetaAberta='';
+function renderOverlay(c){
+  var o=el('overlay'), rol=o.querySelector('.gaveta-rolar'), topoRol=rol?rol.scrollTop:0;
+  var ativo=document.activeElement, idF=(ativo&&ativo.id&&o.contains(ativo))?ativo.id:'', ini=null, fim=null;
+  if(idF){ try{ ini=ativo.selectionStart; fim=ativo.selectionEnd; }catch(e){} }
+  var qual=state.sacola?'sacola':(state.conta?'conta':'');
+  o.innerHTML=fillOverlay(c||ctx());
+  var mesma=qual&&qual===gavetaAberta; gavetaAberta=qual;
+  if(mesma){
+    o.querySelectorAll('.gaveta,.gaveta-fundo').forEach(function(x){ x.style.animation='none'; });
+    var r=o.querySelector('.gaveta-rolar'); if(r) r.scrollTop=topoRol;
+  }
+  if(idF){ var n=el(idF); if(n){ try{ n.focus({preventScroll:true}); if(ini!=null) n.setSelectionRange(ini,fim); }catch(e){} } }
+}
+/* enquanto a pessoa digita: atualiza só o botão de enviar e os avisos, sem recriar os campos */
+function patchGaveta(){
+  var tmp=document.createElement('div'); tmp.innerHTML=fillOverlay(ctx());
+  var novo=tmp.querySelector('#sacolaAcao'), vivo=el('sacolaAcao');
+  if(novo&&vivo&&vivo.innerHTML!==novo.innerHTML) vivo.innerHTML=novo.innerHTML;
+  var ehCnpj=soNum(state.doc).length>11;
+  ['sacolaRazaoBox','contaRazaoBox'].forEach(function(id){ var b=el(id); if(b) b.style.display=ehCnpj?'flex':'none'; });
+  patchDoc();
+}
 function syncBadge(){ // atualiza só o contador da sacola no topo (sem reconstruir busca)
   renderAll();
 }
@@ -639,7 +663,7 @@ function addItem(p){
   var lista=state.carrinhos[loja].slice();
   var i=lista.findIndex(function(x){return x.chave===chave;});
   if(i>=0) lista[i]=Object.assign({},lista[i],{n:lista[i].n+1});
-  else lista.push({chave:chave, chavePreco:p.chave, nome:p.nome, marca:p.marca||'', r:op.r, g:op.g||0, un:op.un||'', fechado:op.fechado||'', n:1});
+  else lista.push({chave:chave, chavePreco:p.chave, nome:p.nome, marca:p.marca||'', r:op.r, g:op.g||0, un:op.un||'', fechado:op.fechado||'', liq:op.liq||'', n:1});
   state.carrinhos[loja]=lista; state.limparOk=false;
   guardarSacola();
   state._aviso=p.nome+' · '+op.r;
@@ -715,15 +739,7 @@ function onInput(e){
     var f=t.getAttribute('data-field');
     state[f]=t.value;
     if(f==='nome'||f==='fone'||f==='doc'||f==='razao'||f==='endereco') guardarConta(); else guardarSacola();
-    // doc e endereço afetam a validação (mostrar/ocultar o botão Enviar e a razão social):
-    // reconstrói a gaveta e devolve o foco e o cursor ao mesmo campo.
-    if((f==='doc'||f==='endereco'||f==='nome'||f==='fone') && (state.sacola||state.conta)){
-      var pos=t.selectionStart, id=t.id;
-      renderOverlay();
-      var n=el(id); if(n){ n.focus(); try{ n.setSelectionRange(pos,pos); }catch(_){} }
-      return;
-    }
-    patchEnviar();
+    if(state.sacola||state.conta) patchGaveta();
     return;
   }
 }
@@ -749,7 +765,7 @@ function enviarLoja(){
     loja:loja.id, hp:(el('hpCampo')||{}).value||'',
     cliente:{nome:state.nome.trim(), telefone:state.fone, doc:querNf?doc:'', razao:querNf?state.razao.trim():''},
     nf:querNf, entrega:{tipo:state.entrega, endereco:entrega?state.endereco.trim():''}, obs:state.obs.trim(),
-    itens:itens.map(function(x){ var u=unitItem(x); return {chave:x.chavePreco, nome:x.nome, marca:x.marca, r:x.r, g:x.g, un:x.un, fechado:x.fechado, n:x.n, preco:u?u.c:null, atacado:!!(u&&u.at)}; }),
+    itens:itens.map(function(x){ var u=unitItem(x); return {chave:x.chavePreco, nome:x.nome, marca:x.marca, r:x.r, g:x.g, un:x.un, fechado:x.fechado, liquido:x.liq||'', n:x.n, preco:u?u.c:null, atacado:!!(u&&u.at)}; }),
     pagamento:state.pag,
     mensagem:decodeURIComponent((mensagemWa(c).split('?text=')[1])||'')
   };
@@ -806,7 +822,7 @@ function init(){
   renderAll();
   carregarPrecos();
   // relógio para "aberto agora"
-  relogio=setInterval(function(){ state.agora=Date.now(); renderAll(); }, 60000);
+  relogio=setInterval(function(){ state.agora=Date.now(); var a=document.activeElement; if(a&&/^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName)) return; renderAll(); }, 60000);
   // carrossel automático
   var reduz=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   if(!reduz) slideTimer=setInterval(function(){ state.slide=(state.slide+1)%3; renderHero(); }, 7000);
