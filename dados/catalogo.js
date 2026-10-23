@@ -233,6 +233,7 @@ window.CATALOGO = {
       { nome: 'Sal de parrilla', cat: 'Misturas da casa', cor: '#d8d0c4', uso: 'Sal grosso temperado para churrasco e carnes na brasa.', so: 'dlu' },
       { nome: 'Caldo de carne', marca: 'Penina', cat: 'Misturas da casa', cor: '#8a4a2a', uso: 'Caldo de carne em pó, em pacote de 1 kg, para feijão, sopas, molhos e arroz.', tamanhos: ['pacote 1 kg'], emb: true, so: 'dlu' },
       { nome: 'Molho Scorpion', marca: 'Bella Minas', ard: 5, cat: 'Molhos', cor: '#8a1410', uso: 'Molho com a pimenta scorpion, extremamente ardido.', tamanhos: ['220 g'], emb: true, so: 'dlu' },
+      { nome: 'Molho Carolina Reaper', marca: 'Bella Minas', ard: 5, cat: 'Molhos', cor: '#7a1010', uso: 'Feito com uma das pimentas mais ardidas do mundo. Para os fortes.', tamanhos: ['220 g'], emb: true, so: 'dlu' },
       { nome: 'Cravo moído', marca: 'Tempera Bem', cat: 'Especiarias', cor: '#5a2e1e', uso: 'Cravo-da-índia moído para bolos, doces, molhos e carnes.', tamanhos: ['pacote 500 g'], emb: true, so: 'dlu' },
       { nome: 'Ácido cítrico', marca: 'Tempera Bem', cat: 'Diversos', cor: '#e8e4d8', uso: 'Ácido cítrico em pó para conservas, geleias, doces e limpeza.', tamanhos: ['pacote 500 g'], emb: true, so: 'dlu' },
       { nome: 'Catuaba em pó', cat: 'Diversos', cor: '#7a5a3a', uso: 'Catuaba em pó, a granel.', so: 'dlu' },
