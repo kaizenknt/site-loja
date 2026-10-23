@@ -1,9 +1,0 @@
-# Projeto Cloudflare Pages: o site (arquivos estáticos) + a ponte (pasta functions/).
-name = "site-loja"
-pages_build_output_dir = "."
-compatibility_date = "2026-01-01"
-
-# Armazenamento da ponte (catálogo e pedidos). O id é preenchido ao criar o KV na Cloudflare.
-[[kv_namespaces]]
-binding = "LOJA"
-id = "SUBSTITUIR_PELO_ID_DO_KV"

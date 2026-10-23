@@ -110,6 +110,7 @@ O pedido agora vai **direto para a loja**, sem depender do WhatsApp (que continu
 - **Preços por loja**: cada loja publica os seus; a chave de cada produto é `slug(nome)` ou `slug(nome)|slug(marca)` (ver `chavePreco` no `app.js`).
 - **Sacola**: pede nome e WhatsApp (obrigatórios), mostra "Em falta no momento" e desativa o botão quando o Balcão marca o produto como indisponível. Depois de enviar, mostra o código e a situação; "Minhas compras" também mostra a situação.
 - Proteções: só aceita pedido vindo do próprio site, limite de 8 pedidos por IP a cada 10 min, campo-isca contra robôs, tamanho limitado.
+- Na Cloudflare (painel do projeto Pages): armazenamento KV ligado com o nome `LOJA` e o segredo `PAINEL_TOKENS`. Comando de compilação `exit 0`, diretório de saída vazio (a raiz). Não coloque `wrangler.toml` no repositório: ele passaria a mandar nas configurações do painel.
 - Para testar localmente: `npx wrangler pages dev . --kv LOJA --binding 'PAINEL_TOKENS={"dlu":"teste"}'`.
 
 ## 5. Regras de negócio que devem ser mantidas
