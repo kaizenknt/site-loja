@@ -127,6 +127,9 @@ O pedido agora vai **direto para a loja**, sem depender do WhatsApp (que continu
 ## 4.4 Produtos agrupados (`grupo` / `tipo`)
 - Entradas com o mesmo `grupo` (ex.: `grupo: 'Erva-doce'`, `tipo: 'Espanhola'` / `'Nacional'`) aparecem como **um cartão só**, com o título do grupo e botões de **Tipo**. Cada entrada continua sendo um produto próprio: chave, preço, falta e ligação no Balcão separados; na sacola e no pedido sai o nome completo (ex.: "Erva-doce espanhola"). Tipo em falta fica riscado; se todos faltarem, o cartão fica em falta.
 
+## 4.5 Cores e logo por loja
+As cores do site são variáveis CSS (`--c-escuro`, `--c-acento`, `--c-destaque`, `--c-fundo`…) definidas no começo do estilo.css. A D’Lu usa os valores de `:root` (azul, vermelho e amarelo). Quando a loja ativa é a VKS, `aplicarTemaLoja()` põe `data-loja="vks"` no `<html>` e os verdes da placa entram. Na VKS também mudam a logo (`imagens/logo-vks.webp`), no cabeçalho e no rodapé, e o ícone da aba. Não use hex fixo para cor de marca no app.js; use as variáveis. Avisos de erro e "Fechado" ficam vermelhos nas duas lojas.
+
 ## 5. Regras de negócio que devem ser mantidas
 - **Mínimo de 250 g** por produto a granel (o app de pesagem arredonda para 250 g).
 - **Fardos:** o botão no site diz só **"Fardo"**; o tamanho (10 ou 25 kg, ou "não vende em fardo") é escolhido **por produto** no Balcão, na tela "Ligar produtos ao site". Sem essa escolha, vale o selo do catálogo (ex.: "Fardo 25 kg" no caldo de galinha e no colorau caseiro) ou o padrão da loja (D’Lu 10 kg, VKS 25 kg).

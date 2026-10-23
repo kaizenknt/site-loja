@@ -2,10 +2,14 @@
    Portado fielmente do design original (feira de temperos do Brás). */
 @import url('https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..100,500..900&family=Figtree:wght@400;500;600;700;800&display=swap');
 
+/* cores por loja: a D’Lu usa os valores de :root; a VKS troca para os verdes da logo */
+:root{--c-ponto1:#8f2414;--c-ponto2:#d4553a;--c-escuro:#1d2240;--c-escuro2:#23336b;--c-escuro3:#2c3d78;--c-linha-esc:#4a5a94;--c-texto-esc:#c9d0e6;--c-mudo-esc:#8f98bd;--c-linha-esc2:#333a5c;--c-acento:#b8321e;--c-acento-esc:#9b2a1c;--c-destaque:#f2b31b;--c-destaque-claro:#ffc93d;--c-fundo:#f8f3ea;--c-borda:#ece5d6;--c-borda2:#e2d9c6;--c-fundo2:#fdf6e8;--c-acento-bg:#fde6e2;--c-acento-bg2:#fde3da;--c-mudo:#5a5f78;--c-fundo3:#fffaf0;--c-borda3:#efe7d9;--c-borda4:#e9e1d2;--c-destaque-bg:#f0e2c0;--c-destaque-bg2:#efe3c4}
+:root[data-loja="vks"]{--c-ponto1:#005a1a;--c-ponto2:#5cb83a;--c-escuro:#0b4420;--c-escuro2:#0e6a2b;--c-escuro3:#127a33;--c-linha-esc:#3f8a55;--c-texto-esc:#d6eedb;--c-mudo-esc:#a9d3b3;--c-linha-esc2:#2a6b3e;--c-acento:#00802a;--c-acento-esc:#00661f;--c-destaque:#7cc61a;--c-destaque-claro:#98d84a;--c-fundo:#f1f7ec;--c-borda:#dce8d3;--c-borda2:#cfe0c3;--c-fundo2:#eef7e6;--c-acento-bg:#e2f3e3;--c-acento-bg2:#d9efda;--c-mudo:#4d6355;--c-fundo3:#f6fbf2;--c-borda3:#dbe8d1;--c-borda4:#d5e3cb;--c-destaque-bg:#e3f2c9;--c-destaque-bg2:#dcefc0}
+
 :root{
-  --azul:#1d2240; --azul-marca:#23336b; --azul2:#2c3d78;
-  --amarelo:#f2b31b; --vermelho:#b8321e; --verde:#1b7a4b; --verde-h:#155f3b;
-  --creme:#f8f3ea; --linha:#ece5d6; --linha2:#e2d9c6; --sec:#5a5f78;
+  --azul:var(--c-escuro); --azul-marca:var(--c-escuro2); --azul2:var(--c-escuro3);
+  --amarelo:var(--c-destaque); --vermelho:var(--c-acento); --verde:#1b7a4b; --verde-h:#155f3b;
+  --creme:var(--c-fundo); --linha:var(--c-borda); --linha2:var(--c-borda2); --sec:var(--c-mudo);
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
@@ -23,7 +27,7 @@ button{font-family:inherit}
 .catnav::-webkit-scrollbar{display:none}
 .hero{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:40px;align-items:center}
 .bowls{position:relative;width:100%;max-width:540px;aspect-ratio:1;justify-self:end}
-.bowl{position:absolute;border-radius:50%;overflow:hidden;border:8px solid #2c3d78;box-shadow:0 30px 50px -20px rgba(0,0,0,.6)}
+.bowl{position:absolute;border-radius:50%;overflow:hidden;border:8px solid var(--c-escuro3);box-shadow:0 30px 50px -20px rgba(0,0,0,.6)}
 .bowl img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .6s ease}
 .bowl:hover img{transform:scale(1.08) rotate(3deg)}
 .fita{overflow:hidden;padding-block:22px;margin-top:-26px;position:relative;z-index:3}
@@ -50,7 +54,7 @@ button{font-family:inherit}
 .btn-wa{transition:background .15s}
 .btn-wa:hover{background:var(--verde-h);color:#fff}
 .btn-y{transition:background .15s,transform .15s}
-.btn-y:hover{background:#ffc93d;color:var(--azul);transform:translateY(-1px)}
+.btn-y:hover{background:var(--c-destaque-claro);color:var(--azul);transform:translateY(-1px)}
 .btn-ghost:hover{background:#fff;color:var(--azul)}
 .navlink:hover{background:var(--azul2);color:#fff}
 .circ .dot{transition:transform .2s,box-shadow .2s}
@@ -136,7 +140,8 @@ button:focus-visible,a:focus-visible{outline:3px solid var(--amarelo);outline-of
   .head-search{grid-column:1 / -1;order:3}
   .hero,.atacado,.lojas,.pedir{grid-template-columns:1fr}
   .bowls{justify-self:center;max-width:380px}
-  .hide-sm{display:none}
+  .hide-sm{display:none!important}
+  .topo-barra{max-height:120px}
   .topo{position:static!important}
   .circles > *{flex-basis:calc((100% - 40px) / 3)}
 }
@@ -145,11 +150,11 @@ button:focus-visible,a:focus-visible{outline:3px solid var(--amarelo);outline-of
   .tags{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
 }
 /* atacado e desconto */
-.tag-atac{display:inline-block;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:#fff;background:#b8321e;padding:2px 8px;border-radius:999px;vertical-align:middle}
-.linha-atac{font-size:13px;color:#5a5f78}.linha-atac b{color:#b8321e}
-.dica-atac{display:block;font-size:12px;font-weight:700;color:#b8321e;margin-top:2px}
+.tag-atac{display:inline-block;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:#fff;background:var(--c-acento);padding:2px 8px;border-radius:999px;vertical-align:middle}
+.linha-atac{font-size:13px;color:var(--c-mudo)}.linha-atac b{color:var(--c-acento)}
+.dica-atac{display:block;font-size:12px;font-weight:700;color:var(--c-acento);margin-top:2px}
 .faixa-desc{margin:0;align-self:flex-start;display:inline-flex;align-items:center;gap:8px;background:#e3f5ea;color:#146b3f;font-weight:800;font-size:14px;padding:9px 16px;border-radius:999px}
-.peso-liq{font-size:12px;color:#5a5f78;line-height:1.35}
+.peso-liq{font-size:12px;color:var(--c-mudo);line-height:1.35}
 .foto-tam{animation:trocaPote .25s ease both}
 @keyframes trocaPote{from{opacity:0;transform:translateY(6px) scale(.97)}to{opacity:1;transform:none}}
 @media (prefers-reduced-motion:reduce){.foto-tam{animation:none}}
