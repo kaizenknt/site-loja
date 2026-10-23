@@ -108,7 +108,7 @@ function extras(p,loja){
   var nomes=['Sem ardência','Suave','Média','Média-forte','Muito forte','Extrema'];
   var cores=['#3f7a3a','#3f7a3a','#b7791f','#c2410c','#b8321e','#7a1010'];
   return {
-    opcoes:opcoes, rotuloOpcoes:p.emb?(p.liquido?'Peso drenado':'Tamanho'):'Quantidade',
+    opcoes:opcoes, rotuloOpcoes:p.rotulo||(p.emb?(p.liquido?'Peso drenado':'Tamanho'):'Quantidade'),
     temArd:ard!==null, ardTxt:ard!==null?(p.ardRotulo||nomes[ard]):'',
     ardCor:ard!==null?cores[ard]:'#1d2240',
     pimentas:ard!==null?[0,1,2,3,4].map(function(i){return i<ard?'#d6261a':'#e2d9c6';}):[]
