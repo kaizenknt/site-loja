@@ -14,7 +14,8 @@ var state = {
   nf:'nao', entrega:'Retirar na loja',
   historico:[], apagarOk:false, limparOk:false,
   sel:{}, agora:Date.now(),
-  enviando:false, enviado:null, erroEnvio:'', statusPed:{}
+  enviando:false, enviado:null, erroEnvio:'', statusPed:{},
+  pag:'pix'
 };
 var PRECOS = null;         // { itens:{ chave:{kg|op} }, indisponivel:[chaves], _exemplo:bool }
 var PRECOS_CACHE = {};     // preços por loja (cada loja publica os seus pelo Balcão)
@@ -69,22 +70,40 @@ function chavePreco(p){ return slug(p.nome)+(p.marca?('|'+slug(p.marca)):''); }
 function precoDe(p){ return PRECOS&&PRECOS.itens?PRECOS.itens[chavePreco(p)]:null; }
 function emFalta(p){ return !!(PRECOS&&PRECOS.indisponivel&&PRECOS.indisponivel.indexOf(chavePreco(p))>=0); }
 function brl(cent){ return 'R$ '+(cent/100).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2}); }
-/* preço em centavos de uma opção escolhida; null se não houver preço */
-function precoOpcao(p,op){
-  var pr=precoDe(p); if(!pr) return null;
-  if(op.g!=null && pr.kg!=null) return Math.round(pr.kg*op.g/1000);      // granel: por grama
-  if(pr.op && pr.op[op.r]!=null) return pr.op[op.r];                      // embalado/unidade: por opção
+/* regras publicadas pelo Balcão (atacado e desconto por forma de pagamento) */
+function regraAtacado(){ var a=PRECOS&&PRECOS.atacado; return a&&a.ativo!==false&&!PRECOS._exemplo?a:null; }
+function regraDesconto(){
+  var d=PRECOS&&PRECOS.desconto;
+  if(!d) d={ativo:true,pct:5,min:10000,formas:['pix','dinheiro']}; // padrão da loja até o Balcão publicar
+  return d.ativo&&d.pct>0?d:null;
+}
+/* preço unitário (centavos) de uma opção, já com atacado quando a quantidade alcança o mínimo.
+   n = quantas vezes a opção vai na sacola. Retorna {c, at} ou null. */
+function precoUnit(p,op,n){
+  var pr=precoDe(p); if(!pr) return null; var a=regraAtacado(); n=n||1;
+  if(op.g!=null && pr.kg!=null){
+    var at=!!(a&&pr.kgAt&&(op.fechado||op.g*n>=a.minKg*1000));
+    return {c:Math.round((at?pr.kgAt:pr.kg)*op.g/1000), at:at};             // granel: por grama
+  }
+  if(pr.op && pr.op[op.r]!=null){
+    var at2=!!(a&&pr.opAt&&pr.opAt[op.r]!=null&&n>=a.minUn);
+    return {c:at2?pr.opAt[op.r]:pr.op[op.r], at:at2};                       // embalado/unidade: por opção
+  }
   return null;
 }
+function precoOpcao(p,op,n){ var x=precoUnit(p,op,n); return x?x.c:null; }
+function fmtKg(kg){ return String(+(+kg).toFixed(3)).replace('.',',')+' kg'; }
 
 /* ---------- opções de quantidade / ardência de cada produto ---------- */
 function extras(p,loja){
-  var fardo = loja.id==='vks' ? {r:'Saco 25 kg',g:25000,fechado:'saco fechado'} : {r:'Fardo 10 kg',g:10000,fechado:'fardo fechado'};
+  var pr=precoDe(p), seloKg=/(\d+)\s*kg/i.exec(p.selo||'');
+  var fardoKg = pr&&pr.fardo!=null ? pr.fardo : (seloKg?+seloKg[1]:loja.fardoKg);
+  var fardo = fardoKg>0 ? {r:'Fardo',g:fardoKg*1000,fechado:'fardo fechado'} : null;
   var opcoes;
   if(p.nome==='Alho roxo nacional') opcoes=[{r:'Caixa 10 kg',un:'caixa de 10 kg'}];
   else if(p.nome==='Alho descascado') opcoes=[{r:'Pacote 1 kg',un:'pacote de 1 kg'}];
   else if(p.emb) opcoes=(p.tamanhos||['Unidade']).map(function(t){return {r:t,un:'un'};});
-  else opcoes=[{r:'250 g',g:250},{r:'500 g',g:500},{r:'1 kg',g:1000},(p.selo==='Saco 25 kg'?{r:'Saco 25 kg',g:25000,fechado:'saco fechado'}:fardo)];
+  else { opcoes=[{r:'250 g',g:250},{r:'500 g',g:500},{r:'1 kg',g:1000}]; if(fardo) opcoes.push(fardo); }
   var ard = typeof p.ard==='number'?p.ard:null;
   var nomes=['Sem ardência','Suave','Média','Média-forte','Muito forte','Extrema'];
   var cores=['#3f7a3a','#3f7a3a','#b7791f','#c2410c','#b8321e','#7a1010'];
@@ -178,9 +197,16 @@ function cartaoHTML(p){
   if(falta){
     precoHTML='<span class="preco-consulta" style="color:#9b2a1c">Em falta no momento</span>';
   } else if(cent!=null){
-    var extra='';
-    if(pr&&pr.kg!=null) extra='<span class="preco-kg">'+brl(pr.kg)+' / kg</span>';
-    precoHTML='<div style="display:flex;align-items:baseline;gap:8px;flex-wrap:wrap"><span class="preco preco-sel">'+brl(cent)+'</span>'+extra+'</div>';
+    var extra='', ra=regraAtacado(), opSel=p.opcoes[sel], uSel=precoUnit(p,opSel,1);
+    if(pr&&pr.kg!=null) extra='<span class="preco-kg">'+brl(uSel&&uSel.at?pr.kgAt:pr.kg)+' / kg</span>';
+    var tagAt=uSel&&uSel.at?'<span class="tag-atac">Preço de atacado</span>':'';
+    var linhaAt='';
+    if(ra&&pr){
+      if(pr.kgAt&&!(uSel&&uSel.at)) linhaAt='<span class="linha-atac">Atacado: <b>'+brl(pr.kgAt)+' / kg</b> a partir de '+fmtKg(ra.minKg)+'</span>';
+      else if(pr.opAt&&opSel&&pr.opAt[opSel.r]!=null) linhaAt='<span class="linha-atac">Atacado: <b>'+brl(pr.opAt[opSel.r])+' cada</b> a partir de '+ra.minUn+' un.</span>';
+    }
+    if(opSel&&opSel.fechado) linhaAt='<span class="linha-atac">Fardo fechado de <b style="color:#1d2240">'+fmtKg(opSel.g/1000)+'</b></span>'+linhaAt;
+    precoHTML='<div style="display:flex;flex-direction:column;gap:3px"><div style="display:flex;align-items:baseline;gap:8px;flex-wrap:wrap"><span class="preco preco-sel">'+brl(cent)+'</span>'+extra+tagAt+'</div>'+linhaAt+'</div>';
   } else {
     precoHTML='<span class="preco-consulta">Preço sob consulta</span>';
   }
@@ -256,12 +282,12 @@ function fillHero(c){
   var loja=c.loja, sit=c.sit;
   var slides = loja.id==='vks' ? [
     {selo:'VKS Condimentos',titulo:'Alho roxo nacional',destaque:'em caixa de 10 kg',texto:'Para restaurantes, açougues e revenda. Entrega somente por Lalamove, Uber ou retirada na Avenida Mercúrio, 330.',botao:'Ver produtos',link:'#produtos'},
-    {selo:'Varejo e atacado',titulo:'Temperos a granel',destaque:'no Brás',texto:'Sacos de 25 kg ou a quantidade que você precisar, pesada na hora.',botao:'Ver produtos',link:'#produtos'},
+    {selo:'Varejo e atacado',titulo:'Temperos a granel',destaque:'no Brás',texto:'Fardos fechados ou a quantidade que você precisar, pesada na hora.',botao:'Ver produtos',link:'#produtos'},
     {selo:'Aberto às 6h',titulo:'Segunda a sábado,',destaque:'das 6h às 16h',texto:'Avenida Mercúrio, 330 – Brás. Pertinho da D’Lu Empório.',botao:'Como chegar',link:'#visite'}
   ] : [
-    {selo:'Varejo e atacado',titulo:'Temperos a granel',destaque:'do jeito que você precisa',texto:'De 250 g a fardos de 10 kg. Temperos, ervas e misturas da casa, pesados na hora.',botao:'Ver produtos',link:'#produtos'},
+    {selo:'Varejo e atacado',titulo:'Temperos a granel',destaque:'do jeito que você precisa',texto:'De 250 g ao fardo fechado. Temperos, ervas e misturas da casa, pesados na hora.',botao:'Ver produtos',link:'#produtos'},
     {selo:'Misturas da casa',titulo:'Ana Maria, Edu Guedes,',destaque:'Gaúcho e muito mais',texto:'As misturas que os clientes mais pedem, prontas para temperar.',botao:'Ver produtos',link:'#produtos'},
-    {selo:'Para o seu negócio',titulo:'Atacado em fardos de',destaque:'10 kg',texto:'Ou a quantidade que você precisar, pesada na hora. Mande a lista no WhatsApp que a gente separa.',botao:'Ver produtos',link:'#produtos'}
+    {selo:'Para o seu negócio',titulo:'Atacado em',destaque:'fardo fechado',texto:'Ou a quantidade que você precisar, pesada na hora. Mande a lista no WhatsApp que a gente separa.',botao:'Ver produtos',link:'#produtos'}
   ];
   var si=state.slide%slides.length;
   var s=slides[si];
@@ -343,10 +369,12 @@ function fillCatalogo(c){
   var grid=c.lista.map(function(p){return '<div class="revela cel">'+cartaoHTML(p)+'</div>';}).join('');
   var vazio=c.lista.length===0?('<p style="margin:0;padding:36px;text-align:center;background:#fff;border-radius:20px;color:#5a5f78">Não achamos esse produto no site. <a href="'+at(waGeralDe(c.loja))+'" target="_blank" rel="noopener" style="font-weight:800">Pergunte pelo WhatsApp</a>: temos muito mais na loja.</p>'):'';
   var limpar=temFiltro?('<button type="button" data-act="limpar" style="font:inherit;font-weight:800;font-size:14px;padding:10px 18px;min-height:44px;border-radius:999px;border:2px solid #1d2240;background:#fff;color:#1d2240;cursor:pointer">Limpar filtro ✕</button>'):'';
+  var rd=regraDesconto();
+  var faixaDesc = rd?'<p class="faixa-desc"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12l-8 8-9-9V3h8z"></path><circle cx="7.5" cy="7.5" r="1.5"></circle></svg>'+esc(textoDesconto(rd))+'</p>':'';
   var exemplo = (PRECOS&&PRECOS._exemplo)?'<p style="margin:0;font-size:13px;color:#b8321e;font-weight:700">⚠️ Preços de exemplo — serão substituídos pelos preços reais do Balcão.</p>':'';
   return '<section id="produtos" style="padding-top:64px;padding-bottom:72px;background:#f8f3ea"><div class="wrap" style="display:flex;flex-direction:column;gap:26px">'
     +'<div style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:12px"><div class="revela-esq" style="display:flex;flex-direction:column;gap:6px"><span class="eyebrow" style="color:#b8321e">'+c.lista.length+(c.lista.length===1?' produto':' produtos')+'</span><h2 class="disp" style="margin:0;font-weight:900;font-size:clamp(36px,4.6vw,56px);line-height:.95">'+esc(c.q?'Resultado da busca':(c.sel==='Todos'?'Todos os produtos':c.sel))+'</h2></div>'+limpar+'</div>'
-    +exemplo
+ +faixaDesc+exemplo
     +'<div class="catnav" style="gap:8px;padding-bottom:4px" role="group" aria-label="Filtrar por categoria">'+abas+'</div>'
     +'<div class="prods">'+grid+'</div>'+vazio
   +'</div></section>';
@@ -409,18 +437,20 @@ function linhaTxt(x){
   if(x.un==='un') return nome+' '+(x.r==='Unidade'?'':x.r+' ')+'– '+x.n+' un';
   return nome+' – '+x.n+' '+x.un.replace(/^(caixa|pacote)/,function(m){return x.n>1?m+'s':m;});
 }
-function precoItem(x){
-  var p={nome:x.nome, marca:x.marca};
-  var op={r:x.r, g:x.g||null};
-  var unit=precoOpcao(p,op);
-  return unit!=null?unit*x.n:null;
-}
+function unitItem(x){ return precoUnit({nome:x.nome, marca:x.marca},{r:x.r, g:x.g||null, fechado:x.fechado||''},x.n); }
+function precoItem(x){ var u=unitItem(x); return u?u.c*x.n:null; }
 function totalSacola(loja){
   var itens=state.carrinhos[loja.id]||[];
   var algum=false, soma=0, falta=false;
   itens.forEach(function(x){ var c=precoItem(x); if(c!=null){algum=true;soma+=c;} else falta=true; });
-  return {algum:algum, soma:soma, falta:falta};
+  var d=regraDesconto(), desc=0, faltaDesc=0;
+  if(d&&algum){
+    if(soma>=d.min){ if(d.formas.indexOf(state.pag)>=0) desc=Math.round(soma*d.pct/100); }
+    else faltaDesc=d.min-soma;
+  }
+  return {algum:algum, soma:soma, falta:falta, desc:desc, total:soma-desc, faltaDesc:faltaDesc, regra:d};
 }
+function textoDesconto(d){ return d.pct+'% de desconto no '+d.formas.filter(function(f){return f!=='cartao';}).map(function(f){return f==='pix'?'Pix':'dinheiro';}).join(' ou ')+' acima de '+brl(d.min); }
 
 function fillOverlay(c){
   var loja=c.loja;
@@ -459,8 +489,12 @@ function sacolaHTML(c){
   }
   var itens=(state.carrinhos[loja.id]||[]).map(function(x,i){
     var resumo=x.g?(fmtG(x.g*x.n)+(x.n>1?' · '+x.n+'× '+x.r:'')):(x.n+'× '+x.r);
-    var cent=precoItem(x);
-    var preco=cent!=null?('<span style="font-size:13px;font-weight:800;color:#1d2240">'+brl(cent)+'</span>'):'';
+    var cent=precoItem(x), u=unitItem(x), ra=regraAtacado(), prx=precoDe({nome:x.nome,marca:x.marca});
+    var preco=cent!=null?('<span style="font-size:13px;font-weight:800;color:#1d2240">'+brl(cent)+(u&&u.at?' <span class="tag-atac">Atacado</span>':'')+'</span>'):'';
+    if(ra&&prx&&u&&!u.at){
+      if(x.g&&prx.kgAt){ var faltaG=ra.minKg*1000-x.g*x.n; if(faltaG>0) preco+='<span class="dica-atac">Com mais '+fmtG(faltaG)+' sai a '+brl(prx.kgAt)+'/kg (atacado)</span>'; }
+      else if(!x.g&&prx.opAt&&prx.opAt[x.r]!=null){ var faltaU=ra.minUn-x.n; if(faltaU>0) preco+='<span class="dica-atac">Com mais '+faltaU+' un. sai a '+brl(prx.opAt[x.r])+' cada (atacado)</span>'; }
+    }
     return '<div style="display:flex;align-items:center;gap:12px;padding:12px;border-radius:16px;background:#f8f3ea"><div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:2px"><strong style="font-size:15px;line-height:1.2">'+esc(x.nome)+(x.marca?' '+esc(x.marca):'')+'</strong><span style="font-size:13px;color:#5a5f78">'+esc(resumo)+'</span>'+preco+'</div><div style="display:flex;align-items:center;gap:2px;background:#fff;border-radius:999px;border:1px solid #e2d9c6"><button type="button" class="qtd-btn" data-act="menos" data-bi="'+i+'" aria-label="Diminuir" style="width:36px;height:36px;border:none;border-radius:50%;background:transparent;color:#1d2240;font-size:18px;font-weight:800;cursor:pointer">−</button><span style="min-width:22px;text-align:center;font-weight:800;font-variant-numeric:tabular-nums">'+x.n+'</span><button type="button" class="qtd-btn" data-act="mais" data-bi="'+i+'" aria-label="Aumentar" style="width:36px;height:36px;border:none;border-radius:50%;background:transparent;color:#1d2240;font-size:18px;font-weight:800;cursor:pointer">+</button></div><button type="button" data-act="tirar" data-bi="'+i+'" aria-label="Tirar do pedido" style="width:36px;height:36px;border:none;border-radius:50%;background:transparent;color:#8a8fa8;cursor:pointer"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"></path></svg></button></div>';
   }).join('');
   var vazio=itens.length===0;
@@ -486,9 +520,17 @@ function sacolaHTML(c){
     else if(querNf&&!docValido) erro=ehCnpj?'Esse CNPJ não parece certo. Confira os números.':'Esse CPF não parece certo. Confira os números.';
     else if(entrega&&!state.endereco.trim()) erro='Para entrega, informe o endereço.';
 
+    var pagOp=[{v:'pix',t:'Pix'},{v:'dinheiro',t:'Dinheiro'},{v:'cartao',t:'Cartão'}].map(function(o){var on=state.pag===o.v;return '<button type="button" data-act="pag" data-v="'+o.v+'" aria-pressed="'+on+'" style="flex:1;font:inherit;cursor:pointer;font-size:13px;font-weight:800;padding:9px 10px;min-height:40px;border-radius:999px;border:1.5px solid #1d2240;background:'+(on?'#1d2240':'#ffffff')+';color:'+(on?'#ffffff':'#1d2240')+'">'+esc(o.t)+'</button>';}).join('');
+    var pagBloco='<span style="font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:#5a5f78">Como vai pagar?</span><div style="display:flex;gap:6px;flex-wrap:wrap" role="group" aria-label="Forma de pagamento">'+pagOp+'</div><span style="font-size:12px;color:#5a5f78;margin-top:-4px">O pagamento é feito na retirada ou na entrega.'+(tot.regra?' <b style="color:#1b7a4b">'+esc(textoDesconto(tot.regra))+'.</b>':'')+'</span>';
     var totalBloco='';
     if(tot.algum){
-      totalBloco='<div style="display:flex;justify-content:space-between;align-items:baseline;padding:4px 2px"><span style="font-weight:700;color:#5a5f78;font-size:14px">Estimativa'+(tot.falta?' (parcial)':'')+'</span><span class="preco" style="font-size:24px">'+brl(tot.soma)+'</span></div><p style="margin:-4px 0 0;font-size:12px;color:#5a5f78">Valor final confirmado na pesagem, na loja.</p>';
+      var linhaDesc='';
+      if(tot.desc>0) linhaDesc='<div style="display:flex;justify-content:space-between;align-items:baseline;padding:0 2px;color:#1b7a4b;font-weight:800;font-size:14px"><span>Desconto '+tot.regra.pct+'% no '+(state.pag==='pix'?'Pix':'dinheiro')+'</span><span>− '+brl(tot.desc)+'</span></div>';
+      else if(tot.regra&&tot.faltaDesc>0&&tot.regra.formas.indexOf(state.pag)>=0) linhaDesc='<p style="margin:0;padding:8px 10px;border-radius:10px;background:#e3f5ea;color:#146b3f;font-size:13px;font-weight:700">Faltam '+brl(tot.faltaDesc)+' para ganhar '+tot.regra.pct+'% de desconto no '+(state.pag==='pix'?'Pix':'dinheiro')+'.</p>';
+      else if(tot.regra&&tot.soma>=tot.regra.min&&tot.regra.formas.indexOf(state.pag)<0) linhaDesc='<p style="margin:0;padding:8px 10px;border-radius:10px;background:#fdf6e8;color:#7a5a12;font-size:13px;font-weight:700">Pagando no Pix ou em dinheiro você economiza '+brl(Math.round(tot.soma*tot.regra.pct/100))+'.</p>';
+      totalBloco=(tot.desc>0?'<div style="display:flex;justify-content:space-between;align-items:baseline;padding:4px 2px 0;font-size:14px;color:#5a5f78;font-weight:700"><span>Subtotal</span><span>'+brl(tot.soma)+'</span></div>':'')
+        +linhaDesc
+        +'<div style="display:flex;justify-content:space-between;align-items:baseline;padding:4px 2px"><span style="font-weight:700;color:#5a5f78;font-size:14px">Estimativa'+(tot.falta?' (parcial)':'')+'</span><span class="preco" style="font-size:24px">'+brl(tot.total)+'</span></div><p style="margin:-4px 0 0;font-size:12px;color:#5a5f78">Valor final confirmado na pesagem, na loja.</p>';
     }
     var acao=erro
       ? '<p role="alert" style="margin:0;padding:10px 12px;border-radius:12px;background:#fde6e2;color:#9b2a1c;font-size:14px;font-weight:700">'+esc(erro)+'</p>'
@@ -503,7 +545,7 @@ function sacolaHTML(c){
       +'<label for="sacolaFone" style="font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:#5a5f78">Seu WhatsApp</label><input id="sacolaFone" type="tel" value="'+at(state.fone)+'" data-act="campo" data-field="fone" autocomplete="tel" inputmode="tel" placeholder="(11) 90000-0000" style="font:inherit;font-size:16px;padding:11px 14px;border-radius:12px;border:1.5px solid #e2d9c6;background:#f8f3ea;color:#1d2240">'
       +'<input id="hpCampo" name="empresa_site" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">'
       +'<label for="sacolaObs" style="font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:#5a5f78">Observação (opcional)</label><input id="sacolaObs" value="'+at(state.obs)+'" data-act="campo" data-field="obs" placeholder="Ex.: separar em pacotes de 1 kg" style="font:inherit;font-size:16px;padding:11px 14px;border-radius:12px;border:1.5px solid #e2d9c6;background:#f8f3ea;color:#1d2240">'
-      +totalBloco+acao
+      +pagBloco+totalBloco+acao
       +'<button type="button" data-act="limpar2" style="align-self:center;font:inherit;cursor:pointer;border:none;background:transparent;color:#b8321e;font-weight:700;font-size:14px;padding:6px 10px;min-height:36px">'+(state.limparOk?'Toque de novo para esvaziar':'Esvaziar sacola')+'</button>'
     +'</div>';
   }
@@ -518,14 +560,15 @@ function mensagemWa(c){
   var querNf=state.nf==='sim', entrega=state.entrega!=='Retirar na loja';
   var tot=totalSacola(loja);
   var msg='Olá, '+loja.nome+'! Gostaria de fazer um pedido:\n\n'
-    +itens.map(function(x){return linhaTxt(x);}).join('\n')
+    +itens.map(function(x){var u=unitItem(x);return linhaTxt(x)+(u&&u.at?' (atacado)':'');}).join('\n')
     +'\n\n'+state.entrega
     +(entrega&&state.endereco.trim()?'\nEndereço: '+state.endereco.trim():'')
     +'\nNota fiscal: '+(querNf?('sim, no '+(ehCnpj?'CNPJ ':'CPF ')+fmtDoc(doc)+(ehCnpj&&state.razao.trim()?' ('+state.razao.trim()+')':'')):'não preciso')
     +(state.nome.trim()?'\nNome: '+state.nome.trim():'')
     +(state.fone.trim()?'\nTelefone: '+state.fone.trim():'')
     +(state.obs.trim()?'\nObs.: '+state.obs.trim():'')
-    +(tot.algum?('\n\nEstimativa'+(tot.falta?' (parcial)':'')+': '+brl(tot.soma)+' — confirmar na pesagem.'):'');
+    +'\nPagamento: '+({pix:'Pix',dinheiro:'Dinheiro',cartao:'Cartão'}[state.pag]||state.pag)
+    +(tot.algum?('\n\nEstimativa'+(tot.falta?' (parcial)':'')+': '+brl(tot.total)+(tot.desc>0?' (já com '+tot.regra.pct+'% de desconto: − '+brl(tot.desc)+')':'')+' — confirmar na pesagem.'):'');
   return 'https://wa.me/'+loja.waNum+'?text='+encodeURIComponent(msg);
 }
 
@@ -651,6 +694,7 @@ function onClick(e){
 
   if(act==='nf'){ state.nf=t.getAttribute('data-v'); renderOverlay(); return; }
   if(act==='entrega'){ state.entrega=t.getAttribute('data-v'); renderOverlay(); return; }
+  if(act==='pag'){ state.pag=t.getAttribute('data-v'); renderOverlay(); return; }
 
   if(act==='apagarDados'){ if(state.apagarOk){ state.nome='';state.fone='';state.doc='';state.razao='';state.endereco='';state.historico=[];state.apagarOk=false; guardarConta(); renderAll(); } else { state.apagarOk=true; renderOverlay(); } return; }
   if(act==='repetir'){ var hi=+t.getAttribute('data-hi'); var hh=(state.historico||[])[hi]; if(hh){ state.carrinhos[hh.loja]=hh.itens.map(function(x){return Object.assign({},x);}); state.loja=hh.loja; state.conta=false; state.sacola=true; state.cat='Todos'; state.busca=''; guardarSacola(); renderAll(); } return; }
@@ -705,7 +749,8 @@ function enviarLoja(){
     loja:loja.id, hp:(el('hpCampo')||{}).value||'',
     cliente:{nome:state.nome.trim(), telefone:state.fone, doc:querNf?doc:'', razao:querNf?state.razao.trim():''},
     nf:querNf, entrega:{tipo:state.entrega, endereco:entrega?state.endereco.trim():''}, obs:state.obs.trim(),
-    itens:itens.map(function(x){ return {chave:x.chavePreco, nome:x.nome, marca:x.marca, r:x.r, g:x.g, un:x.un, fechado:x.fechado, n:x.n, preco:precoOpcao({nome:x.nome,marca:x.marca},{r:x.r,g:x.g||null})}; }),
+    itens:itens.map(function(x){ var u=unitItem(x); return {chave:x.chavePreco, nome:x.nome, marca:x.marca, r:x.r, g:x.g, un:x.un, fechado:x.fechado, n:x.n, preco:u?u.c:null, atacado:!!(u&&u.at)}; }),
+    pagamento:state.pag,
     mensagem:decodeURIComponent((mensagemWa(c).split('?text=')[1])||'')
   };
   state.enviando=true; state.erroEnvio=''; renderOverlay();

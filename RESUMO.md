@@ -113,9 +113,14 @@ O pedido agora vai **direto para a loja**, sem depender do WhatsApp (que continu
 - Na Cloudflare (painel do projeto Pages): armazenamento KV ligado com o nome `LOJA` e o segredo `PAINEL_TOKENS`. Comando de compilação `exit 0`, diretório de saída vazio (a raiz). Não coloque `wrangler.toml` no repositório: ele passaria a mandar nas configurações do painel.
 - Para testar localmente: `npx wrangler pages dev . --kv LOJA --binding 'PAINEL_TOKENS={"dlu":"teste"}'`.
 
+## 4.2 Atacado e desconto (vêm do Balcão)
+- **Atacado:** usa o "Preço de atacado" de cada produto no Balcão. **Fardo fechado sempre sai no atacado**; em quantidade solta, a partir de X kg do mesmo produto (padrão 10 kg) ou N unidades do mesmo pote/garrafa (padrão 12). Os números ficam em Ajustes → Sistema → Site da loja. Publicado em `/api/catalogo` como `kgAt`, `opAt` e `atacado: {minKg, minUn}`.
+- **Desconto:** 5% no Pix ou dinheiro para compras a partir de R$ 100 (percentual e mínimo ajustáveis no Balcão; publicado como `desconto`). A sacola pergunta a forma de pagamento. **A ponte recalcula o desconto** ao receber o pedido: o valor enviado pelo navegador não vale sozinho.
+- No Balcão, o pedido do site vai ao caixa com o preço de atacado travado nos itens marcados, a forma de pagamento escolhida e o desconto lançado.
+
 ## 5. Regras de negócio que devem ser mantidas
 - **Mínimo de 250 g** por produto a granel (o app de pesagem arredonda para 250 g).
-- **Fardos:** D’Lu = **10 kg**; VKS = **25 kg**; as duas pesam quantidades menores. Caldo de galinha e colorau caseiro (D’Lu) também vêm em saco de 25 kg.
+- **Fardos:** o botão no site diz só **"Fardo"**; o tamanho (10 ou 25 kg, ou "não vende em fardo") é escolhido **por produto** no Balcão, na tela "Ligar produtos ao site". Sem essa escolha, vale o selo do catálogo (ex.: "Fardo 25 kg" no caldo de galinha e no colorau caseiro) ou o padrão da loja (D’Lu 10 kg, VKS 25 kg).
 - **Alho roxo nacional (VKS):** caixa fechada de 10 kg, **entrega somente por Lalamove, Uber ou retirada na loja**.
 - **Fotos da VKS são só da VKS e fotos da D’Lu são só da D’Lu. Nunca misturar.** Produto que existe nas duas lojas mostra, em cada aba, apenas a foto daquela loja (ou o desenho).
 - **Jataí do Nordeste** é xarope sabor mel (xarope de glicose + aroma de mel), **não é mel**. Não descrever como mel de abelha.

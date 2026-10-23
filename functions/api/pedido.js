@@ -19,7 +19,8 @@ function limparItens(lista) {
     unidade: texto(i && i.un, 20),
     fechado: texto(i && i.fechado, 40),
     quantidade: Math.max(1, Math.min(9999, Math.round(Number(i && i.n) || 1))),
-    preco: i && i.preco != null && isFinite(i.preco) ? Math.max(0, Math.round(Number(i.preco))) : null
+    preco: i && i.preco != null && isFinite(i.preco) ? Math.max(0, Math.round(Number(i.preco))) : null,
+    atacado: !!(i && i.atacado)
   })).filter(i => i.nome || i.chave);
 }
 
@@ -45,8 +46,17 @@ export async function onRequestPost(context) {
   const entrega = b.entrega && typeof b.entrega === 'object' ? b.entrega : {};
   const codigo = codigoCurto();
   const id = idPedido();
-  const total = itens.reduce((s, i) => (i.preco != null ? s + i.preco * i.quantidade : s), 0);
+  const subtotal = itens.reduce((s, i) => (i.preco != null ? s + i.preco * i.quantidade : s), 0);
   const algumSemPreco = itens.some(i => i.preco == null);
+  const pagamento = ['pix', 'dinheiro', 'cartao'].includes(String(b.pagamento)) ? String(b.pagamento) : '';
+  // o desconto é conferido aqui de novo: o valor que o navegador manda não vale sozinho
+  let desconto = 0, descontoPct = 0;
+  try {
+    const cat = await env.LOJA.get('cat:' + (lojaValida(b.loja) || ''), { type: 'json' });
+    const r = cat && cat.desconto ? cat.desconto : { ativo: true, pct: 5, min: 10000, formas: ['pix', 'dinheiro'] };
+    if (r.ativo && r.pct > 0 && r.formas.includes(pagamento) && subtotal >= r.min) { descontoPct = r.pct; desconto = Math.round(subtotal * r.pct / 100); }
+  } catch (e) { desconto = 0; }
+  const total = subtotal - desconto;
 
   const registro = {
     id, codigo, loja, status: 'novo', criadoEm: new Date().toISOString(),
@@ -58,6 +68,7 @@ export async function onRequestPost(context) {
     })(),
     obs: texto(b.obs, 1000),
     itens,
+    pagamento, subtotal: subtotal || null, desconto, descontoPct,
     total: algumSemPreco ? null : total,
     totalParcial: total > 0 ? total : null,
     mensagem: texto(b.mensagem, 4000)

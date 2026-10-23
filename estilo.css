@@ -144,3 +144,8 @@ button:focus-visible,a:focus-visible{outline:3px solid var(--amarelo);outline-of
   .foot,.trust{grid-template-columns:1fr}
   .tags{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
 }
+/* atacado e desconto */
+.tag-atac{display:inline-block;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:#fff;background:#b8321e;padding:2px 8px;border-radius:999px;vertical-align:middle}
+.linha-atac{font-size:13px;color:#5a5f78}.linha-atac b{color:#b8321e}
+.dica-atac{display:block;font-size:12px;font-weight:700;color:#b8321e;margin-top:2px}
+.faixa-desc{margin:0;align-self:flex-start;display:inline-flex;align-items:center;gap:8px;background:#e3f5ea;color:#146b3f;font-weight:800;font-size:14px;padding:9px 16px;border-radius:999px}
