@@ -60,7 +60,7 @@ window.CATALOGO = {
       { nome: 'Colorau temperado', cat: 'Especiarias', cor: '#c0391f', uso: 'Colorau já temperado para dar cor e sabor a carnes, arroz e feijão.', so: 'dlu' },
       { nome: 'Canela em pau', fotosT: { dlu: 'imagens/dlu/canela-em-pau.webp?v=2' }, cat: 'Especiarias', cor: '#7f4424', uso: 'Canela cortada para quentão, doces em calda, arroz-doce e chás.', so: 'dlu' },
       { nome: 'Tempero carne seca', fotosT: { dlu: 'imagens/dlu/tempero-carne-seca.webp' }, cat: 'Misturas da casa', cor: '#7a3f28', uso: 'Mistura para carne seca, escondidinho e paçoca de carne.', so: 'dlu' },
-      { nome: 'Tempero alho, salsa e cebola com bacon', fotosT: { dlu: 'imagens/dlu/tempero-alho-salsa-cebola-bacon.webp' }, cat: 'Misturas da casa', cor: '#a8603a', uso: 'Alho, salsa e cebola com sabor de bacon para feijão, farofa e arroz.', so: 'dlu' },
+      { nome: 'Italiano frito', fotosT: { dlu: 'imagens/dlu/tempero-alho-salsa-cebola-bacon.webp' }, cat: 'Misturas da casa', cor: '#a8603a', uso: 'Alho, salsa e cebola fritos com sabor de bacon, para feijão, farofa e arroz.', so: 'dlu' },
       { nome: 'Tempero carne de panela', cat: 'Misturas da casa', cor: '#6e3b24', uso: 'Mistura para carne de panela, ensopados e cozidos.', so: 'dlu' },
       { nome: 'Cravo', fotosT: { dlu: 'imagens/dlu/cravo.webp?v=2' }, cat: 'Especiarias', cor: '#5a2e1e', uso: 'Cravo-da-índia para doces, quentão, caldas e carnes.', so: 'dlu' },
       { nome: 'Chimichurri com pimenta', cat: 'Misturas da casa', cor: '#6a5a26', uso: 'O chimichurri com um toque de pimenta, para churrasco e marinadas.', so: 'dlu' },
