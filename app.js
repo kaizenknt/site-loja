@@ -13,9 +13,11 @@ var state = {
   nome:'', fone:'', doc:'', razao:'', endereco:'', obs:'',
   nf:'nao', entrega:'Retirar na loja',
   historico:[], apagarOk:false, limparOk:false,
-  sel:{}, agora:Date.now()
+  sel:{}, agora:Date.now(),
+  enviando:false, enviado:null, erroEnvio:'', statusPed:{}
 };
-var PRECOS = null;         // { itens:{ chave:{kg|op} }, _exemplo:bool }
+var PRECOS = null;         // { itens:{ chave:{kg|op} }, indisponivel:[chaves], _exemplo:bool }
+var PRECOS_CACHE = {};     // preços por loja (cada loja publica os seus pelo Balcão)
 var avisoTimer=null, relogio=null, slideTimer=null;
 
 /* ---------- persistência ---------- */
@@ -65,6 +67,7 @@ function situacao(l){
 function slug(s){ return String(s||'').normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,''); }
 function chavePreco(p){ return slug(p.nome)+(p.marca?('|'+slug(p.marca)):''); }
 function precoDe(p){ return PRECOS&&PRECOS.itens?PRECOS.itens[chavePreco(p)]:null; }
+function emFalta(p){ return !!(PRECOS&&PRECOS.indisponivel&&PRECOS.indisponivel.indexOf(chavePreco(p))>=0); }
 function brl(cent){ return 'R$ '+(cent/100).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2}); }
 /* preço em centavos de uma opção escolhida; null se não houver preço */
 function precoOpcao(p,op){
@@ -169,9 +172,12 @@ function cartaoHTML(p){
 
   // preço
   var precoHTML='';
+  var falta=emFalta(p);
   var pr=precoDe(p);
   var cent=precoOpcao(p,p.opcoes[sel]);
-  if(cent!=null){
+  if(falta){
+    precoHTML='<span class="preco-consulta" style="color:#9b2a1c">Em falta no momento</span>';
+  } else if(cent!=null){
     var extra='';
     if(pr&&pr.kg!=null) extra='<span class="preco-kg">'+brl(pr.kg)+' / kg</span>';
     precoHTML='<div style="display:flex;align-items:baseline;gap:8px;flex-wrap:wrap"><span class="preco preco-sel">'+brl(cent)+'</span>'+extra+'</div>';
@@ -189,7 +195,7 @@ function cartaoHTML(p){
       +'<div style="display:flex;flex-direction:column;gap:6px"><span style="font-size:11px;font-weight:800;color:#5a5f78;text-transform:uppercase;letter-spacing:.1em">'+esc(p.rotuloOpcoes)+'</span><div style="display:flex;flex-wrap:wrap;gap:6px" role="group" aria-label="'+at(p.rotuloOpcoes)+'">'+opc+'</div></div>'
       +precoHTML
       +'<div style="display:flex;gap:8px;margin-top:4px">'
-        +'<button type="button" data-act="add" data-key="'+at(p.chave)+'" style="flex:1;font:inherit;cursor:pointer;border:none;background:#1d2240;color:#fff;font-weight:800;font-size:14px;text-transform:uppercase;letter-spacing:.06em;padding:12px;border-radius:999px;min-height:46px;display:flex;align-items:center;justify-content:center;gap:8px;transition:background .2s"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 8h14l-1.2 12H6.2L5 8z"></path><path d="M9 8V6a3 3 0 0 1 6 0v2"></path></svg><span class="add-txt">Adicionar</span></button>'
+        +'<button type="button" data-act="add" data-key="'+at(p.chave)+'"'+(falta?' disabled aria-disabled="true"':'')+' style="flex:1;font:inherit;cursor:'+(falta?'not-allowed':'pointer')+';opacity:'+(falta?'.45':'1')+';border:none;background:#1d2240;color:#fff;font-weight:800;font-size:14px;text-transform:uppercase;letter-spacing:.06em;padding:12px;border-radius:999px;min-height:46px;display:flex;align-items:center;justify-content:center;gap:8px;transition:background .2s"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 8h14l-1.2 12H6.2L5 8z"></path><path d="M9 8V6a3 3 0 0 1 6 0v2"></path></svg><span class="add-txt">Adicionar</span></button>'
         +'<a class="btn-wa" href="'+at(p.wa)+'" target="_blank" rel="noopener" aria-label="Pedir só '+at(p.nome)+' pelo WhatsApp" title="Pedir só este produto" style="flex:none;width:46px;height:46px;border-radius:50%;background:#1b7a4b;color:#fff;display:flex;align-items:center;justify-content:center"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.4L3 21l2.1-5.4A8.4 8.4 0 1 1 21 11.5z"></path></svg></a>'
       +'</div>'
     +'</div></article>';
@@ -358,7 +364,7 @@ function fillPedir(c){
   return '<section id="como-pedir" style="padding-top:72px;padding-bottom:72px"><div class="wrap pedir"><div class="revela-esq" style="display:flex;flex-direction:column;gap:26px"><div style="display:flex;flex-direction:column;gap:6px"><span class="eyebrow" style="color:#b8321e">Simples e rápido</span><h2 class="disp" style="margin:0;font-weight:900;font-size:clamp(36px,4.6vw,56px);line-height:.95">Como pedir</h2></div>'
     +'<ol style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:20px">'
     +passo('1','Escolha os temperos','No site ou perguntando pelo que precisa. No varejo, a partir de 250 g por produto.')
-    +passo('2','Monte sua sacola','Escolha a quantidade e toque em “Adicionar” em cada produto. No fim, abra a sacola e envie tudo de uma vez pelo WhatsApp.')
+    +passo('2','Monte sua sacola','Escolha a quantidade e toque em “Adicionar” em cada produto. No fim, abra a sacola e envie direto para a loja (ou pelo WhatsApp, se preferir).')
     +passo('3','A gente pesa e separa','Conferimos o pedido, pesamos na hora e avisamos quando estiver pronto.')
     +'</ol><a class="btn-wa" href="'+at(waGeralDe(loja))+'" target="_blank" rel="noopener" style="align-self:flex-start;text-decoration:none;background:#1b7a4b;color:#fff;font-weight:800;font-size:15px;text-transform:uppercase;letter-spacing:.06em;padding:16px 28px;border-radius:999px;min-height:52px;display:inline-flex;align-items:center">Fazer meu pedido</a></div>'
     +'<figure class="revela" aria-label="Exemplo de conversa de pedido" style="margin:0;background:#e9e1d2;border-radius:28px;padding:18px;box-shadow:0 30px 50px -30px rgba(29,34,64,.45)"><div style="background:#efe7d9;border-radius:18px;overflow:hidden"><div style="background:#1b7a4b;color:#fff;padding:14px 16px;display:flex;align-items:center;gap:12px"><span style="width:38px;height:38px;border-radius:50%;background:#fff;color:#23336b;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:13px" class="disp">'+(loja.id==='vks'?'VKS':'D’Lu')+'</span><span style="display:flex;flex-direction:column;line-height:1.2"><strong style="font-size:15px">'+esc(loja.nome)+'</strong><span style="font-size:12px;color:#d3f0df">conta comercial</span></span></div><div style="padding:18px 14px 22px;display:flex;flex-direction:column;gap:10px;font-size:15px"><div class="bolha b1" style="align-self:flex-end;max-width:82%;background:#d9fdd3;color:#1a2a1f;border-radius:14px 14px 4px 14px;padding:10px 12px;white-space:pre-line;box-shadow:0 1px 1px rgba(0,0,0,.08)">Bom dia! Quero:\nCominho – 500 g\nPáprica defumada – 1 kg</div><div class="bolha b2" style="align-self:flex-start;max-width:82%;background:#fff;color:#1a2a1f;border-radius:14px 14px 14px 4px;padding:10px 12px;box-shadow:0 1px 1px rgba(0,0,0,.08)">Bom dia! Já estamos separando. Avisamos assim que estiver pesado e pronto.</div><div class="bolha b3" style="align-self:flex-end;max-width:82%;background:#d9fdd3;color:#1a2a1f;border-radius:14px 14px 4px 14px;padding:10px 12px;box-shadow:0 1px 1px rgba(0,0,0,.08)">Perfeito, obrigado!</div></div></div></figure></div></section>';
@@ -431,8 +437,26 @@ function fillOverlay(c){
   return html;
 }
 
+function confirmacaoHTML(loja){
+  var cod=state.enviado.codigo, st=state.statusPed[cod]||{};
+  var waTxt='Olá, '+loja.nome+'! Acabei de fazer o pedido '+cod+' pelo site.';
+  return '<div style="text-align:center;padding:26px 6px;display:flex;flex-direction:column;align-items:center;gap:14px">'
+    +'<span aria-hidden="true" style="width:64px;height:64px;border-radius:50%;background:#e3f5ea;display:flex;align-items:center;justify-content:center"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#1b7a4b" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"></path></svg></span>'
+    +'<h3 class="disp" style="margin:0;font-weight:900;font-size:32px;line-height:1">Pedido enviado!</h3>'
+    +'<p style="margin:0;color:#5a5f78;max-width:32ch">A '+esc(loja.nome)+' recebeu seu pedido. A gente confere, pesa e avisa você pelo WhatsApp.</p>'
+    +'<div style="display:flex;flex-direction:column;gap:4px;padding:14px 24px;border-radius:18px;background:#f8f3ea;border:2px dashed #e2d9c6"><span style="font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.12em;color:#5a5f78">Código do pedido</span><span class="disp" style="font-weight:900;font-size:40px;letter-spacing:.12em;color:#1d2240">'+esc(cod)+'</span></div>'
+    +'<p role="status" style="margin:0;font-size:15px;font-weight:700;color:#1d2240">'+esc(st.rotulo||'Recebido, aguardando a loja')+(st.numero?' · nº '+esc(st.numero)+' na loja':'')+'</p>'
+    +'<button type="button" data-act="verStatus" data-cod="'+at(cod)+'" data-loja="'+at(loja.id)+'" style="font:inherit;cursor:pointer;border:2px solid #1d2240;background:#fff;color:#1d2240;font-weight:800;font-size:14px;padding:9px 18px;border-radius:999px;min-height:42px">Atualizar situação</button>'
+    +'<a class="btn-wa" href="'+at('https://wa.me/'+loja.waNum+'?text='+encodeURIComponent(waTxt))+'" target="_blank" rel="noopener" style="text-decoration:none;background:#1b7a4b;color:#fff;font-weight:800;font-size:14px;padding:11px 18px;border-radius:999px;min-height:44px;display:inline-flex;align-items:center">Falar com a loja no WhatsApp</a>'
+    +'<button type="button" data-act="novoPedido" style="font:inherit;cursor:pointer;border:none;background:transparent;color:#b8321e;font-weight:700;font-size:14px;padding:6px 10px;min-height:36px">Fazer outro pedido</button>'
+  +'</div>';
+}
 function sacolaHTML(c){
   var loja=c.loja;
+  var nItens=(state.carrinhos[loja.id]||[]).length, rotItens=nItens===1?'1 item':nItens+' itens';
+  if(state.enviado&&state.enviado.loja===loja.id){
+    return '<div style="position:fixed;inset:0;z-index:80"><button type="button" class="gaveta-fundo" data-act="fecharSacola" aria-label="Fechar" style="position:absolute;inset:0;border:none;padding:0;background:rgba(15,18,38,.55);cursor:pointer"></button><aside class="gaveta" role="dialog" aria-label="Pedido enviado" style="position:absolute;top:0;right:0;bottom:0;width:min(440px,100%);background:#fff;display:flex;flex-direction:column;box-shadow:-20px 0 40px -20px rgba(0,0,0,.5)"><div style="display:flex;justify-content:flex-end;padding:16px 18px 0"><button type="button" data-act="fecharSacola" aria-label="Fechar" style="width:44px;height:44px;border-radius:50%;border:1px solid #ece5d6;background:#fff;color:#1d2240;cursor:pointer;font-size:20px;line-height:1">✕</button></div><div style="flex:1;overflow-y:auto;padding:0 22px 24px">'+confirmacaoHTML(loja)+'</div></aside></div>';
+  }
   var itens=(state.carrinhos[loja.id]||[]).map(function(x,i){
     var resumo=x.g?(fmtG(x.g*x.n)+(x.n>1?' · '+x.n+'× '+x.r:'')):(x.n+'× '+x.r);
     var cent=precoItem(x);
@@ -456,7 +480,9 @@ function sacolaHTML(c){
     var nfBloco=querNf?('<div style="display:flex;flex-direction:column;gap:8px;padding:12px;border-radius:14px;background:#fdf6e8;border:1px solid #f0e2c0"><label for="sacolaDoc" style="font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:#5a5f78">CPF ou CNPJ</label><input id="sacolaDoc" value="'+at(state.doc)+'" data-act="campo" data-field="doc" inputmode="numeric" autocomplete="off" placeholder="Só os números" style="font:inherit;font-size:16px;padding:11px 14px;border-radius:12px;border:1.5px solid #e2d9c6;background:#f8f3ea;color:#1d2240"><span id="docDica" style="font-size:13px;font-weight:700;color:'+(doc&&docValido?'#1b7a4b':'#5a5f78')+'">'+esc(docDica)+'</span>'+(ehCnpj?('<label for="sacolaRazao" style="font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:#5a5f78">Razão social (opcional)</label><input id="sacolaRazao" value="'+at(state.razao)+'" data-act="campo" data-field="razao" placeholder="Nome da empresa" style="font:inherit;font-size:16px;padding:11px 14px;border-radius:12px;border:1.5px solid #e2d9c6;background:#f8f3ea;color:#1d2240">'):'')+'</div>'):'';
 
     var erro='';
-    if(querNf&&!doc) erro='Para a nota fiscal, informe seu CPF ou CNPJ.';
+    if(!state.nome.trim()) erro='Informe seu nome para a loja identificar o pedido.';
+    else if(soNum(state.fone).length<10) erro='Informe seu WhatsApp com DDD: é por ele que a loja confirma o pedido.';
+    else if(querNf&&!doc) erro='Para a nota fiscal, informe seu CPF ou CNPJ.';
     else if(querNf&&!docValido) erro=ehCnpj?'Esse CNPJ não parece certo. Confira os números.':'Esse CPF não parece certo. Confira os números.';
     else if(entrega&&!state.endereco.trim()) erro='Para entrega, informe o endereço.';
 
@@ -466,19 +492,23 @@ function sacolaHTML(c){
     }
     var acao=erro
       ? '<p role="alert" style="margin:0;padding:10px 12px;border-radius:12px;background:#fde6e2;color:#9b2a1c;font-size:14px;font-weight:700">'+esc(erro)+'</p>'
-      : '<a class="btn-wa" href="'+at(mensagemWa(c))+'" data-act="registrar" target="_blank" rel="noopener" style="text-decoration:none;background:#1b7a4b;color:#fff;font-weight:800;font-size:15px;text-transform:uppercase;letter-spacing:.06em;padding:15px;border-radius:999px;min-height:52px;display:flex;align-items:center;justify-content:center;gap:10px"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.4L3 21l2.1-5.4A8.4 8.4 0 1 1 21 11.5z"></path></svg>Enviar pedido · '+(itens.length===1?'1 item':itens.length+' itens')+'</a>';
+      : ('<button type="button" data-act="enviarLoja"'+(state.enviando?' disabled aria-busy="true"':'')+' style="font:inherit;cursor:'+(state.enviando?'wait':'pointer')+';border:none;background:#f2b31b;color:#1d2240;font-weight:800;font-size:15px;text-transform:uppercase;letter-spacing:.06em;padding:15px;border-radius:999px;min-height:52px;display:flex;align-items:center;justify-content:center;gap:10px"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13"></path><path d="M22 2l-7 20-4-9-9-4 20-7z"></path></svg>'+(state.enviando?'Enviando…':'Enviar pedido para a loja · '+rotItens)+'</button>'
+        +(state.erroEnvio?'<p role="alert" style="margin:0;padding:10px 12px;border-radius:12px;background:#fde6e2;color:#9b2a1c;font-size:14px;font-weight:700">'+esc(state.erroEnvio)+'</p>':'')
+        +'<a class="btn-wa" href="'+at(mensagemWa(c))+'" data-act="registrar" target="_blank" rel="noopener" style="text-decoration:none;background:'+(state.erroEnvio?'#1b7a4b':'#fff')+';color:'+(state.erroEnvio?'#fff':'#1b7a4b')+';border:2px solid #1b7a4b;font-weight:800;font-size:14px;padding:11px;border-radius:999px;min-height:46px;display:flex;align-items:center;justify-content:center;gap:8px"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.4L3 21l2.1-5.4A8.4 8.4 0 1 1 21 11.5z"></path></svg>'+(state.erroEnvio?'Enviar pelo WhatsApp':'ou enviar pelo WhatsApp')+'</a>');
 
-    rodape='<div style="border-top:1px solid #ece5d6;padding:16px 22px 22px;display:flex;flex-direction:column;gap:12px;background:#fff">'
+    rodape='<div style="border-top:1px solid #ece5d6;margin:4px -22px 0;padding:16px 22px 6px;display:flex;flex-direction:column;gap:12px;background:#fff">'
       +'<div style="display:flex;gap:6px;flex-wrap:wrap" role="group" aria-label="Retirada ou entrega">'+entregas+'</div>'+endBloco
       +'<span style="font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:#5a5f78">Precisa de nota fiscal?</span><div style="display:flex;gap:6px;flex-wrap:wrap" role="group" aria-label="Nota fiscal">'+nfOp+'</div>'+nfBloco
       +'<label for="sacolaNome" style="font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:#5a5f78">Seu nome</label><input id="sacolaNome" value="'+at(state.nome)+'" data-act="campo" data-field="nome" autocomplete="name" placeholder="Para a gente identificar o pedido" style="font:inherit;font-size:16px;padding:11px 14px;border-radius:12px;border:1.5px solid #e2d9c6;background:#f8f3ea;color:#1d2240">'
+      +'<label for="sacolaFone" style="font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:#5a5f78">Seu WhatsApp</label><input id="sacolaFone" type="tel" value="'+at(state.fone)+'" data-act="campo" data-field="fone" autocomplete="tel" inputmode="tel" placeholder="(11) 90000-0000" style="font:inherit;font-size:16px;padding:11px 14px;border-radius:12px;border:1.5px solid #e2d9c6;background:#f8f3ea;color:#1d2240">'
+      +'<input id="hpCampo" name="empresa_site" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">'
       +'<label for="sacolaObs" style="font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:#5a5f78">Observação (opcional)</label><input id="sacolaObs" value="'+at(state.obs)+'" data-act="campo" data-field="obs" placeholder="Ex.: separar em pacotes de 1 kg" style="font:inherit;font-size:16px;padding:11px 14px;border-radius:12px;border:1.5px solid #e2d9c6;background:#f8f3ea;color:#1d2240">'
       +totalBloco+acao
       +'<button type="button" data-act="limpar2" style="align-self:center;font:inherit;cursor:pointer;border:none;background:transparent;color:#b8321e;font-weight:700;font-size:14px;padding:6px 10px;min-height:36px">'+(state.limparOk?'Toque de novo para esvaziar':'Esvaziar sacola')+'</button>'
     +'</div>';
   }
 
-  return '<div style="position:fixed;inset:0;z-index:80"><button type="button" class="gaveta-fundo" data-act="fecharSacola" aria-label="Fechar meu pedido" style="position:absolute;inset:0;border:none;padding:0;background:rgba(15,18,38,.55);cursor:pointer"></button><aside class="gaveta" role="dialog" aria-label="Meu pedido" style="position:absolute;top:0;right:0;bottom:0;width:min(440px,100%);background:#fff;display:flex;flex-direction:column;box-shadow:-20px 0 40px -20px rgba(0,0,0,.5)"><div style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:20px 22px;border-bottom:1px solid #ece5d6"><div style="display:flex;flex-direction:column;gap:2px"><span class="eyebrow" style="color:#b8321e">'+esc(loja.nome)+'</span><h2 class="disp" style="margin:0;font-weight:900;font-size:34px;line-height:1">Meu pedido</h2></div><button type="button" data-act="fecharSacola" aria-label="Fechar" style="width:44px;height:44px;border-radius:50%;border:1px solid #ece5d6;background:#fff;color:#1d2240;cursor:pointer;font-size:20px;line-height:1">✕</button></div><div style="flex:1;overflow-y:auto;padding:16px 22px;display:flex;flex-direction:column;gap:12px">'+corpo+'</div>'+rodape+'</aside></div>';
+  return '<div style="position:fixed;inset:0;z-index:80"><button type="button" class="gaveta-fundo" data-act="fecharSacola" aria-label="Fechar meu pedido" style="position:absolute;inset:0;border:none;padding:0;background:rgba(15,18,38,.55);cursor:pointer"></button><aside class="gaveta" role="dialog" aria-label="Meu pedido" style="position:absolute;top:0;right:0;bottom:0;width:min(440px,100%);background:#fff;display:flex;flex-direction:column;box-shadow:-20px 0 40px -20px rgba(0,0,0,.5)"><div style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:20px 22px;border-bottom:1px solid #ece5d6"><div style="display:flex;flex-direction:column;gap:2px"><span class="eyebrow" style="color:#b8321e">'+esc(loja.nome)+'</span><h2 class="disp" style="margin:0;font-weight:900;font-size:34px;line-height:1">Meu pedido</h2></div><button type="button" data-act="fecharSacola" aria-label="Fechar" style="width:44px;height:44px;border-radius:50%;border:1px solid #ece5d6;background:#fff;color:#1d2240;cursor:pointer;font-size:20px;line-height:1">✕</button></div><div style="flex:1;overflow-y:auto;padding:16px 22px 22px;display:flex;flex-direction:column;gap:12px">'+corpo+rodape+'</div></aside></div>';
 }
 
 function mensagemWa(c){
@@ -521,7 +551,9 @@ function contaHTML(c){
       var lojaNome=(LOJAS[hh.loja]||c.loja).nome;
       var resumo=hh.itens.map(function(x){return x.nome;}).slice(0,3).join(', ')+(hh.itens.length>3?' e mais '+(hh.itens.length-3):'');
       var dataTxt=new Date(hh.data).toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
-      return '<div style="padding:14px;border-radius:16px;background:#f8f3ea;display:flex;flex-direction:column;gap:6px"><div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap"><strong style="font-size:15px">'+esc(lojaNome)+'</strong><span style="font-size:13px;color:#5a5f78;font-variant-numeric:tabular-nums">'+esc(dataTxt)+'</span></div><span style="font-size:14px;color:#5a5f78">'+(hh.itens.length===1?'1 item':hh.itens.length+' itens')+' · '+esc(resumo)+'</span><button type="button" data-act="repetir" data-hi="'+i+'" style="align-self:flex-start;font:inherit;cursor:pointer;border:2px solid #1d2240;background:#fff;color:#1d2240;font-weight:800;font-size:14px;padding:8px 16px;border-radius:999px;min-height:40px">Pedir de novo</button></div>';
+      var stH=hh.codigo?(state.statusPed[hh.codigo]||null):null;
+      var codHTML=hh.codigo?('<div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap"><span style="font-size:13px;font-weight:800;color:#1d2240">Código <span style="letter-spacing:.08em">'+esc(hh.codigo)+'</span></span>'+(stH?'<span style="font-size:13px;font-weight:700;color:#1b7a4b">'+esc(stH.rotulo)+'</span>':'<button type="button" data-act="verStatus" data-cod="'+at(hh.codigo)+'" data-loja="'+at(hh.loja)+'" style="font:inherit;cursor:pointer;border:none;background:transparent;color:#23336b;font-weight:800;font-size:13px;text-decoration:underline;padding:4px 0">Ver situação</button>')+'</div>'):'<span style="font-size:12px;color:#8a8fa8">Enviado pelo WhatsApp</span>';
+      return '<div style="padding:14px;border-radius:16px;background:#f8f3ea;display:flex;flex-direction:column;gap:6px"><div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap"><strong style="font-size:15px">'+esc(lojaNome)+'</strong><span style="font-size:13px;color:#5a5f78;font-variant-numeric:tabular-nums">'+esc(dataTxt)+'</span></div><span style="font-size:14px;color:#5a5f78">'+(hh.itens.length===1?'1 item':hh.itens.length+' itens')+' · '+esc(resumo)+'</span>'+codHTML+'<button type="button" data-act="repetir" data-hi="'+i+'" style="align-self:flex-start;font:inherit;cursor:pointer;border:2px solid #1d2240;background:#fff;color:#1d2240;font-weight:800;font-size:14px;padding:8px 16px;border-radius:999px;min-height:40px">Pedir de novo</button></div>';
     }).join('');
   }
   return '<div style="position:fixed;inset:0;z-index:80"><button type="button" class="gaveta-fundo" data-act="fecharConta" aria-label="Fechar minha conta" style="position:absolute;inset:0;border:none;padding:0;background:rgba(15,18,38,.55);cursor:pointer"></button><aside class="gaveta" role="dialog" aria-label="Minha conta" style="position:absolute;top:0;right:0;bottom:0;width:min(440px,100%);background:#fff;display:flex;flex-direction:column;box-shadow:-20px 0 40px -20px rgba(0,0,0,.5)"><div style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:20px 22px 0"><div style="display:flex;flex-direction:column;gap:2px"><span class="eyebrow" style="color:#b8321e">D’Lu e VKS</span><h2 class="disp" style="margin:0;font-weight:900;font-size:34px;line-height:1">Minha conta</h2></div><button type="button" data-act="fecharConta" aria-label="Fechar" style="width:44px;height:44px;border-radius:50%;border:1px solid #ece5d6;background:#fff;color:#1d2240;cursor:pointer;font-size:20px;line-height:1">✕</button></div><div role="tablist" style="display:flex;gap:18px;padding:14px 22px 0;border-bottom:1px solid #ece5d6">'+abas+'</div><div style="flex:1;overflow-y:auto;padding:18px 22px 24px;display:flex;flex-direction:column;gap:10px">'+corpo+'</div></aside></div>';
@@ -583,7 +615,7 @@ function onClick(e){
   // links que navegam/abrem whatsapp: deixa o navegador agir
   if(act==='busca'||act==='campo') return;
 
-  if(act==='loja'){ var id=t.getAttribute('data-loja'); if(id!==state.loja){ state.loja=id; state.cat='Todos'; state.busca=''; state.slide=0; state.sacola=false; state.conta=false; renderAll(); } return; }
+  if(act==='loja'){ var id=t.getAttribute('data-loja'); if(id!==state.loja){ state.loja=id; state.cat='Todos'; state.busca=''; state.slide=0; state.sacola=false; state.conta=false; state.enviado=null; state.erroEnvio=''; PRECOS=PRECOS_CACHE[id]||null; renderAll(); carregarPrecos(); } return; }
   if(act==='cat'){ state.cat=t.getAttribute('data-cat'); state.busca=''; renderAll(); return; }
   if(act==='limpar'){ state.busca=''; state.cat='Todos'; renderAll(); return; }
   if(act==='slide'){ state.slide=+t.getAttribute('data-i'); renderHero(); return; }
@@ -603,8 +635,11 @@ function onClick(e){
     return;
   }
 
+  if(act==='enviarLoja'){ enviarLoja(); return; }
+  if(act==='verStatus'){ verStatus(t.getAttribute('data-cod'), t.getAttribute('data-loja')); return; }
+  if(act==='novoPedido'){ state.enviado=null; state.sacola=false; renderAll(); return; }
   if(act==='abrirSacola'){ state.sacola=true; state.conta=false; state.limparOk=false; renderOverlay(); return; }
-  if(act==='fecharSacola'){ state.sacola=false; renderOverlay(); return; }
+  if(act==='fecharSacola'){ state.sacola=false; state.enviado=null; state.erroEnvio=''; renderOverlay(); return; }
   if(act==='abrirConta'){ state.conta=true; state.sacola=false; state.apagarOk=false; renderOverlay(); return; }
   if(act==='fecharConta'){ state.conta=false; renderOverlay(); return; }
   if(act==='contaAba'){ state.contaAba=t.getAttribute('data-v'); renderOverlay(); return; }
@@ -638,7 +673,7 @@ function onInput(e){
     if(f==='nome'||f==='fone'||f==='doc'||f==='razao'||f==='endereco') guardarConta(); else guardarSacola();
     // doc e endereço afetam a validação (mostrar/ocultar o botão Enviar e a razão social):
     // reconstrói a gaveta e devolve o foco e o cursor ao mesmo campo.
-    if((f==='doc'||f==='endereco') && (state.sacola||state.conta)){
+    if((f==='doc'||f==='endereco'||f==='nome'||f==='fone') && (state.sacola||state.conta)){
       var pos=t.selectionStart, id=t.id;
       renderOverlay();
       var n=el(id); if(n){ n.focus(); try{ n.setSelectionRange(pos,pos); }catch(_){} }
@@ -661,11 +696,60 @@ function patchEnviar(){
   if(link) link.setAttribute('href', mensagemWa(c));
 }
 
-/* ---------- carregamento de preços ---------- */
+/* ---------- envio do pedido direto para a loja (ponte na nuvem) ---------- */
+function enviarLoja(){
+  var c=ctx(), loja=c.loja, itens=state.carrinhos[loja.id]||[];
+  if(!itens.length||state.enviando) return;
+  var doc=soNum(state.doc), querNf=state.nf==='sim', entrega=state.entrega!=='Retirar na loja';
+  var corpo={
+    loja:loja.id, hp:(el('hpCampo')||{}).value||'',
+    cliente:{nome:state.nome.trim(), telefone:state.fone, doc:querNf?doc:'', razao:querNf?state.razao.trim():''},
+    nf:querNf, entrega:{tipo:state.entrega, endereco:entrega?state.endereco.trim():''}, obs:state.obs.trim(),
+    itens:itens.map(function(x){ return {chave:x.chavePreco, nome:x.nome, marca:x.marca, r:x.r, g:x.g, un:x.un, fechado:x.fechado, n:x.n, preco:precoOpcao({nome:x.nome,marca:x.marca},{r:x.r,g:x.g||null})}; }),
+    mensagem:decodeURIComponent((mensagemWa(c).split('?text=')[1])||'')
+  };
+  state.enviando=true; state.erroEnvio=''; renderOverlay();
+  fetch('/api/pedido',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(corpo)})
+    .then(function(r){ return r.json().then(function(j){ return {ok:r.ok, j:j}; }, function(){ return {ok:false, j:null}; }); })
+    .then(function(x){
+      state.enviando=false;
+      if(x.ok&&x.j&&x.j.codigo){
+        var h={data:Date.now(), loja:loja.id, codigo:x.j.codigo, itens:itens.map(function(i){return Object.assign({},i);})};
+        state.historico=[h].concat(state.historico||[]).slice(0,20);
+        state.carrinhos[loja.id]=[]; state.obs='';
+        state.enviado={codigo:x.j.codigo, loja:loja.id};
+        state.statusPed[x.j.codigo]={rotulo:'Recebido, aguardando a loja'};
+        guardarConta(); renderAll();
+      } else {
+        state.erroEnvio=(x.j&&x.j.mensagem)||'Não consegui enviar agora. Envie pelo WhatsApp abaixo.';
+        renderOverlay();
+      }
+    })
+    .catch(function(){ state.enviando=false; state.erroEnvio='Sem conexão com a loja agora. Envie pelo WhatsApp abaixo.'; renderOverlay(); });
+}
+function verStatus(cod,loja){
+  if(!cod) return;
+  fetch('/api/status?loja='+encodeURIComponent(loja||state.loja)+'&codigo='+encodeURIComponent(cod),{cache:'no-store'})
+    .then(function(r){ return r.ok?r.json():null; })
+    .then(function(j){ state.statusPed[cod]=j&&j.rotulo?{rotulo:j.rotulo, numero:j.numero}:{rotulo:'Situação indisponível no momento'}; renderOverlay(); })
+    .catch(function(){ state.statusPed[cod]={rotulo:'Sem conexão para ver a situação'}; renderOverlay(); });
+}
+
+/* ---------- carregamento de preços ----------
+   Primeiro os preços que a loja publicou pelo Balcão (/api/catalogo);
+   se ainda não houver publicação, usa o precos.json de exemplo. */
+function pegarJson(u){ return fetch(u,{cache:'no-store'}).then(function(r){return r.ok?r.json():null;}).catch(function(){return null;}); }
 function carregarPrecos(){
-  fetch('precos.json',{cache:'no-store'}).then(function(r){return r.ok?r.json():null;}).then(function(j){
-    if(j&&j.itens){ PRECOS=j; renderCatalogo(); renderCorpo(); if(state.sacola||state.conta) renderOverlay(); }
-  }).catch(function(){});
+  var loja=state.loja;
+  pegarJson('/api/catalogo?loja='+loja).then(function(j){
+    if(j&&j.itens&&!j.vazio&&Object.keys(j.itens).length) return j;
+    return pegarJson('precos.json');
+  }).then(function(j){
+    if(!(j&&j.itens)) return;
+    PRECOS_CACHE[loja]=j;
+    if(state.loja!==loja) return;
+    PRECOS=j; renderCatalogo(); renderCorpo(); if(state.sacola||state.conta) renderOverlay();
+  });
 }
 
 /* ---------- init ---------- */

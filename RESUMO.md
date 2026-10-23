@@ -99,6 +99,19 @@ No `Main.dc.html`, a lógica fica no `<script type="text/x-dc">` no fim do arqui
 5. **Fotos tiradas da internet** (hibisco, canela, cravo, erva-doce, alecrim, camomila, pimenta do reino, calabresa, louro): trocar aos poucos por fotos próprias antes de publicar. A do cominho em grão tinha marca d’água de outra empresa e **não foi usada**.
 6. **Nomes "Tempero Ana Maria", "Edu Guedes", "Master Chef"**: são nomes de pessoas famosas/programa de TV. Avaliar trocar por nomes da casa no site público (ex.: "Tempero da Casa nº 1 (tipo Ana Maria)").
 
+## 4.1 Integração com o Balcão PDV (feita)
+O pedido agora vai **direto para a loja**, sem depender do WhatsApp (que continua como alternativa).
+
+- **Ponte na nuvem**: pasta `functions/` (Cloudflare Pages Functions) + um armazenamento KV chamado `LOJA`.
+  - `GET /api/catalogo?loja=dlu`: preços e produtos em falta que o Balcão publicou. Se a loja ainda não publicou, o site usa `precos.json` (exemplo).
+  - `POST /api/pedido`: o site envia a sacola. Volta um **código** curto (ex.: `7GZCM`) que o cliente usa para acompanhar.
+  - `GET /api/status?loja=dlu&codigo=7GZCM`: situação do pedido (recebido, separando, pronto…).
+  - `/api/painel/publicar`, `/api/painel/pedidos`, `/api/painel/status`: usados **só pelo Balcão**, com o token da loja (`Authorization: Bearer …`). Os tokens ficam na variável `PAINEL_TOKENS` da Cloudflare (`{"dlu":"…","vks":"…"}`).
+- **Preços por loja**: cada loja publica os seus; a chave de cada produto é `slug(nome)` ou `slug(nome)|slug(marca)` (ver `chavePreco` no `app.js`).
+- **Sacola**: pede nome e WhatsApp (obrigatórios), mostra "Em falta no momento" e desativa o botão quando o Balcão marca o produto como indisponível. Depois de enviar, mostra o código e a situação; "Minhas compras" também mostra a situação.
+- Proteções: só aceita pedido vindo do próprio site, limite de 8 pedidos por IP a cada 10 min, campo-isca contra robôs, tamanho limitado.
+- Para testar localmente: `npx wrangler pages dev . --kv LOJA --binding 'PAINEL_TOKENS={"dlu":"teste"}'`.
+
 ## 5. Regras de negócio que devem ser mantidas
 - **Mínimo de 250 g** por produto a granel (o app de pesagem arredonda para 250 g).
 - **Fardos:** D’Lu = **10 kg**; VKS = **25 kg**; as duas pesam quantidades menores. Caldo de galinha e colorau caseiro (D’Lu) também vêm em saco de 25 kg.
