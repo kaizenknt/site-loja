@@ -27,8 +27,9 @@ button{font-family:inherit}
 .catnav::-webkit-scrollbar{display:none}
 .hero{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:40px;align-items:center}
 .bowls{position:relative;width:100%;max-width:540px;aspect-ratio:1;justify-self:end}
-.bowl{position:absolute;border-radius:50%;overflow:hidden;border:8px solid var(--c-escuro3);box-shadow:0 30px 50px -20px rgba(0,0,0,.6)}
-.bowl img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .6s ease}
+.bowl{position:absolute;border-radius:50%;overflow:hidden;border:8px solid var(--c-escuro3);box-shadow:0 30px 50px -20px rgba(0,0,0,.6);isolation:isolate}
+.bowl-in{border-radius:50%;overflow:hidden;clip-path:circle(50%)}
+.bowl img{width:100%;height:100%;object-fit:cover;display:block;border-radius:50%;transition:transform .6s ease}
 .bowl:hover img{transform:scale(1.08) rotate(3deg)}
 .fita{overflow:hidden;padding-block:22px;margin-top:-26px;position:relative;z-index:3}
 .fita-faixa{transform:rotate(-1.6deg);background:var(--amarelo);box-shadow:0 10px 24px -14px rgba(0,0,0,.5)}
