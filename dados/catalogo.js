@@ -340,13 +340,13 @@ window.CATALOGO = {
       id: 'dlu', nome: 'D’Lu Empório', temLogo: true,
       endereco: 'Rua Santa Rosa, 244 – Brás, São Paulo – SP',
       mapa: 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent('Rua Santa Rosa 244 Brás São Paulo'),
-      horarioCurto: 'Seg. a sex. 5h30–16h · Sáb. até 13h', horario: '5h30 às 16h (sábado até 13h)', dias: 'De segunda a sábado',
+      horarioCurto: 'Seg. a sex. 5h30–16h · Sáb. 7h–13h', horario: '5h30 às 16h (sábado das 7h às 13h)', dias: 'De segunda a sábado',
       fone: '(11) 3313-6697', waNum: '551133136697',
       textoAtacado: 'Restaurantes, lanchonetes, açougues e revendas: fardos fechados (de 10 ou 25 kg, conforme o produto) ou a quantidade que você precisar, pesada na hora.',
       quadros: [{ n: 'Fardo', t: 'fechado, de 10 ou 25 kg' }, { n: '250 g', t: 'ou mais, pesado na hora' }, { n: 'Mix', t: 'monte seu pedido com vários temperos' }],
       vantagem: 'Fardo fechado ou fracionado',
       historia: 'Loja de temperos, ervas e misturas da casa no coração do Brás. Varejo e atacado, tudo pesado na hora.',
-      abre: 330, abreTxt: '5h30', fardoKg: 10
+      abre: 330, abreTxt: '5h30', abreSab: 420, abreSabTxt: '7h', fardoKg: 10
     },
     vks: {
       id: 'vks', nome: 'VKS Condimentos', temLogo: false,

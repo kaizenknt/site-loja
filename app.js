@@ -54,15 +54,19 @@ function situacao(l){
   function pt(t){ var x=partes.find(function(p){return p.type===t;}); return x?x.value:''; }
   var dia=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].indexOf(pt('weekday'));
   var minuto=parseInt(pt('hour'),10)*60+parseInt(pt('minute'),10);
-  // seg. a sex. até 16h; sábado até 13h (as duas lojas)
+  // seg. a sex. até 16h; sábado até 13h (as duas lojas); no sábado a D’Lu abre às 7h (abreSab)
   var util=dia>=1&&dia<=6, fecha=dia===6?780:960;
-  if(util&&minuto>=l.abre&&minuto<fecha){
+  var abreSab=l.abreSab!=null?l.abreSab:l.abre, abreSabTxt=l.abreSabTxt||l.abreTxt;
+  var abreHoje=dia===6?abreSab:l.abre;
+  if(util&&minuto>=abreHoje&&minuto<fecha){
     var falta=fecha-minuto;
     return {aberto:true, texto:falta<=60?('Aberto · fecha em '+falta+' min'):('Aberto agora · fecha às '+(dia===6?'13h':'16h')), cor:'#4cc27f', fundo:'#e3f5ea', tinta:'#146b3f'};
   }
-  var quando='amanhã';
-  if(util&&minuto<l.abre) quando='hoje'; else if(dia===6) quando='segunda';
-  return {aberto:false, texto:'Fechado · abre '+quando+' às '+l.abreTxt, cor:'#f26b5b', fundo:'#fde6e2', tinta:'#9b2a1c'};
+  var quando='amanhã', hora=l.abreTxt;
+  if(util&&minuto<abreHoje){ quando='hoje'; if(dia===6) hora=abreSabTxt; }
+  else if(dia===6) quando='segunda';
+  else if(dia===5) hora=abreSabTxt; // sexta depois das 16h: abre sábado
+  return {aberto:false, texto:'Fechado · abre '+quando+' às '+hora, cor:'#f26b5b', fundo:'#fde6e2', tinta:'#9b2a1c'};
 }
 
 /* ---------- preços ---------- */
@@ -462,7 +466,7 @@ function fillVisite(c){
 function fillRodape(c){
   var loja=c.loja;
   var cats=c.cats.map(function(cat){return '<a href="#produtos" data-act="cat" data-cat="'+at(cat)+'" style="color:var(--c-texto-esc);text-decoration:none">'+esc(cat)+'</a>';}).join('');
-  return '<footer style="background:var(--c-escuro);color:var(--c-texto-esc);font-size:14px"><svg aria-hidden="true" viewBox="0 0 1440 48" preserveAspectRatio="none" style="display:block;width:100%;height:36px;background:var(--c-fundo)"><path d="M0 48 C 240 0 480 0 720 24 C 960 48 1200 48 1440 8 L1440 48 Z" style="fill:var(--c-escuro)"></path></svg><div class="wrap foot" style="padding-top:40px;padding-bottom:32px"><div style="display:flex;flex-direction:column;gap:14px"><img src="'+LOGO[loja.id]+'" alt="'+at(loja.nome)+'" style="height:76px;width:auto;align-self:flex-start;background:#fff;border-radius:16px;padding:8px"><p style="margin:0;max-width:34ch">Temperos, ervas, misturas da casa, pimentas e molhos no Brás. Varejo e atacado, pesado na hora.</p><a class="btn-wa" href="'+at(waGeralDe(loja))+'" target="_blank" rel="noopener" style="align-self:flex-start;text-decoration:none;background:#1b7a4b;color:#fff;font-weight:800;font-size:14px;padding:11px 18px;border-radius:999px;min-height:44px;display:inline-flex;align-items:center">Pedir no WhatsApp</a></div><div style="display:flex;flex-direction:column;gap:8px"><strong style="color:var(--c-destaque);text-transform:uppercase;letter-spacing:.1em;font-size:12px">Categorias</strong>'+cats+'</div><div style="display:flex;flex-direction:column;gap:8px"><strong style="color:var(--c-destaque);text-transform:uppercase;letter-spacing:.1em;font-size:12px">D’Lu Empório</strong><span>Rua Santa Rosa, 244 – Brás</span><span>Seg. a sex. 5h30 às 16h · Sáb. 5h30 às 13h</span><span style="font-variant-numeric:tabular-nums">(11) 3313-6697</span></div><div style="display:flex;flex-direction:column;gap:8px"><strong style="color:var(--c-destaque);text-transform:uppercase;letter-spacing:.1em;font-size:12px">VKS Condimentos</strong><span>Avenida Mercúrio, 330 – Brás</span><span>Seg. a sex. 6h às 16h · Sáb. 6h às 13h</span><span style="font-variant-numeric:tabular-nums">(11) 3311-7153</span></div></div><div class="wrap" style="border-top:1px solid var(--c-linha-esc2);padding-top:16px;padding-bottom:22px;font-size:13px">São Paulo – SP · Site do catálogo. Os pedidos são conferidos e pesados na loja.</div></footer>';
+  return '<footer style="background:var(--c-escuro);color:var(--c-texto-esc);font-size:14px"><svg aria-hidden="true" viewBox="0 0 1440 48" preserveAspectRatio="none" style="display:block;width:100%;height:36px;background:var(--c-fundo)"><path d="M0 48 C 240 0 480 0 720 24 C 960 48 1200 48 1440 8 L1440 48 Z" style="fill:var(--c-escuro)"></path></svg><div class="wrap foot" style="padding-top:40px;padding-bottom:32px"><div style="display:flex;flex-direction:column;gap:14px"><img src="'+LOGO[loja.id]+'" alt="'+at(loja.nome)+'" style="height:76px;width:auto;align-self:flex-start;background:#fff;border-radius:16px;padding:8px"><p style="margin:0;max-width:34ch">Temperos, ervas, misturas da casa, pimentas e molhos no Brás. Varejo e atacado, pesado na hora.</p><a class="btn-wa" href="'+at(waGeralDe(loja))+'" target="_blank" rel="noopener" style="align-self:flex-start;text-decoration:none;background:#1b7a4b;color:#fff;font-weight:800;font-size:14px;padding:11px 18px;border-radius:999px;min-height:44px;display:inline-flex;align-items:center">Pedir no WhatsApp</a></div><div style="display:flex;flex-direction:column;gap:8px"><strong style="color:var(--c-destaque);text-transform:uppercase;letter-spacing:.1em;font-size:12px">Categorias</strong>'+cats+'</div><div style="display:flex;flex-direction:column;gap:8px"><strong style="color:var(--c-destaque);text-transform:uppercase;letter-spacing:.1em;font-size:12px">D’Lu Empório</strong><span>Rua Santa Rosa, 244 – Brás</span><span>Seg. a sex. 5h30 às 16h · Sáb. 7h às 13h</span><span style="font-variant-numeric:tabular-nums">(11) 3313-6697</span></div><div style="display:flex;flex-direction:column;gap:8px"><strong style="color:var(--c-destaque);text-transform:uppercase;letter-spacing:.1em;font-size:12px">VKS Condimentos</strong><span>Avenida Mercúrio, 330 – Brás</span><span>Seg. a sex. 6h às 16h · Sáb. 6h às 13h</span><span style="font-variant-numeric:tabular-nums">(11) 3311-7153</span></div></div><div class="wrap" style="border-top:1px solid var(--c-linha-esc2);padding-top:16px;padding-bottom:22px;font-size:13px">São Paulo – SP · Site do catálogo. Os pedidos são conferidos e pesados na loja.</div></footer>';
 }
 
 /* ---------- sacola: textos, documento, mensagem ---------- */
