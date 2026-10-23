@@ -13,7 +13,7 @@ var state = {
   nome:'', fone:'', doc:'', razao:'', endereco:'', obs:'',
   nf:'nao', entrega:'Retirar na loja',
   historico:[], apagarOk:false, limparOk:false,
-  sel:{}, agora:Date.now(),
+  sel:{}, tipo:{}, agora:Date.now(),
   enviando:false, enviado:null, erroEnvio:'', statusPed:{},
   pag:'pix'
 };
@@ -154,6 +154,24 @@ function montarProdutos(loja){
     });
 }
 
+/* ---------- grupos: entradas com o mesmo "grupo" viram um cartão só, com escolha de Tipo ----------
+   Cada entrada continua sendo um produto próprio (chave, preço e falta próprios). */
+function agrupar(todos){
+  var vistos={}, out=[];
+  todos.forEach(function(p){
+    if(!p.grupo){ out.push(p); return; }
+    if(vistos[p.grupo]) return;
+    vistos[p.grupo]=1;
+    var membros=todos.filter(function(x){return x.grupo===p.grupo;});
+    var info=membros.map(function(m){return {tipo:m.tipo||m.nome, chave:m.chave, falta:emFalta(m)};});
+    var ia=state.tipo[p.grupo];
+    if(ia==null||!membros[ia]){ ia=info.findIndex(function(x){return !x.falta;}); if(ia<0) ia=0; }
+    var busca=membros.map(function(m){return m.nome+' '+(m.tipo||'')+' '+(m.marca||'');}).join(' ')+' '+p.grupo;
+    out.push(Object.assign({},membros[ia],{titulo:p.grupo, grupoInfo:{nome:p.grupo, membros:info, ativo:ia}, textoBusca:busca}));
+  });
+  return out;
+}
+
 /* ---------- HTML helpers ---------- */
 function esc(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 function at(s){ return esc(s).replace(/'/g,'&#39;'); }
@@ -186,6 +204,14 @@ function cartaoHTML(p){
       +p.pimentas.map(function(c){return '<svg width="16" height="16" viewBox="0 0 24 24"><path d="M14 3c0 2 1 3 3 3-1 1-1.5 2-1.5 3.5C15.5 15 11 21 5 21c-1 0-1.5-.6-1-1.2C7 16 8 12 10 9.5 11 8 12.5 7.6 14 8c0-1.6-.6-3-2-4z" fill="'+c+'"></path></svg>';}).join('')
       +'</span><span style="font-size:12px;font-weight:800;color:'+p.ardCor+';text-transform:uppercase;letter-spacing:.06em">'+esc(p.ardTxt)+'</span></div>'):'';
 
+  var tiposHTML='';
+  if(p.grupoInfo){
+    tiposHTML='<div style="display:flex;flex-direction:column;gap:6px"><span style="font-size:11px;font-weight:800;color:#5a5f78;text-transform:uppercase;letter-spacing:.1em">Tipo</span><div style="display:flex;flex-wrap:wrap;gap:6px" role="group" aria-label="Tipo">'
+      +p.grupoInfo.membros.map(function(m,i){
+        var on=i===p.grupoInfo.ativo;
+        return '<button type="button" class="chip-tipo'+(m.falta?' chip-falta':'')+'" data-act="tipo" data-grupo="'+at(p.grupoInfo.nome)+'" data-ti="'+i+'" aria-pressed="'+on+'"'+(m.falta?' title="Em falta no momento"':'')+' style="font:inherit;font-size:13px;font-weight:800;padding:6px 11px;min-height:34px;border-radius:999px;cursor:pointer;border:1.5px solid '+(on?'#b8321e':'#e2d9c6')+';background:'+(on?'#b8321e':'#ffffff')+';color:'+(on?'#ffffff':'#1d2240')+'">'+esc(m.tipo)+(m.falta?' <small>(em falta)</small>':'')+'</button>';
+      }).join('')+'</div></div>';
+  }
   var opc = p.opcoes.map(function(o,i){
     var on=i===sel;
     return '<button type="button" data-act="opt" data-key="'+at(p.chave)+'" data-oi="'+i+'" aria-pressed="'+on+'" style="font:inherit;font-size:13px;font-weight:800;padding:6px 11px;min-height:34px;border-radius:999px;cursor:pointer;border:1.5px solid '+(on?'#1d2240':'#e2d9c6')+';background:'+(on?'#1d2240':'#ffffff')+';color:'+(on?'#ffffff':'#1d2240')+'">'+esc(o.r)+'</button>';
@@ -217,9 +243,10 @@ function cartaoHTML(p){
     +'<div style="position:relative;aspect-ratio:4/3;max-width:100%;background:'+p.fundo+';overflow:hidden;display:flex;align-items:center;justify-content:center">'+midia+selo+'</div>'
     +'<div style="padding:16px 18px 18px;display:flex;flex-direction:column;gap:8px;flex:1">'
       +'<span style="font-size:11px;font-weight:800;color:#b8321e;text-transform:uppercase;letter-spacing:.12em">'+esc(p.cat)+'</span>'
-      +'<h3 style="margin:0;font-family:\'Archivo\',\'Arial Narrow\',sans-serif;font-stretch:75%;font-weight:900;font-size:22px;line-height:1.02;text-transform:uppercase">'+esc(p.nome)+'</h3>'
+      +'<h3 style="margin:0;font-family:\'Archivo\',\'Arial Narrow\',sans-serif;font-stretch:75%;font-weight:900;font-size:22px;line-height:1.02;text-transform:uppercase">'+esc(p.titulo||p.nome)+'</h3>'
       +'<p style="margin:0;font-size:14px;color:#5a5f78;flex:1">'+esc(p.uso)+'</p>'
       +ard
+      +tiposHTML
       +'<div style="display:flex;flex-direction:column;gap:6px"><span style="font-size:11px;font-weight:800;color:#5a5f78;text-transform:uppercase;letter-spacing:.1em">'+esc(p.rotuloOpcoes)+'</span><div style="display:flex;flex-wrap:wrap;gap:6px" role="group" aria-label="'+at(p.rotuloOpcoes)+'">'+opc+'</div>'+(opEsc.liq?'<span class="peso-liq">Peso drenado (só a pimenta, sem o líquido). Pote de '+esc(opEsc.liq).replace(/ /g,'\u00a0')+' no rótulo.</span>':'')+'</div>'
       +precoHTML
       +'<div style="display:flex;gap:8px;margin-top:4px">'
@@ -232,15 +259,16 @@ function cartaoHTML(p){
 /* ================= REGIÕES ================= */
 function ctx(){
   var loja=LOJAS[state.loja]||LOJAS.dlu;
-  var produtos=montarProdutos(loja);
+  var todos=montarProdutos(loja);
+  var produtos=agrupar(todos);
   var ordem=['Alho','Misturas da casa','Pimentas e pápricas','Especiarias','Ervas','Chás','Desidratados','Grãos e sementes','Pimentas em conserva','Molhos','Mel, dendê e manteiga','Diversos'];
   var cats=ordem.filter(function(c){return produtos.some(function(p){return p.cat===c;});});
   var sel=(state.cat==='Todos'||cats.indexOf(state.cat)>=0)?state.cat:'Todos';
   function norm(s){return String(s).normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase();}
   var q=norm(state.busca.trim());
   var lista=sel==='Todos'?produtos:produtos.filter(function(p){return p.cat===sel;});
-  if(q) lista=lista.filter(function(p){return norm(p.nome+' '+p.cat+' '+(p.marca||'')).indexOf(q)>=0;});
-  return {loja:loja, produtos:produtos, cats:cats, sel:sel, q:q, lista:lista, sit:situacao(loja)};
+  if(q) lista=lista.filter(function(p){return norm((p.textoBusca||p.nome)+' '+p.cat+' '+(p.marca||'')).indexOf(q)>=0;});
+  return {loja:loja, produtos:produtos, todos:todos, cats:cats, sel:sel, q:q, lista:lista, sit:situacao(loja)};
 }
 function waGeralDe(loja){ return 'https://wa.me/'+loja.waNum+'?text='+encodeURIComponent('Olá, '+loja.nome+'! Gostaria de fazer um pedido:\n'); }
 
@@ -689,11 +717,22 @@ function onClick(e){
   if(act==='slidePrev'){ state.slide=(state.slide+2)%3; renderHero(); return; }
   if(act==='slideNext'){ state.slide=(state.slide+1)%3; renderHero(); return; }
 
+  if(act==='tipo'){
+    var g=t.getAttribute('data-grupo'), ti=+t.getAttribute('data-ti'), cc=ctx();
+    var membros=cc.todos.filter(function(p){return p.grupo===g;});
+    var antes=cc.produtos.find(function(p){return p.grupoInfo&&p.grupoInfo.nome===g;}), novo=membros[ti];
+    if(antes&&novo&&antes.chave!==novo.chave){ // mantém a quantidade escolhida, se existir no tipo novo
+      var opA=antes.opcoes[Math.min(state.sel[antes.chave]||0,antes.opcoes.length-1)];
+      var j=opA?novo.opcoes.findIndex(function(o){return o.r===opA.r;}):-1;
+      if(j>=0) state.sel[novo.chave]=j;
+    }
+    state.tipo[g]=ti; renderCatalogo(); return;
+  }
   if(act==='opt'){ var k=t.getAttribute('data-key'); state.sel[k]=+t.getAttribute('data-oi'); renderCatalogo(); return; }
   if(act==='add'){
     e.preventDefault();
     var key=t.getAttribute('data-key');
-    var c=ctx(); var prod=c.produtos.find(function(p){return p.chave===key;});
+    var c=ctx(); var prod=c.todos.find(function(p){return p.chave===key;});
     if(prod){ addItem(prod);
       // feedback no botão
       var span=t.querySelector('.add-txt'); if(span){ span.textContent='Adicionado ✓'; t.style.background='#1b7a4b'; setTimeout(function(){ try{span.textContent='Adicionar'; t.style.background='#1d2240';}catch(_){} },1400); }

@@ -153,3 +153,7 @@ button:focus-visible,a:focus-visible{outline:3px solid var(--amarelo);outline-of
 .foto-tam{animation:trocaPote .25s ease both}
 @keyframes trocaPote{from{opacity:0;transform:translateY(6px) scale(.97)}to{opacity:1;transform:none}}
 @media (prefers-reduced-motion:reduce){.foto-tam{animation:none}}
+
+/* escolha de Tipo (produtos agrupados) */
+.chip-tipo.chip-falta{opacity:.6;text-decoration:line-through;text-decoration-thickness:1.5px}
+.chip-tipo.chip-falta small{text-decoration:none;font-weight:700}
