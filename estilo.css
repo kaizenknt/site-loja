@@ -26,7 +26,8 @@ button{font-family:inherit}
 .catnav{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none}
 .catnav::-webkit-scrollbar{display:none}
 .hero{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:40px;align-items:center}
-.bowls{position:relative;width:100%;max-width:540px;aspect-ratio:1;justify-self:end}
+.bowls{position:relative;width:100%;max-width:540px;justify-self:end}
+.bowls::before{content:'';display:block;padding-top:100%}
 .bowl{position:absolute;border-radius:50%;overflow:hidden;border:8px solid var(--c-escuro3);box-shadow:0 30px 50px -20px rgba(0,0,0,.6);isolation:isolate}
 .bowl-in{border-radius:50%;overflow:hidden;clip-path:circle(50%)}
 .bowl img{width:100%;height:100%;object-fit:cover;display:block;border-radius:50%;transition:transform .6s ease}

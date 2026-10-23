@@ -334,7 +334,7 @@ function fillHero(c){
   var tig=pos.map(function(ps,i){
     var f=comF.length?comF[(i+si*3)%comF.length]:null;
     var inner=f?('<img src="'+at(f.foto)+'" alt="'+at(f.nome)+'">'):('<div aria-hidden="true" style="width:100%;height:100%;background:'+grao(tigelaCores[i])+'"></div>');
-    return '<div class="bowl" style="width:'+ps.w+';aspect-ratio:1;top:'+ps.t+';left:'+ps.l+';animation-duration:'+['6.5s','5.2s','7.4s'][i]+';animation-delay:'+['-1s','-3s','-2s'][i]+'"><div class="bowl-in" style="animation-name:'+(si%2?'popB':'popA')+';animation-delay:'+(0.25+i*0.15)+'s">'+inner+'</div></div>';
+    return '<div class="bowl" style="width:'+ps.w+';height:'+ps.w+';top:'+ps.t+';left:'+ps.l+';animation-duration:'+['6.5s','5.2s','7.4s'][i]+';animation-delay:'+['-1s','-3s','-2s'][i]+'"><div class="bowl-in" style="animation-name:'+(si%2?'popB':'popA')+';animation-delay:'+(0.25+i*0.15)+'s">'+inner+'</div></div>';
   }).join('');
   var pontos=slides.map(function(_,i){var on=i===si;return '<button type="button" data-act="slide" data-i="'+i+'" aria-label="Ir para o destaque '+(i+1)+'" aria-current="'+on+'" style="width:'+(on?'28px':'10px')+';height:10px;border-radius:999px;border:none;background:'+(on?'var(--c-destaque)':'var(--c-linha-esc)')+';cursor:pointer;padding:0"></button>';}).join('');
   return '<section id="inicio" aria-roledescription="carrossel" aria-label="Destaques" style="background:radial-gradient(1200px 500px at 85% 20%, var(--c-escuro3) 0%, var(--c-escuro) 60%);color:#fff;position:relative;overflow:hidden">'
