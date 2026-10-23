@@ -233,7 +233,7 @@ function cartaoHTML(p){
 function ctx(){
   var loja=LOJAS[state.loja]||LOJAS.dlu;
   var produtos=montarProdutos(loja);
-  var ordem=['Alho','Misturas da casa','Pimentas e pápricas','Especiarias','Ervas','Chás','Desidratados','Pimentas em conserva','Molhos','Mel, dendê e manteiga'];
+  var ordem=['Alho','Misturas da casa','Pimentas e pápricas','Especiarias','Ervas','Chás','Desidratados','Grãos e sementes','Pimentas em conserva','Molhos','Mel, dendê e manteiga'];
   var cats=ordem.filter(function(c){return produtos.some(function(p){return p.cat===c;});});
   var sel=(state.cat==='Todos'||cats.indexOf(state.cat)>=0)?state.cat:'Todos';
   function norm(s){return String(s).normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase();}
