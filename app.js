@@ -359,6 +359,10 @@ function fillHero(c){
 /* destaques: mesmos cartões do catálogo; a ordem fica presa ao produto (ou ao grupo), para trocar o tipo não embaralhar */
 function destaquesDe(c){
   function comFoto(p){ var m=p.grupoInfo?c.todos.filter(function(x){return x.grupo===p.grupoInfo.nome;}):[p]; return (m.some(function(x){return x.foto;})?2:0)+(p.top||m.some(function(x){return x.top;})?1:0); }
+  if(c.loja.id==='dlu'){ // os queridinhos: os mais vendidos da D’Lu (relatório de vendas do ano)
+    var q=c.produtos.filter(function(p){return p.queridinho;}).sort(function(a,b){return a.queridinho-b.queridinho;});
+    if(q.length>=4) return q.slice(0,8);
+  }
   return c.produtos.slice().sort(function(a,b){return comFoto(b)-comFoto(a);}).slice(0,6);
 }
 function renderDestaques(){
@@ -403,7 +407,7 @@ function fillCorpo(c){
   return '<div class="fita" aria-hidden="true"><div class="fita-faixa"><div class="fita-trilho">'+fita+'</div></div></div>'
     +'<section style="padding-top:26px;padding-bottom:8px"><div class="wrap trust revela">'+trust+'</div></section>'
     +'<section style="padding-top:56px;padding-bottom:28px"><div class="wrap" style="display:flex;flex-direction:column;gap:32px"><div class="revela" style="display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center"><span class="eyebrow" style="color:var(--c-acento)">Compre por categoria</span><h2 class="disp" style="margin:0;font-weight:900;font-size:clamp(36px,4.6vw,56px);line-height:.95;color:var(--c-escuro)">Tem tempero pra tudo</h2></div><div class="circles">'+circ+'</div></div></section>'
-    +'<section style="padding-top:40px;padding-bottom:64px"><div class="wrap" style="display:flex;flex-direction:column;gap:28px"><div style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:12px"><div class="revela-esq" style="display:flex;flex-direction:column;gap:6px"><span class="eyebrow" style="color:var(--c-acento)">'+(loja.id==='vks'?'Os mais pedidos da VKS':'Os mais pedidos da D’Lu')+'</span><h2 class="disp" style="margin:0;font-weight:900;font-size:clamp(36px,4.6vw,56px);line-height:.95">Destaques da semana</h2></div><a href="#produtos" style="font-weight:800;font-size:15px;display:inline-flex;align-items:center;gap:8px">Ver todos os produtos <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></a></div><div class="prods">'+destHTML+'</div></div></section>'
+    +'<section style="padding-top:40px;padding-bottom:64px"><div class="wrap" style="display:flex;flex-direction:column;gap:28px"><div style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:12px"><div class="revela-esq" style="display:flex;flex-direction:column;gap:6px"><span class="eyebrow" style="color:var(--c-acento)">'+(loja.id==='vks'?'Os mais pedidos da VKS':'Os mais vendidos da D’Lu')+'</span><h2 class="disp" style="margin:0;font-weight:900;font-size:clamp(36px,4.6vw,56px);line-height:.95">'+(loja.id==='vks'?'Destaques da semana':'Os queridinhos')+'</h2></div><a href="#produtos" style="font-weight:800;font-size:15px;display:inline-flex;align-items:center;gap:8px">Ver todos os produtos <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></a></div><div class="prods">'+destHTML+'</div></div></section>'
     +galeriaHTML;
 }
 function vItem(path,titulo,texto,stroke){
