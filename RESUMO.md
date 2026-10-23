@@ -130,6 +130,14 @@ O pedido agora vai **direto para a loja**, sem depender do WhatsApp (que continu
 ## 4.5 Cores e logo por loja
 As cores do site são variáveis CSS (`--c-escuro`, `--c-acento`, `--c-destaque`, `--c-fundo`…) definidas no começo do estilo.css. A D’Lu usa os valores de `:root` (azul, vermelho e amarelo). Quando a loja ativa é a VKS, `aplicarTemaLoja()` põe `data-loja="vks"` no `<html>` e os verdes da placa entram. Na VKS também mudam a logo (`imagens/logo-vks.webp`), no cabeçalho e no rodapé, e o ícone da aba. Não use hex fixo para cor de marca no app.js; use as variáveis. Avisos de erro e "Fechado" ficam vermelhos nas duas lojas.
 
+## 4.6 Celular e paginação (redesenho de out/2026)
+- **Celular (≤ 760 px):** o catálogo e os queridinhos usam o **cartão compacto** (`compactoHTML`): foto, marca, nome (2 linhas), preço "a partir de" e um "+". Tocar abre a **folha do produto** (`folhaHTML`, `#folha`), que mostra o mesmo cartão completo (`cartaoHTML(p,{folha:true})`) com a mesma lógica de preço, tamanhos, Tipo, foto por tamanho e "Adicionar". A folha fecha por X, toque fora, Esc, arrastando a alça para baixo e sozinha depois de adicionar; o foco fica preso nela. `state.mob` vem de `matchMedia('(max-width:760px)')`.
+- **Queridinhos no celular** viram carrossel horizontal (`.carrossel`, scroll-snap). A seção vem logo depois do banner; as vantagens, "Tem tempero pra tudo" e "Direto da bandeja" vêm depois.
+- **Paginação:** em "Todos" e nas categorias aparecem 24 produtos (`POR_PAGINA`) e o botão "Ver mais produtos (N restantes)". A busca mostra todos os resultados. Trocar de categoria, de loja ou buscar volta a 24.
+- **Status Aberto/Fechado** aparece uma vez só (na barra das lojas); no celular em versão curta (`sit.curto`: "Aberto até 16h", "Abre amanhã 7h").
+- **Tipografia:** caixa alta só no título grande do banner (`.caps`), nos selos/etiquetas pequenas (eyebrow, "Da casa", "Quantidade") e nas fitas. Nomes de produtos (`.nome-prod`), títulos de seção, botões e categorias ficam em caixa normal.
+- **Duas lojas:** a barra diz "Duas lojas vizinhas no Brás, cada uma com seu catálogo"; o fim do catálogo tem a nota com link para a outra loja; "Visite nossas lojas" diz os dois endereços.
+
 ## 5. Regras de negócio que devem ser mantidas
 - **Mínimo de 250 g** por produto a granel (o app de pesagem arredonda para 250 g).
 - **Fardos:** o botão no site diz só **"Fardo"**; o tamanho (10 ou 25 kg, ou "não vende em fardo") é escolhido **por produto** no Balcão, na tela "Ligar produtos ao site". Sem essa escolha, vale o selo do catálogo (ex.: "Fardo 25 kg" no caldo de galinha e no colorau caseiro) ou o padrão da loja (D’Lu 10 kg, VKS 25 kg).
@@ -154,7 +162,7 @@ As cores do site são variáveis CSS (`--c-escuro`, `--c-acento`, `--c-destaque`
 | Texto secundário | `#5a5f78` |
 
 **Tipografia (Google Fonts):**
-- Títulos: **Archivo**, peso 900, **condensada** (`font-stretch: 72–75%`), **MAIÚSCULAS**.
+- Títulos: **Archivo**, peso 800–900, **condensada** (`font-stretch: 72–82%`). Maiúsculas só no título do banner e nos rótulos pequenos (ver 4.6).
 - Texto: **Figtree** (400–800).
 - Pequenos rótulos acima dos títulos ("eyebrow"): 13px, peso 800, maiúsculas, espaçamento .14em, com tracinho antes.
 
