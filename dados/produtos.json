@@ -1,0 +1,2278 @@
+[
+  {
+    "id": "P001",
+    "nome": "Páprica defumada",
+    "marca": null,
+    "categoria": "Pimentas e pápricas",
+    "lojas": [
+      "dlu",
+      "vks"
+    ],
+    "venda": "granel",
+    "tamanhos": null,
+    "unidade": null,
+    "descricao": "Sabor de churrasco em carnes, feijão, batatas e molhos.",
+    "destaque": false,
+    "ardencia": null,
+    "ardenciaTexto": null,
+    "selo": null,
+    "observacaoVenda": null,
+    "corDesenho": "#8e2a16",
+    "fotos": {}
+  },
+  {
+    "id": "P002",
+    "nome": "Páprica doce",
+    "marca": null,
+    "categoria": "Pimentas e pápricas",
+    "lojas": [
+      "dlu",
+      "vks"
+    ],
+    "venda": "granel",
+    "tamanhos": null,
+    "unidade": null,
+    "descricao": "Cor e sabor suave para frango, arroz e maionese.",
+    "destaque": false,
+    "ardencia": null,
+    "ardenciaTexto": null,
+    "selo": null,
+    "observacaoVenda": null,
+    "corDesenho": "#c8442a",
+    "fotos": {}
+  },
+  {
+    "id": "P003",
+    "nome": "Pimenta do reino moída",
+    "marca": null,
+    "categoria": "Pimentas e pápricas",
+    "lojas": [
+      "dlu",
+      "vks"
+    ],
+    "venda": "granel",
+    "tamanhos": null,
+    "unidade": null,
+    "descricao": "A base de quase todo tempero do dia a dia.",
+    "destaque": false,
+    "ardencia": null,
+    "ardenciaTexto": null,
+    "selo": null,
+    "observacaoVenda": null,
+    "corDesenho": "#3b332c",
+    "fotos": {}
+  },
+  {
+    "id": "P004",
+    "nome": "Lemon pepper",
+    "marca": null,
+    "categoria": "Pimentas e pápricas",
+    "lojas": [
+      "dlu",
+      "vks"
+    ],
+    "venda": "granel",
+    "tamanhos": null,
+    "unidade": null,
+    "descricao": "Pimenta com limão para peixe, frango e saladas.",
+    "destaque": false,
+    "ardencia": null,
+    "ardenciaTexto": null,
+    "selo": null,
+    "observacaoVenda": null,
+    "corDesenho": "#c9b83a",
+    "fotos": {
+      "vks": {
+        "arquivo": "imagens/vks/lemon-pepper.webp",
+        "tipo": "foto"
+      }
+    }
+  },
+  {
+    "id": "P005",
+    "nome": "Cominho",
+    "marca": null,
+    "categoria": "Especiarias",
+    "lojas": [
+      "dlu",
+      "vks"
+    ],
+    "venda": "granel",
+    "tamanhos": null,
+    "unidade": null,
+    "descricao": "Essencial em carne moída, feijão e cozinha árabe.",
+    "destaque": false,
+    "ardencia": null,
+    "ardenciaTexto": null,
+    "selo": null,
+    "observacaoVenda": null,
+    "corDesenho": "#8a6a3b",
+    "fotos": {}
+  },
+  {
+    "id": "P006",
+    "nome": "Açafrão puro",
+    "marca": null,
+    "categoria": "Especiarias",
+    "lojas": [
+      "dlu",
+      "vks"
+    ],
+    "venda": "granel",
+    "tamanhos": null,
+    "unidade": null,
+    "descricao": "Açafrão puro para dar cor e sabor a arroz, caldos, frango e risotos.",
+    "destaque": false,
+    "ardencia": null,
+    "ardenciaTexto": null,
+    "selo": null,
+    "observacaoVenda": null,
+    "corDesenho": "#e2a21b",
+    "fotos": {
+      "vks": {
+        "arquivo": "imagens/vks/acafrao-puro.webp",
+        "tipo": "foto"
+      }
+    }
+  },
+  {
+    "id": "P007",
+    "nome": "Canela em pó",
+    "marca": null,
+    "categoria": "Especiarias",
+    "lojas": [
+      "dlu",
+      "vks"
+    ],
+    "venda": "granel",
+    "tamanhos": null,
+    "unidade": null,
+    "descricao": "Doces, mingau, bolos e bebidas quentes.",
+    "destaque": false,
+    "ardencia": null,
+    "ardenciaTexto": null,
+    "selo": null,
+    "observacaoVenda": null,
+    "corDesenho": "#9a5a2e",
+    "fotos": {}
+  },
+  {
+    "id": "P008",
+    "nome": "Orégano",
+    "marca": null,
+    "categoria": "Ervas",
+    "lojas": [
+      "dlu",
+      "vks"
+    ],
+    "venda": "granel",
+    "tamanhos": null,
+    "unidade": null,
+    "descricao": "Pizza, molho de tomate e pão de alho.",
+    "destaque": false,
+    "ardencia": null,
+    "ardenciaTexto": null,
+    "selo": null,
+    "observacaoVenda": null,
+    "corDesenho": "#6e7f3a",
+    "fotos": {
+      "vks": {
+        "arquivo": "imagens/vks/oregano.webp",
+        "tipo": "foto"
+      }
+    }
+  },
+  {
+    "id": "P009",
+    "nome": "Louro em folha",
+    "marca": null,
+    "categoria": "Ervas",
+    "lojas": [
+      "dlu",
+      "vks"
+    ],
+    "venda": "granel",
+    "tamanhos": null,
+    "unidade": null,
+    "descricao": "Feijão, ensopados e caldos de cozimento longo.",
+    "destaque": false,
+    "ardencia": null,
+    "ardenciaTexto": null,
+    "selo": null,
+    "observacaoVenda": null,
+    "corDesenho": "#4f6b3a",
+    "fotos": {
+      "vks": {
+        "arquivo": "imagens/vks/louro.webp",
+        "tipo": "foto"
+      }
+    }
+  },
+  {
+    "id": "P010",
+    "nome": "Alho desidratado",
+    "marca": null,
+    "categoria": "Desidratados",
+    "lojas": [
+      "dlu",
+      "vks"
+    ],
+    "venda": "granel",
+    "tamanhos": null,
+    "unidade": null,
+    "descricao": "Praticidade para refogados, pães e temperos secos.",
+    "destaque": false,
+    "ardencia": null,
+    "ardenciaTexto": null,
+    "selo": null,
+    "observacaoVenda": null,
+    "corDesenho": "#e6dcc4",
+    "fotos": {}
+  },
+  {
+    "id": "P011",
+    "nome": "Cebola desidratada",
+    "marca": null,
+    "categoria": "Desidratados",
+    "lojas": [
+      "dlu",
+      "vks"
+    ],
+    "venda": "granel",
+    "tamanhos": null,
+    "unidade": null,
+    "descricao": "Sopas, molhos e farofas sem precisar picar.",
+    "destaque": false,
+    "ardencia": null,
+    "ardenciaTexto": null,
+    "selo": null,
+    "observacaoVenda": null,
+    "corDesenho": "#d9c39a",
+    "fotos": {}
+  },
+  {
+    "id": "P012",
+    "nome": "Tempero Ana Maria",
+    "marca": null,
+    "categoria": "Misturas da casa",
+    "lojas": [
+      "dlu"
+    ],
+    "venda": "granel",
+    "tamanhos": null,
+    "unidade": null,
+    "descricao": "Mistura pronta da casa. Pergunte a composição no WhatsApp.",
+    "destaque": true,
+    "ardencia": null,
+    "ardenciaTexto": null,
+    "selo": null,
+    "observacaoVenda": null,
+    "corDesenho": "#b5651d",
+    "fotos": {
+      "dlu": {
+        "arquivo": "imagens/dlu/ana-maria.jpg",
+        "tipo": "foto"
+      }
+    }
+  },
+  {
+    "id": "P013",
+    "nome": "Tempero Master Chef",
+    "marca": null,
+    "categoria": "Misturas da casa",
+    "lojas": [
+      "dlu"
+    ],
+    "venda": "granel",
+    "tamanhos": null,
+    "unidade": null,
+    "descricao": "Mistura pronta da casa. Pergunte a composição no WhatsApp.",
+    "destaque": false,
+    "ardencia": null,
+    "ardenciaTexto": null,
+    "selo": null,
+    "observacaoVenda": null,
+    "corDesenho": "#7a3b1f",
+    "fotos": {
+      "dlu": {
+        "arquivo": "imagens/dlu/master-chef.jpg",
+        "tipo": "foto"
+      }
+    }
+  },
+  {
+    "id": "P014",
+    "nome": "Edu Guedes tradicional",
+    "marca": null,
+    "categoria": "Misturas da casa",
+    "lojas": [
+      "dlu"
+    ],
+    "venda": "granel",
+    "tamanhos": null,
+    "unidade": null,
+    "descricao": "Mistura pronta da casa. Pergunte a composição no WhatsApp.",
+    "destaque": true,
+    "ardencia": null,
+    "ardenciaTexto": null,
+    "selo": null,
+    "observacaoVenda": null,
+    "corDesenho": "#a0522d",
+    "fotos": {
+      "dlu": {
+        "arquivo": "imagens/dlu/edu-guedes.jpg",
+        "tipo": "foto"
+      }
+    }
+  },
+  {
+    "id": "P015",
+    "nome": "Chimichurri tradicional",
+    "marca": null,
+    "categoria": "Misturas da casa",
+    "lojas": [
+      "dlu"
+    ],
+    "venda": "granel",
+    "tamanhos": null,
+    "unidade": null,
+    "descricao": "Mistura de ervas para churrasco e marinadas.",
+    "destaque": false,
+    "ardencia": null,
+    "ardenciaTexto": null,
+    "selo": null,
+    "observacaoVenda": null,
+    "corDesenho": "#5e7a35",
+    "fotos": {
+      "dlu": {
+        "arquivo": "imagens/dlu/chimichurri-tradicional.jpg",
+        "tipo": "foto"
+      }
+    }
+  },
+  {
+    "id": "P016",
+    "nome": "Chimichurri especial",
+    "marca": null,
+    "categoria": "Misturas da casa",
+    "lojas": [
+      "dlu",
+      "vks"
+    ],
+    "venda": "granel",
+    "tamanhos": null,
+    "unidade": null,
+    "descricao": "A versão especial do chimichurri para o seu churrasco.",
+    "destaque": true,
+    "ardencia": null,
+    "ardenciaTexto": null,
+    "selo": null,
+    "observacaoVenda": null,
+    "corDesenho": "#3f5a26",
+    "fotos": {}
+  },
+  {
+    "id": "P017",
+    "nome": "Mix gourmet",
+    "marca": null,
+    "categoria": "Misturas da casa",
+    "lojas": [
+      "dlu"
+    ],
+    "venda": "granel",
+    "tamanhos": null,
+    "unidade": null,
+    "descricao": "Mistura pronta da casa. Pergunte a composição no WhatsApp.",
+    "destaque": false,
+    "ardencia": null,
+    "ardenciaTexto": null,
+    "selo": null,
+    "observacaoVenda": null,
+    "corDesenho": "#c2872f",
+    "fotos": {
+      "dlu": {
+        "arquivo": "imagens/dlu/mix-gourmet.jpg",
+        "tipo": "foto"
+      }
+    }
+  },
+  {
+    "id": "P018",
+    "nome": "Tempero para feijão",
+    "marca": null,
+    "categoria": "Misturas da casa",
+    "lojas": [
+      "dlu"
+    ],
+    "venda": "granel",
+    "tamanhos": null,
+    "unidade": null,
+    "descricao": "Mistura pronta para deixar o feijão mais saboroso.",
+    "destaque": true,
+    "ardencia": null,
+    "ardenciaTexto": null,
+    "selo": null,
+    "observacaoVenda": null,
+    "corDesenho": "#6b4a2b",
+    "fotos": {
+      "dlu": {
+        "arquivo": "imagens/dlu/tempero-feijao.jpg",
+        "tipo": "foto"
+      }
+    }
+  },
+  {
+    "id": "P019",
+    "nome": "Tempero italiano",
+    "marca": null,
+    "categoria": "Misturas da casa",
+    "lojas": [
+      "dlu",
+      "vks"
+    ],
+    "venda": "granel",
+    "tamanhos": null,
+    "unidade": null,
+    "descricao": "Salsa, cebola e alho. Para molhos, massas e carnes.",
+    "destaque": false,
+    "ardencia": null,
+    "ardenciaTexto": null,
+    "selo": null,
+    "observacaoVenda": null,
+    "corDesenho": "#7d8f45",
+    "fotos": {}
+  },
+  {
+    "id": "P020",
+    "nome": "Edu Guedes sabor carne",
+    "marca": null,
+    "categoria": "Misturas da casa",
+    "lojas": [
+      "dlu"
+    ],
+    "venda": "granel",
+    "tamanhos": null,
+    "unidade": null,
+    "descricao": "Mistura pronta da casa. Pergunte a composição no WhatsApp.",
+    "destaque": false,
+    "ardencia": null,
+    "ardenciaTexto": null,
+    "selo": null,
+    "observacaoVenda": null,
+    "corDesenho": "#7b3a24",
+    "fotos": {}
+  },
+  {
+    "id": "P021",
+    "nome": "Mix gourmet com cebola miúda",
+    "marca": null,
+    "categoria": "Misturas da casa",
+    "lojas": [
+      "dlu"
+    ],
+    "venda": "granel",
+    "tamanhos": null,
+    "unidade": null,
+    "descricao": "Mistura pronta da casa. Pergunte a composição no WhatsApp.",
+    "destaque": false,
+    "ardencia": null,
+    "ardenciaTexto": null,
+    "selo": null,
+    "observacaoVenda": null,
+    "corDesenho": "#b9873f",
+    "fotos": {}
+  },
+  {
+    "id": "P022",
+    "nome": "Tempera tudo",
+    "marca": null,
+    "categoria": "Misturas da casa",
+    "lojas": [
+      "dlu"
+    ],
+    "venda": "granel",
+    "tamanhos": null,
+    "unidade": null,
+    "descricao": "Mistura pronta da casa. Pergunte a composição no WhatsApp.",
+    "destaque": false,
+    "ardencia": null,
+    "ardenciaTexto": null,
+    "selo": null,
+    "observacaoVenda": null,
+    "corDesenho": "#9b6a35",
+    "fotos": {}
+  },
+  {
+    "id": "P023",
+    "nome": "Pega marido",
+    "marca": null,
+    "categoria": "Misturas da casa",
+    "lojas": [
+      "dlu"
+    ],
+    "venda": "granel",
+    "tamanhos": null,
+    "unidade": null,
+    "descricao": "Mistura pronta da casa. Pergunte a composição no WhatsApp.",
+    "destaque": true,
+    "ardencia": null,
+    "ardenciaTexto": null,
+    "selo": null,
+    "observacaoVenda": null,
+    "corDesenho": "#a13d2b",
+    "fotos": {
+      "dlu": {
+        "arquivo": "imagens/dlu/pega-marido.jpg",
+        "tipo": "foto"
+      }
+    }
+  },
+  {
+    "id": "P024",
+    "nome": "Tempero mineiro",
+    "marca": null,
+    "categoria": "Misturas da casa",
+    "lojas": [
+      "dlu"
+    ],
+    "venda": "granel",
+    "tamanhos": null,
+    "unidade": null,
+    "descricao": "Mistura pronta da casa. Pergunte a composição no WhatsApp.",
+    "destaque": false,
+    "ardencia": null,
+    "ardenciaTexto": null,
+    "selo": null,
+    "observacaoVenda": null,
+    "corDesenho": "#8c5a2b",
+    "fotos": {}
+  },
+  {
+    "id": "P025",
+    "nome": "Tempero paulista",
+    "marca": null,
+    "categoria": "Misturas da casa",
+    "lojas": [
+      "dlu"
+    ],
+    "venda": "granel",
+    "tamanhos": null,
+    "unidade": null,
+    "descricao": "Mistura pronta da casa. Pergunte a composição no WhatsApp.",
+    "destaque": false,
+    "ardencia": null,
+    "ardenciaTexto": null,
+    "selo": null,
+    "observacaoVenda": null,
+    "corDesenho": "#9a4f2a",
+    "fotos": {}
+  },
+  {
+    "id": "P026",
+    "nome": "Tempero baiano sem pimenta",
+    "marca": null,
+    "categoria": "Misturas da casa",
+    "lojas": [
+      "dlu"
+    ],
+    "venda": "granel",
+    "tamanhos": null,
+    "unidade": null,
+    "descricao": "Mistura no estilo baiano, sem ardência.",
+    "destaque": false,
+    "ardencia": null,
+    "ardenciaTexto": null,
+    "selo": null,
+    "observacaoVenda": null,
+    "corDesenho": "#c46a1f",
+    "fotos": {}
+  },
+  {
+    "id": "P027",
+    "nome": "Tempero gaúcho",
+    "marca": null,
+    "categoria": "Misturas da casa",
+    "lojas": [
+      "dlu"
+    ],
+    "venda": "granel",
+    "tamanhos": null,
+    "unidade": null,
+    "descricao": "Mistura no estilo do Sul para churrasco, carnes e frango.",
+    "destaque": true,
+    "ardencia": null,
+    "ardenciaTexto": null,
+    "selo": null,
+    "observacaoVenda": null,
+    "corDesenho": "#d8b21f",
+    "fotos": {
+      "dlu": {
+        "arquivo": "imagens/dlu/tempero-gaucho.jpg",
+        "tipo": "foto"
+      }
+    }
+  },
+  {
+    "id": "P028",
+    "nome": "Mix gourmet defumado",
+    "marca": null,
+    "categoria": "Misturas da casa",
+    "lojas": [
+      "dlu"
+    ],
+    "venda": "granel",
+    "tamanhos": null,
+    "unidade": null,
+    "descricao": "A versão defumada do mix gourmet, com sabor de churrasco.",
+    "destaque": false,
+    "ardencia": null,
+    "ardenciaTexto": null,
+    "selo": null,
+    "observacaoVenda": null,
+    "corDesenho": "#c4402a",
+    "fotos": {
+      "dlu": {
+        "arquivo": "imagens/dlu/mix-gourmet-defumado.jpg",
+        "tipo": "foto"
+      }
+    }
+  },
+  {
+    "id": "P029",
+    "nome": "Tempero bife acebolado",
+    "marca": null,
+    "categoria": "Misturas da casa",
+    "lojas": [
+      "dlu"
+    ],
+    "venda": "granel",
+    "tamanhos": null,
+    "unidade": null,
+    "descricao": "Cebola tostada temperada para bifes, carne moída e arroz.",
+    "destaque": false,
+    "ardencia": null,
+    "ardenciaTexto": null,
+    "selo": null,
+    "observacaoVenda": null,
+    "corDesenho": "#8a4a2a",
+    "fotos": {
+      "dlu": {
+        "arquivo": "imagens/dlu/bife-acebolado.jpg",
+        "tipo": "foto"
+      }
+    }
+  },
+  {
+    "id": "P030",
+    "nome": "Tempero Jacquan",
+    "marca": null,
+    "categoria": "Misturas da casa",
+    "lojas": [
+      "dlu"
+    ],
+    "venda": "granel",
+    "tamanhos": null,
+    "unidade": null,
+    "descricao": "Mistura pronta da casa. Pergunte a composição no WhatsApp.",
+    "destaque": false,
+    "ardencia": null,
+    "ardenciaTexto": null,
+    "selo": null,
+    "observacaoVenda": null,
+    "corDesenho": "#8d4b33",
+    "fotos": {}
+  },
+  {
+    "id": "P031",
+    "nome": "Tempero vaca atolada",
+    "marca": null,
+    "categoria": "Misturas da casa",
+    "lojas": [
+      "dlu"
+    ],
+    "venda": "granel",
+    "tamanhos": null,
+    "unidade": null,
+    "descricao": "Mistura para o clássico prato de costela com mandioca.",
+    "destaque": false,
+    "ardencia": null,
+    "ardenciaTexto": null,
+    "selo": null,
+    "observacaoVenda": null,
+    "corDesenho": "#6f4a2f",
+    "fotos": {}
+  },
+  {
+    "id": "P032",
+    "nome": "Tempero calabresa",
+    "marca": null,
+    "categoria": "Misturas da casa",
+    "lojas": [
+      "dlu"
+    ],
+    "venda": "granel",
+    "tamanhos": null,
+    "unidade": null,
+    "descricao": "Sabor de calabresa para farofas, caldos e massas.",
+    "destaque": false,
+    "ardencia": null,
+    "ardenciaTexto": null,
+    "selo": null,
+    "observacaoVenda": null,
+    "corDesenho": "#a8452e",
+    "fotos": {}
+  },
+  {
+    "id": "P033",
+    "nome": "Tempero para vinagrete",
+    "marca": null,
+    "categoria": "Misturas da casa",
+    "lojas": [
+      "dlu"
+    ],
+    "venda": "granel",
+    "tamanhos": null,
+    "unidade": null,
+    "descricao": "Mistura pronta para preparar o vinagrete.",
+    "destaque": false,
+    "ardencia": null,
+    "ardenciaTexto": null,
+    "selo": null,
+    "observacaoVenda": null,
+    "corDesenho": "#6d8a3e",
+    "fotos": {
+      "dlu": {
+        "arquivo": "imagens/dlu/vinagrete.jpg",
+        "tipo": "foto"
+      }
+    }
+  },
+  {
+    "id": "P034",
+    "nome": "Caldo de galinha",
+    "marca": null,
+    "categoria": "Misturas da casa",
+    "lojas": [
+      "dlu"
+    ],
+    "venda": "granel",
+    "tamanhos": null,
+    "unidade": null,
+    "descricao": "Caldo em pó para arroz, sopas e refogados.",
+    "destaque": false,
+    "ardencia": null,
+    "ardenciaTexto": null,
+    "selo": "Saco 25 kg",
+    "observacaoVenda": "a partir de 250 g · saco de 25 kg",
+    "corDesenho": "#d9a441",
+    "fotos": {}
+  },
+  {
+    "id": "P035",
+    "nome": "Orange pepper",
+    "marca": null,
+    "categoria": "Pimentas e pápricas",
+    "lojas": [
+      "dlu"
+    ],
+    "venda": "granel",
+    "tamanhos": null,
+    "unidade": null,
+    "descricao": "Pimenta com toque de laranja para peixes, frango e saladas.",
+    "destaque": false,
+    "ardencia": null,
+    "ardenciaTexto": null,
+    "selo": null,
+    "observacaoVenda": null,
+    "corDesenho": "#d9782d",
+    "fotos": {}
+  },
+  {
+    "id": "P036",
+    "nome": "Limão defumado",
+    "marca": null,
+    "categoria": "Pimentas e pápricas",
+    "lojas": [
+      "dlu"
+    ],
+    "venda": "granel",
+    "tamanhos": null,
+    "unidade": null,
+    "descricao": "Sabor de limão com toque defumado para carnes e peixes.",
+    "destaque": false,
+    "ardencia": null,
+    "ardenciaTexto": null,
+    "selo": null,
+    "observacaoVenda": null,
+    "corDesenho": "#a8a03a",
+    "fotos": {}
+  },
+  {
+    "id": "P037",
+    "nome": "Pimenta branca",
+    "marca": null,
+    "categoria": "Pimentas e pápricas",
+    "lojas": [
+      "dlu"
+    ],
+    "venda": "granel",
+    "tamanhos": null,
+    "unidade": null,
+    "descricao": "Pimenta suave e clara para molhos brancos e peixes.",
+    "destaque": false,
+    "ardencia": null,
+    "ardenciaTexto": null,
+    "selo": null,
+    "observacaoVenda": null,
+    "corDesenho": "#d8cfb8",
+    "fotos": {}
+  },
+  {
+    "id": "P038",
+    "nome": "Colorau caseiro (colorífico)",
+    "marca": null,
+    "categoria": "Especiarias",
+    "lojas": [
+      "dlu"
+    ],
+    "venda": "granel",
+    "tamanhos": null,
+    "unidade": null,
+    "descricao": "Dá cor avermelhada a arroz, carnes e ensopados.",
+    "destaque": false,
+    "ardencia": null,
+    "ardenciaTexto": null,
+    "selo": "Saco 25 kg",
+    "observacaoVenda": "a partir de 250 g · saco de 25 kg",
+    "corDesenho": "#b8321e",
+    "fotos": {}
+  },
+  {
+    "id": "P039",
+    "nome": "Curry",
+    "marca": null,
+    "categoria": "Especiarias",
+    "lojas": [
+      "dlu"
+    ],
+    "venda": "granel",
+    "tamanhos": null,
+    "unidade": null,
+    "descricao": "Mistura de especiarias para frango, arroz e molhos.",
+    "destaque": false,
+    "ardencia": null,
+    "ardenciaTexto": null,
+    "selo": null,
+    "observacaoVenda": null,
+    "corDesenho": "#d79a1c",
+    "fotos": {}
+  },
+  {
+    "id": "P040",
+    "nome": "Coentro em pó",
+    "marca": null,
+    "categoria": "Especiarias",
+    "lojas": [
+      "dlu"
+    ],
+    "venda": "granel",
+    "tamanhos": null,
+    "unidade": null,
+    "descricao": "Para peixes, moquecas e pratos nordestinos.",
+    "destaque": false,
+    "ardencia": null,
+    "ardenciaTexto": null,
+    "selo": null,
+    "observacaoVenda": null,
+    "corDesenho": "#9a8a52",
+    "fotos": {}
+  },
+  {
+    "id": "P041",
+    "nome": "Coentro em grão",
+    "marca": null,
+    "categoria": "Especiarias",
+    "lojas": [
+      "dlu"
+    ],
+    "venda": "granel",
+    "tamanhos": null,
+    "unidade": null,
+    "descricao": "Inteiro, para conservas, marinadas ou moer na hora.",
+    "destaque": false,
+    "ardencia": null,
+    "ardenciaTexto": null,
+    "selo": null,
+    "observacaoVenda": null,
+    "corDesenho": "#b3a06a",
+    "fotos": {}
+  },
+  {
+    "id": "P042",
+    "nome": "Salsa desidratada",
+    "marca": null,
+    "categoria": "Ervas",
+    "lojas": [
+      "dlu"
+    ],
+    "venda": "granel",
+    "tamanhos": null,
+    "unidade": null,
+    "descricao": "Salsa pronta para molhos, sopas e refogados.",
+    "destaque": false,
+    "ardencia": null,
+    "ardenciaTexto": null,
+    "selo": null,
+    "observacaoVenda": null,
+    "corDesenho": "#4e7a2f",
+    "fotos": {}
+  },
+  {
+    "id": "P043",
+    "nome": "Pimenta malagueta",
+    "marca": "Nativa",
+    "categoria": "Pimentas em conserva",
+    "lojas": [
+      "dlu"
+    ],
+    "venda": "embalado",
+    "tamanhos": [
+      "30 g",
+      "90 g",
+      "220 g",
+      "1 L"
+    ],
+    "unidade": null,
+    "descricao": "Malagueta em conserva, ardida e saborosa.",
+    "destaque": false,
+    "ardencia": 4,
+    "ardenciaTexto": null,
+    "selo": null,
+    "observacaoVenda": null,
+    "corDesenho": "#c4241b",
+    "fotos": {}
+  },
+  {
+    "id": "P044",
+    "nome": "Pimenta cumari",
+    "marca": "Nativa",
+    "categoria": "Pimentas em conserva",
+    "lojas": [
+      "dlu"
+    ],
+    "venda": "embalado",
+    "tamanhos": [
+      "30 g",
+      "90 g",
+      "1 L"
+    ],
+    "unidade": null,
+    "descricao": "Pimentinha pequena e bem ardida, em conserva.",
+    "destaque": false,
+    "ardencia": 4,
+    "ardenciaTexto": null,
+    "selo": null,
+    "observacaoVenda": null,
+    "corDesenho": "#d6491a",
+    "fotos": {}
+  },
+  {
+    "id": "P045",
+    "nome": "Pimenta biquinho",
+    "marca": "Nativa",
+    "categoria": "Pimentas em conserva",
+    "lojas": [
+      "dlu",
+      "vks"
+    ],
+    "venda": "embalado",
+    "tamanhos": [
+      "90 g",
+      "180 g",
+      "320 g",
+      "1 L"
+    ],
+    "unidade": null,
+    "descricao": "Doce e sem ardência. Vai bem em saladas, petiscos e carnes.",
+    "destaque": false,
+    "ardencia": 0,
+    "ardenciaTexto": null,
+    "selo": null,
+    "observacaoVenda": null,
+    "corDesenho": "#e0662a",
+    "fotos": {}
+  },
+  {
+    "id": "P046",
+    "nome": "Pimenta biquinho balde",
+    "marca": null,
+    "categoria": "Pimentas em conserva",
+    "lojas": [
+      "dlu",
+      "vks"
+    ],
+    "venda": "embalado",
+    "tamanhos": [
+      "balde 1,6 kg"
+    ],
+    "unidade": null,
+    "descricao": "Biquinho em conserva no balde, para restaurantes e revenda.",
+    "destaque": false,
+    "ardencia": 0,
+    "ardenciaTexto": null,
+    "selo": null,
+    "observacaoVenda": null,
+    "corDesenho": "#d8552a",
+    "fotos": {}
+  },
+  {
+    "id": "P047",
+    "nome": "Pimenta mista",
+    "marca": "Nativa",
+    "categoria": "Pimentas em conserva",
+    "lojas": [
+      "dlu"
+    ],
+    "venda": "embalado",
+    "tamanhos": [
+      "90 g",
+      "1 L"
+    ],
+    "unidade": null,
+    "descricao": "Mistura de pimentas em conserva.",
+    "destaque": false,
+    "ardencia": 2,
+    "ardenciaTexto": null,
+    "selo": null,
+    "observacaoVenda": null,
+    "corDesenho": "#b5371f",
+    "fotos": {}
+  },
+  {
+    "id": "P048",
+    "nome": "Pimenta de bode (de cheiro)",
+    "marca": "Nativa",
+    "categoria": "Pimentas em conserva",
+    "lojas": [
+      "dlu",
+      "vks"
+    ],
+    "venda": "embalado",
+    "tamanhos": [
+      "90 g",
+      "1 L"
+    ],
+    "unidade": null,
+    "descricao": "Pimenta perfumada, de ardência média, em conserva.",
+    "destaque": false,
+    "ardencia": 2,
+    "ardenciaTexto": null,
+    "selo": null,
+    "observacaoVenda": null,
+    "corDesenho": "#e3a21c",
+    "fotos": {}
+  },
+  {
+    "id": "P049",
+    "nome": "Molho de pimenta caipira",
+    "marca": "Aroma D’Minas",
+    "categoria": "Molhos",
+    "lojas": [
+      "dlu",
+      "vks"
+    ],
+    "venda": "embalado",
+    "tamanhos": [
+      "150 ml"
+    ],
+    "unidade": null,
+    "descricao": "Molho de pimenta no estilo caipira.",
+    "destaque": false,
+    "ardencia": 1,
+    "ardenciaTexto": "Picante, sem ardência",
+    "selo": null,
+    "observacaoVenda": null,
+    "corDesenho": "#a52a1a",
+    "fotos": {
+      "vks": {
+        "arquivo": "imagens/vks/molho-caipira.webp",
+        "tipo": "recorte"
+      }
+    }
+  },
+  {
+    "id": "P050",
+    "nome": "Molho Carolina Reaper",
+    "marca": "Nativa",
+    "categoria": "Molhos",
+    "lojas": [
+      "dlu",
+      "vks"
+    ],
+    "venda": "embalado",
+    "tamanhos": null,
+    "unidade": null,
+    "descricao": "Feito com uma das pimentas mais ardidas do mundo. Para os fortes.",
+    "destaque": false,
+    "ardencia": 5,
+    "ardenciaTexto": null,
+    "selo": null,
+    "observacaoVenda": null,
+    "corDesenho": "#7a1010",
+    "fotos": {}
+  },
+  {
+    "id": "P051",
+    "nome": "Molho Scorpion",
+    "marca": "Nativa",
+    "categoria": "Molhos",
+    "lojas": [
+      "dlu",
+      "vks"
+    ],
+    "venda": "embalado",
+    "tamanhos": null,
+    "unidade": null,
+    "descricao": "Molho com pimenta Scorpion, de ardência extrema.",
+    "destaque": false,
+    "ardencia": 5,
+    "ardenciaTexto": null,
+    "selo": null,
+    "observacaoVenda": null,
+    "corDesenho": "#8f1a12",
+    "fotos": {}
+  },
+  {
+    "id": "P052",
+    "nome": "Molho mexicana habanero",
+    "marca": "Nativa",
+    "categoria": "Molhos",
+    "lojas": [
+      "dlu",
+      "vks"
+    ],
+    "venda": "embalado",
+    "tamanhos": [
+      "150 ml"
+    ],
+    "unidade": null,
+    "descricao": "Ardência forte com sabor frutado da habanero.",
+    "destaque": false,
+    "ardencia": 4,
+    "ardenciaTexto": null,
+    "selo": null,
+    "observacaoVenda": null,
+    "corDesenho": "#e0661a",
+    "fotos": {
+      "vks": {
+        "arquivo": "imagens/vks/habanero.webp",
+        "tipo": "recorte"
+      }
+    }
+  },
+  {
+    "id": "P053",
+    "nome": "Molho mata sogra",
+    "marca": "Nativa",
+    "categoria": "Molhos",
+    "lojas": [
+      "dlu",
+      "vks"
+    ],
+    "venda": "embalado",
+    "tamanhos": [
+      "150 ml"
+    ],
+    "unidade": null,
+    "descricao": "Molho de pimenta da linha da casa, com ardência na medida: nem fraco, nem forte demais.",
+    "destaque": false,
+    "ardencia": 3,
+    "ardenciaTexto": null,
+    "selo": null,
+    "observacaoVenda": null,
+    "corDesenho": "#9b1f16",
+    "fotos": {
+      "vks": {
+        "arquivo": "imagens/vks/mata-sogra.webp",
+        "tipo": "recorte"
+      }
+    }
+  },
+  {
+    "id": "P054",
+    "nome": "Molho mata genro",
+    "marca": "Nativa",
+    "categoria": "Molhos",
+    "lojas": [
+      "dlu",
+      "vks"
+    ],
+    "venda": "embalado",
+    "tamanhos": [
+      "150 ml"
+    ],
+    "unidade": null,
+    "descricao": "Molho de pimenta da linha da casa, com ardência na medida: nem fraco, nem forte demais.",
+    "destaque": false,
+    "ardencia": 3,
+    "ardenciaTexto": null,
+    "selo": null,
+    "observacaoVenda": null,
+    "corDesenho": "#a8301a",
+    "fotos": {
+      "vks": {
+        "arquivo": "imagens/vks/mata-genro.webp",
+        "tipo": "recorte"
+      }
+    }
+  },
+  {
+    "id": "P055",
+    "nome": "Molho espanta visita",
+    "marca": "Nativa",
+    "categoria": "Molhos",
+    "lojas": [
+      "dlu",
+      "vks"
+    ],
+    "venda": "embalado",
+    "tamanhos": [
+      "150 ml"
+    ],
+    "unidade": null,
+    "descricao": "Molho de pimenta da linha da casa, com ardência na medida: nem fraco, nem forte demais.",
+    "destaque": false,
+    "ardencia": 3,
+    "ardenciaTexto": null,
+    "selo": null,
+    "observacaoVenda": null,
+    "corDesenho": "#b8401c",
+    "fotos": {
+      "vks": {
+        "arquivo": "imagens/vks/espanta-visita.webp",
+        "tipo": "recorte"
+      }
+    }
+  },
+  {
+    "id": "P056",
+    "nome": "Molho de pequi",
+    "marca": "Nativa",
+    "categoria": "Molhos",
+    "lojas": [
+      "dlu",
+      "vks"
+    ],
+    "venda": "embalado",
+    "tamanhos": null,
+    "unidade": null,
+    "descricao": "Com o sabor marcante do pequi, típico do cerrado.",
+    "destaque": false,
+    "ardencia": 2,
+    "ardenciaTexto": null,
+    "selo": null,
+    "observacaoVenda": null,
+    "corDesenho": "#d9a520",
+    "fotos": {}
+  },
+  {
+    "id": "P057",
+    "nome": "Creme de alho",
+    "marca": "Nativa",
+    "categoria": "Molhos",
+    "lojas": [
+      "dlu",
+      "vks"
+    ],
+    "venda": "embalado",
+    "tamanhos": null,
+    "unidade": null,
+    "descricao": "Pronto para pão de alho, carnes e refogados.",
+    "destaque": false,
+    "ardencia": null,
+    "ardenciaTexto": null,
+    "selo": null,
+    "observacaoVenda": null,
+    "corDesenho": "#efe6c8",
+    "fotos": {}
+  },
+  {
+    "id": "P058",
+    "nome": "Pimenta saborosa",
+    "marca": "Aroma D’Minas",
+    "categoria": "Pimentas em conserva",
+    "lojas": [
+      "vks"
+    ],
+    "venda": "embalado",
+    "tamanhos": [
+      "300 g"
+    ],
+    "unidade": null,
+    "descricao": "Pimentas misturadas com vinagre e ervas finas, em vidro.",
+    "destaque": true,
+    "ardencia": null,
+    "ardenciaTexto": null,
+    "selo": null,
+    "observacaoVenda": null,
+    "corDesenho": "#d9541f",
+    "fotos": {
+      "vks": {
+        "arquivo": "imagens/vks/pimenta-saborosa.webp",
+        "tipo": "recorte"
+      }
+    }
+  },
+  {
+    "id": "P059",
+    "nome": "Pimenta malagueta",
+    "marca": "Aroma D’Minas",
+    "categoria": "Pimentas em conserva",
+    "lojas": [
+      "vks"
+    ],
+    "venda": "embalado",
+    "tamanhos": [
+      "75 g",
+      "200 g",
+      "480 g",
+      "780 g"
+    ],
+    "unidade": null,
+    "descricao": "Malagueta em conserva, ardida e saborosa.",
+    "destaque": true,
+    "ardencia": 4,
+    "ardenciaTexto": null,
+    "selo": null,
+    "observacaoVenda": null,
+    "corDesenho": "#c4241b",
+    "fotos": {
+      "vks": {
+        "arquivo": "imagens/vks/set-malagueta.webp",
+        "tipo": "recorte"
+      }
+    }
+  },
+  {
+    "id": "P060",
+    "nome": "Pimenta cumari verde",
+    "marca": "Aroma D’Minas",
+    "categoria": "Pimentas em conserva",
+    "lojas": [
+      "vks"
+    ],
+    "venda": "embalado",
+    "tamanhos": [
+      "200 g",
+      "500 g",
+      "850 g"
+    ],
+    "unidade": null,
+    "descricao": "Cumari verde em conserva, pequena e bem ardida.",
+    "destaque": false,
+    "ardencia": 4,
+    "ardenciaTexto": null,
+    "selo": null,
+    "observacaoVenda": null,
+    "corDesenho": "#7f8f2a",
+    "fotos": {
+      "vks": {
+        "arquivo": "imagens/vks/set-cumari-verde.webp",
+        "tipo": "recorte"
+      }
+    }
+  },
+  {
+    "id": "P061",
+    "nome": "Pimenta mista",
+    "marca": "Aroma D’Minas",
+    "categoria": "Pimentas em conserva",
+    "lojas": [
+      "vks"
+    ],
+    "venda": "embalado",
+    "tamanhos": [
+      "120 g",
+      "500 g",
+      "850 g"
+    ],
+    "unidade": null,
+    "descricao": "Camadas de pimentas coloridas em conserva.",
+    "destaque": false,
+    "ardencia": 2,
+    "ardenciaTexto": null,
+    "selo": null,
+    "observacaoVenda": null,
+    "corDesenho": "#e0662a",
+    "fotos": {
+      "vks": {
+        "arquivo": "imagens/vks/set-mista.webp",
+        "tipo": "recorte"
+      }
+    }
+  },
+  {
+    "id": "P062",
+    "nome": "Pimenta misturada",
+    "marca": "Nativa",
+    "categoria": "Pimentas em conserva",
+    "lojas": [
+      "vks"
+    ],
+    "venda": "embalado",
+    "tamanhos": [
+      "200 g",
+      "880 g",
+      "1 kg"
+    ],
+    "unidade": null,
+    "descricao": "Pimentas variadas com sal e vinagre.",
+    "destaque": false,
+    "ardencia": 2,
+    "ardenciaTexto": null,
+    "selo": null,
+    "observacaoVenda": null,
+    "corDesenho": "#d6491a",
+    "fotos": {
+      "vks": {
+        "arquivo": "imagens/vks/set-misturada.webp",
+        "tipo": "recorte"
+      }
+    }
+  },
+  {
+    "id": "P063",
+    "nome": "Molho de pimenta verde cremoso",
+    "marca": "Aroma D’Minas",
+    "categoria": "Molhos",
+    "lojas": [
+      "vks"
+    ],
+    "venda": "embalado",
+    "tamanhos": [
+      "150 ml"
+    ],
+    "unidade": null,
+    "descricao": "Molho cremoso de pimentas verdes com ervas finas.",
+    "destaque": false,
+    "ardencia": null,
+    "ardenciaTexto": null,
+    "selo": null,
+    "observacaoVenda": null,
+    "corDesenho": "#a8b83a",
+    "fotos": {
+      "vks": {
+        "arquivo": "imagens/vks/molho-verde-cremoso.webp",
+        "tipo": "recorte"
+      }
+    }
+  },
+  {
+    "id": "P064",
+    "nome": "Molho de pimenta calabresa cremoso",
+    "marca": "Nativa",
+    "categoria": "Molhos",
+    "lojas": [
+      "vks"
+    ],
+    "venda": "embalado",
+    "tamanhos": [
+      "150 ml"
+    ],
+    "unidade": null,
+    "descricao": "Molho cremoso de pimenta calabresa com ervas finas.",
+    "destaque": false,
+    "ardencia": null,
+    "ardenciaTexto": null,
+    "selo": null,
+    "observacaoVenda": null,
+    "corDesenho": "#e0662a",
+    "fotos": {
+      "vks": {
+        "arquivo": "imagens/vks/calabresa-cremoso.webp",
+        "tipo": "recorte"
+      }
+    }
+  },
+  {
+    "id": "P065",
+    "nome": "Pimenta de bico",
+    "marca": "Aroma D’Minas",
+    "categoria": "Pimentas em conserva",
+    "lojas": [
+      "vks"
+    ],
+    "venda": "embalado",
+    "tamanhos": [
+      "200 g",
+      "780 g"
+    ],
+    "unidade": null,
+    "descricao": "Pimenta de bico em conserva. Não arde: sabor suave para saladas, petiscos e carnes.",
+    "destaque": true,
+    "ardencia": 0,
+    "ardenciaTexto": "Não arde",
+    "selo": null,
+    "observacaoVenda": null,
+    "corDesenho": "#d8331f",
+    "fotos": {
+      "vks": {
+        "arquivo": "imagens/vks/set-bico.webp",
+        "tipo": "recorte"
+      }
+    }
+  },
+  {
+    "id": "P066",
+    "nome": "Pimenta cumari do Pará",
+    "marca": "Aroma D’Minas",
+    "categoria": "Pimentas em conserva",
+    "lojas": [
+      "vks"
+    ],
+    "venda": "embalado",
+    "tamanhos": [
+      "750 g"
+    ],
+    "unidade": null,
+    "descricao": "Cumari amarela do Pará em conserva, perfumada e bem ardida.",
+    "destaque": false,
+    "ardencia": 4,
+    "ardenciaTexto": null,
+    "selo": null,
+    "observacaoVenda": null,
+    "corDesenho": "#e8a21c",
+    "fotos": {
+      "vks": {
+        "arquivo": "imagens/vks/cumari-para-750.webp",
+        "tipo": "recorte"
+      }
+    }
+  },
+  {
+    "id": "P067",
+    "nome": "Pimenta cumari verde",
+    "marca": "Nativa",
+    "categoria": "Pimentas em conserva",
+    "lojas": [
+      "vks"
+    ],
+    "venda": "embalado",
+    "tamanhos": [
+      "80 g"
+    ],
+    "unidade": null,
+    "descricao": "Cumari verde em conserva, no frasco pequeno.",
+    "destaque": false,
+    "ardencia": 4,
+    "ardenciaTexto": null,
+    "selo": null,
+    "observacaoVenda": null,
+    "corDesenho": "#8a9a2a",
+    "fotos": {
+      "vks": {
+        "arquivo": "imagens/vks/cumari-nativa-80.webp",
+        "tipo": "recorte"
+      }
+    }
+  },
+  {
+    "id": "P068",
+    "nome": "Alho picado sem sal",
+    "marca": "Muniz",
+    "categoria": "Alho",
+    "lojas": [
+      "vks"
+    ],
+    "venda": "embalado",
+    "tamanhos": [
+      "250 g"
+    ],
+    "unidade": null,
+    "descricao": "Alho picado pronto para usar, sem sal. Depois de aberto, guardar na geladeira por até 30 dias.",
+    "destaque": false,
+    "ardencia": null,
+    "ardenciaTexto": null,
+    "selo": null,
+    "observacaoVenda": null,
+    "corDesenho": "#efe3c4",
+    "fotos": {
+      "vks": {
+        "arquivo": "imagens/vks/alho-picado-muniz.webp",
+        "tipo": "recorte"
+      }
+    }
+  },
+  {
+    "id": "P069",
+    "nome": "Pimenta calabresa em flocos",
+    "marca": null,
+    "categoria": "Pimentas e pápricas",
+    "lojas": [
+      "vks"
+    ],
+    "venda": "granel",
+    "tamanhos": null,
+    "unidade": null,
+    "descricao": "Para pizza, molhos, carnes e conservas.",
+    "destaque": false,
+    "ardencia": null,
+    "ardenciaTexto": null,
+    "selo": null,
+    "observacaoVenda": null,
+    "corDesenho": "#c4321b",
+    "fotos": {
+      "vks": {
+        "arquivo": "imagens/vks/calabresa-flocos.webp",
+        "tipo": "foto"
+      }
+    }
+  },
+  {
+    "id": "P070",
+    "nome": "Pimenta do reino em grão",
+    "marca": null,
+    "categoria": "Pimentas e pápricas",
+    "lojas": [
+      "vks"
+    ],
+    "venda": "granel",
+    "tamanhos": null,
+    "unidade": null,
+    "descricao": "Inteira, para moer na hora ou usar em conservas e caldos.",
+    "destaque": false,
+    "ardencia": null,
+    "ardenciaTexto": null,
+    "selo": null,
+    "observacaoVenda": null,
+    "corDesenho": "#3b332c",
+    "fotos": {
+      "vks": {
+        "arquivo": "imagens/vks/pimenta-reino-grao.webp",
+        "tipo": "foto"
+      }
+    }
+  },
+  {
+    "id": "P071",
+    "nome": "Erva-doce",
+    "marca": null,
+    "categoria": "Especiarias",
+    "lojas": [
+      "vks"
+    ],
+    "venda": "granel",
+    "tamanhos": null,
+    "unidade": null,
+    "descricao": "Para chás, pães, bolos e biscoitos.",
+    "destaque": false,
+    "ardencia": null,
+    "ardenciaTexto": null,
+    "selo": null,
+    "observacaoVenda": null,
+    "corDesenho": "#b9b58a",
+    "fotos": {
+      "vks": {
+        "arquivo": "imagens/vks/erva-doce.webp",
+        "tipo": "foto"
+      }
+    }
+  },
+  {
+    "id": "P072",
+    "nome": "Canela em pau",
+    "marca": null,
+    "categoria": "Especiarias",
+    "lojas": [
+      "vks"
+    ],
+    "venda": "granel",
+    "tamanhos": null,
+    "unidade": null,
+    "descricao": "Para doces, quentão, chás e caldas.",
+    "destaque": false,
+    "ardencia": null,
+    "ardenciaTexto": null,
+    "selo": null,
+    "observacaoVenda": null,
+    "corDesenho": "#9a5a2e",
+    "fotos": {
+      "vks": {
+        "arquivo": "imagens/vks/canela-pau.webp",
+        "tipo": "foto"
+      }
+    }
+  },
+  {
+    "id": "P073",
+    "nome": "Cravo-da-índia",
+    "marca": null,
+    "categoria": "Especiarias",
+    "lojas": [
+      "vks"
+    ],
+    "venda": "granel",
+    "tamanhos": null,
+    "unidade": null,
+    "descricao": "Para doces, compotas, quentão e carnes.",
+    "destaque": false,
+    "ardencia": null,
+    "ardenciaTexto": null,
+    "selo": null,
+    "observacaoVenda": null,
+    "corDesenho": "#6b3a22",
+    "fotos": {
+      "vks": {
+        "arquivo": "imagens/vks/cravo.webp",
+        "tipo": "foto"
+      }
+    }
+  },
+  {
+    "id": "P074",
+    "nome": "Limão natural (limão siciliano)",
+    "marca": null,
+    "categoria": "Especiarias",
+    "lojas": [
+      "vks"
+    ],
+    "venda": "granel",
+    "tamanhos": null,
+    "unidade": null,
+    "descricao": "Tempero de limão siciliano para peixes, frango, saladas e legumes.",
+    "destaque": false,
+    "ardencia": null,
+    "ardenciaTexto": null,
+    "selo": null,
+    "observacaoVenda": null,
+    "corDesenho": "#d9d21c",
+    "fotos": {
+      "vks": {
+        "arquivo": "imagens/vks/limao-natural.webp",
+        "tipo": "foto"
+      }
+    }
+  },
+  {
+    "id": "P075",
+    "nome": "Tempero do Chefe",
+    "marca": null,
+    "categoria": "Misturas da casa",
+    "lojas": [
+      "vks"
+    ],
+    "venda": "granel",
+    "tamanhos": null,
+    "unidade": null,
+    "descricao": "Mistura pronta da casa. Pergunte a composição no WhatsApp.",
+    "destaque": false,
+    "ardencia": null,
+    "ardenciaTexto": null,
+    "selo": null,
+    "observacaoVenda": null,
+    "corDesenho": "#c9a54a",
+    "fotos": {
+      "vks": {
+        "arquivo": "imagens/vks/do-chefe.webp",
+        "tipo": "foto"
+      }
+    }
+  },
+  {
+    "id": "P076",
+    "nome": "Tempero baiano em grão",
+    "marca": null,
+    "categoria": "Misturas da casa",
+    "lojas": [
+      "vks"
+    ],
+    "venda": "granel",
+    "tamanhos": null,
+    "unidade": null,
+    "descricao": "Coentro, cominho e pimentas em grão com ervas, para moer ou usar inteiro.",
+    "destaque": false,
+    "ardencia": null,
+    "ardenciaTexto": null,
+    "selo": null,
+    "observacaoVenda": null,
+    "corDesenho": "#8a7a4a",
+    "fotos": {
+      "vks": {
+        "arquivo": "imagens/vks/baiano-grao.webp",
+        "tipo": "foto"
+      }
+    }
+  },
+  {
+    "id": "P077",
+    "nome": "Colorau extraforte",
+    "marca": null,
+    "categoria": "Especiarias",
+    "lojas": [
+      "vks"
+    ],
+    "venda": "granel",
+    "tamanhos": null,
+    "unidade": null,
+    "descricao": "Colorau de cor bem intensa para arroz, carnes, frango e ensopados.",
+    "destaque": false,
+    "ardencia": null,
+    "ardenciaTexto": null,
+    "selo": null,
+    "observacaoVenda": null,
+    "corDesenho": "#b8321e",
+    "fotos": {
+      "vks": {
+        "arquivo": "imagens/vks/colorau-extraforte.webp",
+        "tipo": "foto"
+      }
+    }
+  },
+  {
+    "id": "P078",
+    "nome": "Açafrão",
+    "marca": "Jomil",
+    "categoria": "Especiarias",
+    "lojas": [
+      "vks"
+    ],
+    "venda": "granel",
+    "tamanhos": null,
+    "unidade": null,
+    "descricao": "Açafrão em pó para dar cor e sabor ao arroz, caldos e frango.",
+    "destaque": false,
+    "ardencia": null,
+    "ardenciaTexto": null,
+    "selo": null,
+    "observacaoVenda": null,
+    "corDesenho": "#d9902a",
+    "fotos": {
+      "vks": {
+        "arquivo": "imagens/vks/acafrao-jomil.webp",
+        "tipo": "foto"
+      }
+    }
+  },
+  {
+    "id": "P079",
+    "nome": "Tempero para feijão",
+    "marca": null,
+    "categoria": "Misturas da casa",
+    "lojas": [
+      "vks"
+    ],
+    "venda": "granel",
+    "tamanhos": null,
+    "unidade": null,
+    "descricao": "Mistura pronta para deixar o feijão mais saboroso.",
+    "destaque": false,
+    "ardencia": null,
+    "ardenciaTexto": null,
+    "selo": null,
+    "observacaoVenda": null,
+    "corDesenho": "#6b4a2b",
+    "fotos": {}
+  },
+  {
+    "id": "P080",
+    "nome": "Tempero mineiro",
+    "marca": null,
+    "categoria": "Misturas da casa",
+    "lojas": [
+      "vks"
+    ],
+    "venda": "granel",
+    "tamanhos": null,
+    "unidade": null,
+    "descricao": "Mistura pronta da casa. Pergunte a composição no WhatsApp.",
+    "destaque": false,
+    "ardencia": null,
+    "ardenciaTexto": null,
+    "selo": null,
+    "observacaoVenda": null,
+    "corDesenho": "#8c5a2b",
+    "fotos": {}
+  },
+  {
+    "id": "P081",
+    "nome": "Tempero gaúcho",
+    "marca": null,
+    "categoria": "Misturas da casa",
+    "lojas": [
+      "vks"
+    ],
+    "venda": "granel",
+    "tamanhos": null,
+    "unidade": null,
+    "descricao": "Mistura no estilo do Sul para churrasco, carnes e frango.",
+    "destaque": false,
+    "ardencia": null,
+    "ardenciaTexto": null,
+    "selo": null,
+    "observacaoVenda": null,
+    "corDesenho": "#d8b21f",
+    "fotos": {}
+  },
+  {
+    "id": "P082",
+    "nome": "Edu Guedes tradicional",
+    "marca": null,
+    "categoria": "Misturas da casa",
+    "lojas": [
+      "vks"
+    ],
+    "venda": "granel",
+    "tamanhos": null,
+    "unidade": null,
+    "descricao": "Mistura pronta da casa. Pergunte a composição no WhatsApp.",
+    "destaque": false,
+    "ardencia": null,
+    "ardenciaTexto": null,
+    "selo": null,
+    "observacaoVenda": null,
+    "corDesenho": "#a0522d",
+    "fotos": {}
+  },
+  {
+    "id": "P083",
+    "nome": "Tempero para vinagrete",
+    "marca": null,
+    "categoria": "Misturas da casa",
+    "lojas": [
+      "vks"
+    ],
+    "venda": "granel",
+    "tamanhos": null,
+    "unidade": null,
+    "descricao": "Mistura pronta para preparar o vinagrete.",
+    "destaque": false,
+    "ardencia": null,
+    "ardenciaTexto": null,
+    "selo": null,
+    "observacaoVenda": null,
+    "corDesenho": "#6d8a3e",
+    "fotos": {}
+  },
+  {
+    "id": "P084",
+    "nome": "Mix gourmet",
+    "marca": null,
+    "categoria": "Misturas da casa",
+    "lojas": [
+      "vks"
+    ],
+    "venda": "granel",
+    "tamanhos": null,
+    "unidade": null,
+    "descricao": "Mistura pronta da casa. Pergunte a composição no WhatsApp.",
+    "destaque": false,
+    "ardencia": null,
+    "ardenciaTexto": null,
+    "selo": null,
+    "observacaoVenda": null,
+    "corDesenho": "#c2872f",
+    "fotos": {}
+  },
+  {
+    "id": "P085",
+    "nome": "Chimichurri tradicional",
+    "marca": null,
+    "categoria": "Misturas da casa",
+    "lojas": [
+      "vks"
+    ],
+    "venda": "granel",
+    "tamanhos": null,
+    "unidade": null,
+    "descricao": "Mistura de ervas para churrasco e marinadas.",
+    "destaque": false,
+    "ardencia": null,
+    "ardenciaTexto": null,
+    "selo": null,
+    "observacaoVenda": null,
+    "corDesenho": "#5e7a35",
+    "fotos": {}
+  },
+  {
+    "id": "P086",
+    "nome": "Azeite de dendê",
+    "marca": null,
+    "categoria": "Mel, dendê e manteiga",
+    "lojas": [
+      "dlu",
+      "vks"
+    ],
+    "venda": "embalado",
+    "tamanhos": [
+      "200 ml",
+      "900 ml (litro)"
+    ],
+    "unidade": null,
+    "descricao": "Para moqueca, acarajé, vatapá e bobó.",
+    "destaque": false,
+    "ardencia": null,
+    "ardenciaTexto": null,
+    "selo": null,
+    "observacaoVenda": null,
+    "corDesenho": "#d9601a",
+    "fotos": {}
+  },
+  {
+    "id": "P087",
+    "nome": "Mel puro",
+    "marca": null,
+    "categoria": "Mel, dendê e manteiga",
+    "lojas": [
+      "dlu",
+      "vks"
+    ],
+    "venda": "embalado",
+    "tamanhos": [
+      "200 ml",
+      "500 ml",
+      "1 L"
+    ],
+    "unidade": null,
+    "descricao": "Mel puro de abelha.",
+    "destaque": false,
+    "ardencia": null,
+    "ardenciaTexto": null,
+    "selo": null,
+    "observacaoVenda": null,
+    "corDesenho": "#d99a1a",
+    "fotos": {}
+  },
+  {
+    "id": "P088",
+    "nome": "Jataí do Nordeste",
+    "marca": null,
+    "categoria": "Mel, dendê e manteiga",
+    "lojas": [
+      "dlu",
+      "vks"
+    ],
+    "venda": "embalado",
+    "tamanhos": [
+      "250 g",
+      "680 g",
+      "1,2 kg"
+    ],
+    "unidade": null,
+    "descricao": "Xarope sabor mel: xarope de glicose com aroma natural de mel. Produto de origem nordestina.",
+    "destaque": false,
+    "ardencia": null,
+    "ardenciaTexto": null,
+    "selo": null,
+    "observacaoVenda": null,
+    "corDesenho": "#c9781a",
+    "fotos": {
+      "vks": {
+        "arquivo": "imagens/vks/jatai.webp",
+        "tipo": "recorte"
+      }
+    }
+  },
+  {
+    "id": "P089",
+    "nome": "Manteiga de garrafa",
+    "marca": null,
+    "categoria": "Mel, dendê e manteiga",
+    "lojas": [
+      "dlu",
+      "vks"
+    ],
+    "venda": "embalado",
+    "tamanhos": [
+      "250 ml",
+      "1 L"
+    ],
+    "unidade": null,
+    "descricao": "Para carne de sol, cuscuz, macaxeira e feijão verde.",
+    "destaque": false,
+    "ardencia": null,
+    "ardenciaTexto": null,
+    "selo": null,
+    "observacaoVenda": null,
+    "corDesenho": "#e6c34a",
+    "fotos": {}
+  },
+  {
+    "id": "P090",
+    "nome": "Alho descascado",
+    "marca": null,
+    "categoria": "Alho",
+    "lojas": [
+      "vks"
+    ],
+    "venda": "unidade",
+    "tamanhos": null,
+    "unidade": "pacote(s) de 1 kg",
+    "descricao": "Dentes de alho já descascados, prontos para usar. Pacote de 1 kg.",
+    "destaque": false,
+    "ardencia": null,
+    "ardenciaTexto": null,
+    "selo": "Pacote 1 kg",
+    "observacaoVenda": "pacote de 1 kg",
+    "corDesenho": "#efe3c4",
+    "fotos": {}
+  },
+  {
+    "id": "P091",
+    "nome": "Manjericão",
+    "marca": null,
+    "categoria": "Ervas",
+    "lojas": [
+      "dlu",
+      "vks"
+    ],
+    "venda": "granel",
+    "tamanhos": null,
+    "unidade": null,
+    "descricao": "Molho de tomate, pizza, massas e saladas.",
+    "destaque": false,
+    "ardencia": null,
+    "ardenciaTexto": null,
+    "selo": null,
+    "observacaoVenda": null,
+    "corDesenho": "#3f6b2f",
+    "fotos": {}
+  },
+  {
+    "id": "P092",
+    "nome": "Alecrim",
+    "marca": null,
+    "categoria": "Ervas",
+    "lojas": [
+      "dlu",
+      "vks"
+    ],
+    "venda": "granel",
+    "tamanhos": null,
+    "unidade": null,
+    "descricao": "Carnes assadas, batatas, frango e pães.",
+    "destaque": false,
+    "ardencia": null,
+    "ardenciaTexto": null,
+    "selo": null,
+    "observacaoVenda": null,
+    "corDesenho": "#5b7a4a",
+    "fotos": {
+      "vks": {
+        "arquivo": "imagens/vks/alecrim.webp",
+        "tipo": "foto"
+      }
+    }
+  },
+  {
+    "id": "P093",
+    "nome": "Tomilho",
+    "marca": null,
+    "categoria": "Ervas",
+    "lojas": [
+      "dlu"
+    ],
+    "venda": "granel",
+    "tamanhos": null,
+    "unidade": null,
+    "descricao": "Carnes, aves, legumes assados e caldos.",
+    "destaque": false,
+    "ardencia": null,
+    "ardenciaTexto": null,
+    "selo": null,
+    "observacaoVenda": null,
+    "corDesenho": "#6b7d4a",
+    "fotos": {}
+  },
+  {
+    "id": "P094",
+    "nome": "Coentro em folha",
+    "marca": null,
+    "categoria": "Ervas",
+    "lojas": [
+      "dlu"
+    ],
+    "venda": "granel",
+    "tamanhos": null,
+    "unidade": null,
+    "descricao": "Folhas desidratadas para moquecas, peixes e caldos.",
+    "destaque": false,
+    "ardencia": null,
+    "ardenciaTexto": null,
+    "selo": null,
+    "observacaoVenda": null,
+    "corDesenho": "#4a7a3a",
+    "fotos": {}
+  },
+  {
+    "id": "P095",
+    "nome": "Hibisco",
+    "marca": null,
+    "categoria": "Chás",
+    "lojas": [
+      "dlu",
+      "vks"
+    ],
+    "venda": "granel",
+    "tamanhos": null,
+    "unidade": null,
+    "descricao": "Flor desidratada para chá, quente ou gelado.",
+    "destaque": false,
+    "ardencia": null,
+    "ardenciaTexto": null,
+    "selo": null,
+    "observacaoVenda": null,
+    "corDesenho": "#8e1c3a",
+    "fotos": {
+      "vks": {
+        "arquivo": "imagens/vks/hibisco.webp",
+        "tipo": "foto"
+      }
+    }
+  },
+  {
+    "id": "P096",
+    "nome": "Camomila",
+    "marca": null,
+    "categoria": "Chás",
+    "lojas": [
+      "dlu",
+      "vks"
+    ],
+    "venda": "granel",
+    "tamanhos": null,
+    "unidade": null,
+    "descricao": "Flores desidratadas para chá calmante.",
+    "destaque": false,
+    "ardencia": null,
+    "ardenciaTexto": null,
+    "selo": null,
+    "observacaoVenda": null,
+    "corDesenho": "#e2c45a",
+    "fotos": {
+      "vks": {
+        "arquivo": "imagens/vks/camomila.webp",
+        "tipo": "foto"
+      }
+    }
+  },
+  {
+    "id": "P097",
+    "nome": "Alho roxo nacional",
+    "marca": null,
+    "categoria": "Alho",
+    "lojas": [
+      "vks"
+    ],
+    "venda": "unidade",
+    "tamanhos": null,
+    "unidade": "caixa(s) de 10 kg",
+    "descricao": "Caixa fechada de 10 kg. Entrega somente por Lalamove, Uber ou retirada na loja.",
+    "destaque": true,
+    "ardencia": null,
+    "ardenciaTexto": null,
+    "selo": "Caixa 10 kg",
+    "observacaoVenda": "caixa de 10 kg · Lalamove, Uber ou retirada",
+    "corDesenho": "#8a4a6b",
+    "fotos": {}
+  }
+]

@@ -1,0 +1,26 @@
+{
+  "dlu": {
+    "id": "dlu",
+    "nome": "D’Lu Empório",
+    "endereco": "Rua Santa Rosa, 244 – Brás, São Paulo – SP",
+    "horario": "5h30 às 16h",
+    "dias": "De segunda a sábado",
+    "whatsapp": "(11) 3313-6697",
+    "whatsappInternacional": "551133136697",
+    "abre": "05:30",
+    "fecha": "16:00",
+    "atacado": "Restaurantes, lanchonetes, açougues e revendas: fardos fechados de 10 kg ou a quantidade que você precisar, pesada na hora."
+  },
+  "vks": {
+    "id": "vks",
+    "nome": "VKS Condimentos",
+    "endereco": "Avenida Mercúrio, 330 – Brás, São Paulo – SP",
+    "horario": "6h às 16h",
+    "dias": "De segunda a sábado",
+    "whatsapp": "(11) 3311-7153",
+    "whatsappInternacional": "551133117153",
+    "abre": "06:00",
+    "fecha": "16:00",
+    "atacado": "Restaurantes, lanchonetes, açougues e revendas: sacos fechados de 25 kg ou a quantidade que você precisar, pesada na hora."
+  }
+}

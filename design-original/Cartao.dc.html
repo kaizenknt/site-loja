@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Cartão de produto</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..100,500..900&amp;family=Figtree:wght@400;500;600;700;800&amp;display=swap">
+<style>
+body{margin:0}
+</style>
+</helmet>
+<article class="card" style="height: 100%; background: #ffffff; border-radius: 20px; overflow: hidden; display: flex; flex-direction: column; font-family: 'Figtree', 'Segoe UI', system-ui, sans-serif; color: #1d2240; box-shadow: 0 0 0 1px #ece5d6">
+  <div style="position: relative; aspect-ratio: 4 / 3; max-width: 100%; background: {{p.fundo}}; overflow: hidden; display: flex; align-items: center; justify-content: center">
+
+    <sc-if value="{{p.temFoto}}" hint-placeholder-val="{{ false }}">
+      <img class="midia-img" src="{{p.foto}}" alt="{{p.nome}} a granel" loading="lazy" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block">
+    </sc-if>
+
+    <sc-if value="{{p.temRecorte}}" hint-placeholder-val="{{ false }}">
+      <img class="midia-img" src="{{p.foto}}" alt="{{p.nome}}" loading="lazy" style="position: absolute; left: 0; right: 0; top: 7%; bottom: 5%; margin: auto; max-width: 84%; max-height: 88%; width: auto; height: auto; object-fit: contain; display: block; filter: drop-shadow(0 14px 14px rgba(29,34,64,.28))">
+    </sc-if>
+
+    <sc-if value="{{p.temGrao}}" hint-placeholder-val="{{ true }}">
+      <div class="midia-img" aria-hidden="true" style="position: relative; width: 70%; height: 62%; display: flex; align-items: flex-end; justify-content: center">
+        <div style="position: absolute; bottom: 4%; width: 92%; height: 18%; border-radius: 50%; background: {{p.sombra}}; opacity: .22; filter: blur(6px)"></div>
+        <div style="position: relative; width: 100%; height: 88%; border-radius: 50% 50% 46% 46% / 72% 72% 28% 28%; background: {{p.graoBg}}; box-shadow: inset 0 -10px 14px rgba(0,0,0,.18), inset 0 8px 12px rgba(255,255,255,.18)"></div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{p.temPote}}" hint-placeholder-val="{{ false }}">
+      <div class="midia-img" aria-hidden="true" style="position: relative; height: 80%; aspect-ratio: .78; display: flex; flex-direction: column; align-items: center">
+        <div style="width: 74%; height: 14%; border-radius: 8px 8px 4px 4px; background: {{p.tampa}}; box-shadow: inset 0 -3px 0 rgba(0,0,0,.25), inset 0 3px 0 rgba(255,255,255,.18)"></div>
+        <div style="position: relative; width: 100%; flex: 1; margin-top: 3%; border-radius: 14px 14px 22px 22px; background: {{p.graoBg}}; box-shadow: inset 10px 0 14px rgba(255,255,255,.25), inset -8px 0 12px rgba(0,0,0,.2), 0 16px 22px -12px rgba(0,0,0,.45); display: flex; align-items: center; justify-content: center">
+          <div style="width: 84%; padding: 9px 6px; background: #fffaf0; border-radius: 6px; text-align: center; display: flex; flex-direction: column; gap: 2px; box-shadow: 0 2px 4px rgba(0,0,0,.15)">
+            <span style="font-size: 9px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; color: #b8321e">{{p.rotulo}}</span>
+            <span style="font-family: 'Archivo', 'Arial Narrow', sans-serif; font-stretch: 72%; font-weight: 900; font-size: 15px; line-height: 1; text-transform: uppercase; color: #1d2240">{{p.curto}}</span>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{p.temGarrafa}}" hint-placeholder-val="{{ false }}">
+      <div class="midia-img" aria-hidden="true" style="position: relative; height: 86%; aspect-ratio: .42; display: flex; flex-direction: column; align-items: center">
+        <div style="width: 34%; height: 9%; border-radius: 5px 5px 2px 2px; background: #1d2240"></div>
+        <div style="width: 26%; height: 14%; background: {{p.brilho}}; opacity: .92"></div>
+        <div style="width: 100%; height: 9%; border-radius: 40% 40% 0 0 / 100% 100% 0 0; background: {{p.brilho}}"></div>
+        <div style="position: relative; width: 100%; flex: 1; border-radius: 0 0 14px 14px; background: {{p.brilho}}; box-shadow: 0 16px 22px -12px rgba(0,0,0,.45); display: flex; align-items: center; justify-content: center">
+          <div style="width: 92%; padding: 9px 4px; background: #fffaf0; border-radius: 4px; text-align: center; display: flex; flex-direction: column; gap: 2px; box-shadow: 0 2px 4px rgba(0,0,0,.15)">
+            <span style="font-size: 8px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; color: #b8321e">{{p.rotulo}}</span>
+            <span style="font-family: 'Archivo', 'Arial Narrow', sans-serif; font-stretch: 68%; font-weight: 900; font-size: 13px; line-height: 1; text-transform: uppercase; color: #1d2240">{{p.curto}}</span>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{p.temSelo}}" hint-placeholder-val="{{ false }}">
+      <span style="position: absolute; z-index: 1; left: 12px; top: 12px; background: {{p.seloBg}}; color: {{p.seloCor}}; font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: .08em; padding: 5px 10px; border-radius: 999px; transform: rotate(-3deg); box-shadow: 0 4px 10px -4px rgba(0,0,0,.35)">{{p.selo}}</span>
+    </sc-if>
+  </div>
+
+  <div style="padding: 16px 18px 18px; display: flex; flex-direction: column; gap: 8px; flex: 1">
+    <span style="font-size: 11px; font-weight: 800; color: #b8321e; text-transform: uppercase; letter-spacing: .12em">{{p.cat}}</span>
+    <h3 style="margin: 0; font-family: 'Archivo', 'Arial Narrow', sans-serif; font-stretch: 75%; font-weight: 900; font-size: 22px; line-height: 1.02; text-transform: uppercase">{{p.nome}}</h3>
+    <p style="margin: 0; font-size: 14px; color: #5a5f78; flex: 1">{{p.uso}}</p>
+    <sc-if value="{{p.temArd}}" hint-placeholder-val="{{ false }}">
+      <div style="display: flex; align-items: center; gap: 8px" aria-label="Ardência: {{p.ardTxt}}">
+        <span style="display: flex; gap: 1px" aria-hidden="true">
+          <sc-for list="{{p.pimentas}}" as="c" hint-placeholder-count="5">
+            <svg width="16" height="16" viewBox="0 0 24 24"><path d="M14 3c0 2 1 3 3 3-1 1-1.5 2-1.5 3.5C15.5 15 11 21 5 21c-1 0-1.5-.6-1-1.2C7 16 8 12 10 9.5 11 8 12.5 7.6 14 8c0-1.6-.6-3-2-4z" fill="{{c}}"></path></svg>
+          </sc-for>
+        </span>
+        <span style="font-size: 12px; font-weight: 800; color: {{p.ardCor}}; text-transform: uppercase; letter-spacing: .06em">{{p.ardTxt}}</span>
+      </div>
+    </sc-if>
+    <div style="display: flex; flex-direction: column; gap: 6px">
+      <span style="font-size: 11px; font-weight: 800; color: #5a5f78; text-transform: uppercase; letter-spacing: .1em">{{p.rotuloOpcoes}}</span>
+      <div style="display: flex; flex-wrap: wrap; gap: 6px" role="group" aria-label="{{p.rotuloOpcoes}}">
+        <sc-for list="{{opcoes}}" as="o" hint-placeholder-count="4">
+          <button type="button" onClick="{{o.pick}}" aria-pressed="{{o.ativo}}" style="font: inherit; font-size: 13px; font-weight: 800; padding: 6px 11px; min-height: 34px; border-radius: 999px; cursor: pointer; border: 1.5px solid {{o.borda}}; background: {{o.fundo}}; color: {{o.texto}}">{{o.r}}</button>
+        </sc-for>
+      </div>
+    </div>
+    <div style="display: flex; gap: 8px; margin-top: 4px">
+      <button type="button" onClick="{{adicionar}}" style="flex: 1; font: inherit; cursor: pointer; border: none; background: {{botaoFundo}}; color: #ffffff; font-weight: 800; font-size: 14px; text-transform: uppercase; letter-spacing: .06em; padding: 12px; border-radius: 999px; min-height: 46px; display: flex; align-items: center; justify-content: center; gap: 8px; transition: background .2s">
+        <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 8h14l-1.2 12H6.2L5 8z"></path><path d="M9 8V6a3 3 0 0 1 6 0v2"></path></svg>
+        {{botaoTexto}}
+      </button>
+      <a class="btn-wa" href="{{p.wa}}" aria-label="Pedir só {{p.nome}} pelo WhatsApp" title="Pedir só este produto" style="flex: none; width: 46px; height: 46px; border-radius: 50%; background: #1b7a4b; color: #ffffff; display: flex; align-items: center; justify-content: center">
+        <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.4L3 21l2.1-5.4A8.4 8.4 0 1 1 21 11.5z"></path></svg>
+      </a>
+    </div>
+  </div>
+</article>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"p":{"editor":null},"$preview":{"width":260,"height":480}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { sel: 0, ok: false };
+  }
+  componentWillUnmount() { clearTimeout(this.t); }
+  renderVals() {
+    const p = this.props.p || {
+      nome: 'Páprica defumada', cat: 'Pimentas e pápricas', uso: 'Sabor de churrasco em carnes, feijão, batatas e molhos.', venda: 'a partir de 250 g', wa: '#',
+      temSelo: false, selo: '', seloBg: '#f2b31b', seloCor: '#1d2240', temFoto: false, temRecorte: false, foto: '', temGrao: true, temPote: false, temGarrafa: false,
+      graoBg: 'radial-gradient(circle at 50% 30%, #c9715c, #8e2a16 55%, #611d0f)', fundo: '#f4e5e1', sombra: '#401309', tampa: '#47150b', brilho: '#8e2a16',
+      rotulo: 'D’Lu', curto: 'Páprica', temArd: false, pimentas: [], ardTxt: '', ardCor: '#1d2240',
+      rotuloOpcoes: 'Quantidade', opcoes: [{ r: '250 g' }, { r: '500 g' }, { r: '1 kg' }, { r: 'Fardo 10 kg' }], add: null
+    };
+    const ops = p.opcoes || [];
+    const sel = Math.min(this.state.sel, Math.max(ops.length - 1, 0));
+    return {
+      p: p,
+      opcoes: ops.map((o, i) => ({
+        r: o.r, ativo: i === sel ? 'true' : 'false',
+        fundo: i === sel ? '#1d2240' : '#ffffff', texto: i === sel ? '#ffffff' : '#1d2240', borda: i === sel ? '#1d2240' : '#e2d9c6',
+        pick: () => this.setState({ sel: i })
+      })),
+      botaoTexto: this.state.ok ? 'Adicionado ✓' : 'Adicionar',
+      botaoFundo: this.state.ok ? '#1b7a4b' : '#1d2240',
+      adicionar: () => {
+        if (p.add && ops[sel]) p.add(ops[sel]);
+        this.setState({ ok: true });
+        clearTimeout(this.t);
+        this.t = setTimeout(() => this.setState({ ok: false }), 1400);
+      }
+    };
+  }
+}
+</script>
+</body>
+</html>

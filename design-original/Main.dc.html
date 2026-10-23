@@ -1,0 +1,1165 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>D’Lu Empório e VKS Condimentos</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..100,500..900&amp;family=Figtree:wght@400;500;600;700;800&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#1d2240}a:hover{color:#b8321e}
+*{box-sizing:border-box}
+.wrap{max-width:1240px;margin:0 auto;padding-left:clamp(16px,3vw,32px);padding-right:clamp(16px,3vw,32px)}
+.disp{font-family:'Archivo','Arial Narrow',sans-serif;font-stretch:72%;text-transform:uppercase;letter-spacing:-0.01em}
+.eyebrow{display:inline-flex;align-items:center;gap:10px;font-size:13px;font-weight:800;letter-spacing:.14em;text-transform:uppercase}
+.eyebrow::before{content:"";width:28px;height:3px;border-radius:3px;background:currentColor}
+.head-row{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:28px;align-items:center}
+.catnav{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none}
+.catnav::-webkit-scrollbar{display:none}
+.hero{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:40px;align-items:center}
+.bowls{position:relative;width:100%;max-width:540px;aspect-ratio:1;justify-self:end}
+.bowl{position:absolute;border-radius:50%;overflow:hidden;border:8px solid #2c3d78;box-shadow:0 30px 50px -20px rgba(0,0,0,.6)}
+.bowl img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .6s ease}
+.bowl:hover img{transform:scale(1.08) rotate(3deg)}
+.fita{overflow:hidden;padding-block:22px;margin-top:-26px;position:relative;z-index:3}
+.fita-faixa{transform:rotate(-1.6deg);background:#f2b31b;box-shadow:0 10px 24px -14px rgba(0,0,0,.5)}
+.fita-trilho{display:flex;width:max-content;animation:corre 60s linear infinite}
+@keyframes corre{to{transform:translateX(-50%)}}
+.trust{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+.circles{display:flex;flex-wrap:wrap;justify-content:center;gap:28px 20px}
+.circles > *{flex:0 0 calc((100% - 100px) / 6);min-width:0}
+.prods{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:20px}
+.bento{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));grid-auto-rows:210px;gap:14px}
+.bento > *:first-child{grid-column:span 2;grid-row:span 2}
+.bento-item img{transition:transform .5s ease}
+.bento-item:hover img{transform:scale(1.06)}
+.atacado{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:48px;align-items:center}
+.tags{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.pedir{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.9fr);gap:48px;align-items:center}
+.lojas{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px}
+.foot{display:grid;grid-template-columns:minmax(0,1.3fr) repeat(3,minmax(0,1fr));gap:32px}
+.card{transition:box-shadow .2s,transform .2s}
+.card:hover{box-shadow:0 18px 34px -18px rgba(29,34,64,.5);transform:translateY(-4px)}
+.card .midia-img{transition:transform .5s ease}
+.card:hover .midia-img{transform:scale(1.07)}
+.btn-wa{transition:background .15s}
+.btn-wa:hover{background:#155f3b;color:#ffffff}
+.btn-y{transition:background .15s,transform .15s}
+.btn-y:hover{background:#ffc93d;color:#1d2240;transform:translateY(-1px)}
+.btn-ghost:hover{background:#ffffff;color:#1d2240}
+.navlink:hover{background:#2c3d78;color:#ffffff}
+.circ .dot{transition:transform .2s,box-shadow .2s}
+.circ:hover .dot{transform:translateY(-4px) scale(1.03);box-shadow:0 16px 26px -14px rgba(29,34,64,.55)}
+.search:focus{outline:3px solid #f2b31b;outline-offset:1px}
+button:focus-visible,a:focus-visible{outline:3px solid #f2b31b;outline-offset:2px}
+/* ===== animações ===== */
+@keyframes sobeA{from{opacity:0;transform:translateY(26px)}to{opacity:1;transform:none}}
+@keyframes sobeB{from{opacity:0;transform:translateY(26px)}to{opacity:1;transform:none}}
+@keyframes popA{from{opacity:0;transform:scale(.6) rotate(-14deg)}to{opacity:1;transform:none}}
+@keyframes popB{from{opacity:0;transform:scale(.6) rotate(14deg)}to{opacity:1;transform:none}}
+@keyframes flutua{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+@keyframes gira{to{transform:rotate(360deg)}}
+@keyframes balanco{0%,100%{transform:rotate(12deg)}50%{transform:rotate(2deg) scale(1.05)}}
+@keyframes ping{from{transform:scale(1);opacity:.45}to{transform:scale(1.8);opacity:0}}
+@keyframes pendulo{0%{transform:rotate(-2deg)}30%{transform:rotate(4deg)}60%{transform:rotate(-3deg)}100%{transform:rotate(-2deg)}}
+@keyframes brilho{from{transform:translateX(-120%) skewX(-20deg)}to{transform:translateX(260%) skewX(-20deg)}}
+.entra{animation:sobeA .8s cubic-bezier(.2,.7,.2,1) both}
+.d1{animation-delay:.08s}.d2{animation-delay:.18s}.d3{animation-delay:.3s}.d4{animation-delay:.42s}.d5{animation-delay:.54s}
+.bowl{animation:flutua 6s ease-in-out infinite}
+.bowl-in{width:100%;height:100%;animation:popA .8s cubic-bezier(.2,.8,.2,1.2) both}
+.gira{animation:gira 90s linear infinite;transform-origin:50% 50%}
+.selo-250{animation:balanco 4.5s ease-in-out infinite}
+.pulso::before{content:"";position:absolute;inset:0;border-radius:50%;background:#1b7a4b;animation:ping 2.4s ease-out infinite;z-index:-1}
+.etiqueta{transform:rotate(-2deg);transform-origin:50% 0}
+.etiqueta:hover{animation:pendulo 1s ease-in-out}
+.btn-y{position:relative;overflow:hidden}
+.btn-y::after{content:"";position:absolute;top:0;bottom:0;left:0;width:40%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.55),transparent);transform:translateX(-120%) skewX(-20deg)}
+.btn-y:hover::after{animation:brilho .7s ease}
+.circ:hover .dot{transform:translateY(-6px) rotate(10deg) scale(1.04)}
+.navlink,.catnav button{transition:background .2s,color .2s}
+.cel{display:grid}
+/* revelar ao rolar (Chrome, Edge, Android); nos outros navegadores tudo aparece normalmente */
+@supports (animation-timeline: view()){
+  .revela{animation:revela linear both;animation-timeline:view();animation-range:entry 0% entry 70%}
+  @keyframes revela{from{opacity:0;transform:translateY(46px) scale(.97)}to{opacity:1;transform:none}}
+  .revela-esq{animation:revelaEsq linear both;animation-timeline:view();animation-range:entry 0% entry 80%}
+  @keyframes revelaEsq{from{opacity:0;transform:translateX(-50px)}to{opacity:1;transform:none}}
+  .bolha{animation:bolha linear both;animation-timeline:view();transform-origin:100% 100%}
+  .bolha.b1{animation-range:entry 30% cover 30%}
+  .bolha.b2{animation-range:cover 25% cover 38%;transform-origin:0 100%}
+  .bolha.b3{animation-range:cover 33% cover 45%}
+  @keyframes bolha{from{opacity:0;transform:translateY(18px) scale(.85)}to{opacity:1;transform:none}}
+}
+/* topo encolhe ao rolar */
+@supports (animation-timeline: scroll()){
+  .topo{animation:topoSombra linear both;animation-timeline:scroll();animation-range:0 160px}
+  @keyframes topoSombra{to{box-shadow:0 12px 30px -14px rgba(20,24,48,.45)}}
+  .topo-barra{max-height:60px;overflow:hidden;animation:recolhe linear both;animation-timeline:scroll();animation-range:0 120px}
+  @keyframes recolhe{to{max-height:0;opacity:0}}
+  .logo-img{animation:logoMenor linear both;animation-timeline:scroll();animation-range:0 160px}
+  @keyframes logoMenor{to{height:40px}}
+  .head-pad{animation:menosPad linear both;animation-timeline:scroll();animation-range:0 160px}
+  @keyframes menosPad{to{padding-top:6px;padding-bottom:6px}}
+}
+@keyframes puloA{0%{transform:scale(1)}35%{transform:scale(1.25)}100%{transform:scale(1)}}
+@keyframes puloB{0%{transform:scale(1)}35%{transform:scale(1.25)}100%{transform:scale(1)}}
+@keyframes gaveta{from{transform:translateX(100%)}to{transform:none}}
+@keyframes fundoEntra{from{opacity:0}to{opacity:1}}
+@keyframes avisoSobe{from{opacity:0;transform:translate(-50%,20px)}to{opacity:1;transform:translate(-50%,0)}}
+@keyframes piscaVerde{0%,100%{box-shadow:0 0 0 0 rgba(76,194,127,.6)}50%{box-shadow:0 0 0 5px rgba(76,194,127,0)}}
+.pulo{animation:puloA .45s ease}
+.gaveta{animation:gaveta .35s cubic-bezier(.2,.8,.2,1) both}
+.gaveta-fundo{animation:fundoEntra .25s ease both}
+.aviso{animation:avisoSobe .3s ease both}
+.ponto-vivo{animation:piscaVerde 2s ease-in-out infinite}
+.qtd-btn:hover{background:#f8f3ea}
+@media (prefers-reduced-motion:reduce){
+  .pulo,.gaveta,.gaveta-fundo,.aviso,.ponto-vivo{animation:none!important}
+  .entra,.bowl,.bowl-in,.gira,.selo-250,.pulso::before,.revela,.revela-esq,.bolha,.etiqueta:hover,.btn-y:hover::after{animation:none!important}
+  .fita-trilho{animation:none}.card,.circ .dot,.bowl img,.bento-item img,.card .midia-img{transition:none}.card:hover{transform:none}}
+@media (max-width:980px){
+  .circles > *{flex-basis:calc((100% - 60px) / 4)}
+  .trust{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .foot{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .bento{grid-template-columns:repeat(2,minmax(0,1fr));grid-auto-rows:170px}
+}
+@media (max-width:760px){
+  .head-row{grid-template-columns:1fr auto}
+  .head-search{grid-column:1 / -1;order:3}
+  .hero,.atacado,.lojas,.pedir{grid-template-columns:1fr}
+  .bowls{justify-self:center;max-width:380px}
+  .hide-sm{display:none}
+  .topo{position:static!important}
+  .circles > *{flex-basis:calc((100% - 40px) / 3)}
+}
+@media (max-width:480px){
+  .foot,.trust{grid-template-columns:1fr}
+  .tags{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+}
+</style>
+</helmet>
+<div style="width: 100%; background: #ffffff; color: #1d2240; font-family: 'Figtree', 'Segoe UI', system-ui, sans-serif; font-size: 16px; line-height: 1.55; position: relative">
+
+  <!-- topo fixo: lojas, cabeçalho e categorias -->
+  <div class="topo" style="position: sticky; top: 0; z-index: 40">
+    <div class="topo-barra" style="background: #1d2240; color: #c9d0e6; font-size: 13px">
+      <div class="wrap" style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 6px 16px; padding-top: 6px; padding-bottom: 6px">
+        <div style="display: flex; align-items: center; gap: 6px; flex-wrap: wrap" role="group" aria-label="Escolha a loja">
+          <span style="margin-right: 2px">Você está na loja:</span>
+          <sc-for list="{{abasLoja}}" as="l" hint-placeholder-count="2">
+            <button type="button" onClick="{{l.pick}}" aria-pressed="{{l.ativo}}" style="font: inherit; font-weight: 800; font-size: 13px; padding: 5px 13px; min-height: 32px; border-radius: 999px; border: 1px solid {{l.borda}}; background: {{l.fundo}}; color: {{l.texto}}; cursor: pointer">{{l.nome}}</button>
+          </sc-for>
+        </div>
+        <span style="font-weight: 700; display: inline-flex; align-items: center; gap: 8px"><span class="ponto-vivo" aria-hidden="true" style="width: 8px; height: 8px; border-radius: 50%; background: {{sit.cor}}"></span>{{sit.texto}}<span class="hide-sm" style="font-weight: 600; color: #8f98bd">· {{loja.horarioCurto}}</span></span>
+      </div>
+    </div>
+    <header style="background: #ffffff; border-bottom: 1px solid #ece5d6">
+      <div class="wrap head-row head-pad" style="padding-top: 12px; padding-bottom: 12px">
+        <a href="#inicio" style="text-decoration: none; display: flex; align-items: center">
+          <sc-if value="{{loja.temLogo}}" hint-placeholder-val="{{ true }}">
+            <img class="logo-img" src="../imagens/logo-dlu.png" alt="D’Lu Empório" style="height: 58px; width: auto; display: block">
+          </sc-if>
+          <sc-if value="{{loja.semLogo}}" hint-placeholder-val="{{ false }}">
+            <span style="display: flex; flex-direction: column; line-height: 1">
+              <span class="disp" style="font-weight: 900; font-size: 34px; color: #23336b">VKS</span>
+              <span style="font-weight: 800; font-size: 11px; letter-spacing: .3em; text-transform: uppercase; color: #b8321e">Condimentos</span>
+            </span>
+          </sc-if>
+        </a>
+        <div class="head-search" style="position: relative">
+          <label for="busca" style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Buscar tempero</label>
+          <input id="busca" class="search" type="search" value="{{busca}}" onInput="{{onBusca}}" placeholder="O que vai temperar hoje? Páprica, cominho, Ana Maria…" style="width: 100%; font: inherit; font-size: 16px; padding: 13px 52px 13px 20px; border-radius: 999px; border: 2px solid #ece5d6; background: #f8f3ea; color: #1d2240">
+          <span aria-hidden="true" style="position: absolute; right: 6px; top: 50%; transform: translateY(-50%); width: 38px; height: 38px; border-radius: 50%; background: #23336b; display: flex; align-items: center; justify-content: center">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.4" stroke-linecap="round"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-3.5-3.5"></path></svg>
+          </span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 10px">
+        <button type="button" onClick="{{abrirConta}}" aria-label="Minha conta" style="font: inherit; cursor: pointer; height: 48px; padding: 0 14px 0 8px; border-radius: 999px; border: 2px solid #ece5d6; background: #ffffff; color: #1d2240; display: flex; align-items: center; gap: 8px; font-weight: 800; font-size: 14px">
+          <span aria-hidden="true" style="width: 32px; height: 32px; border-radius: 50%; background: #f8f3ea; display: flex; align-items: center; justify-content: center"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"></circle><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"></path></svg></span>
+          <sc-if value="{{temNome}}" hint-placeholder-val="{{ false }}"><span class="hide-sm">Olá, {{primeiroNome}}</span></sc-if>
+          <sc-if value="{{semNomeConta}}" hint-placeholder-val="{{ true }}"><span class="hide-sm">Minha conta</span></sc-if>
+        </button>
+        <button type="button" onClick="{{abrirSacola}}" aria-label="Abrir meu pedido ({{qtdTxt}})" style="position: relative; font: inherit; cursor: pointer; width: 48px; height: 48px; border-radius: 50%; border: 2px solid #ece5d6; background: #ffffff; color: #1d2240; display: flex; align-items: center; justify-content: center">
+          <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M5 8h14l-1.2 12H6.2L5 8z"></path><path d="M9 8V6a3 3 0 0 1 6 0v2"></path></svg>
+          <sc-if value="{{temItens}}" hint-placeholder-val="{{ false }}">
+            <span class="pulo" style="animation-name: {{pulo}}; position: absolute; top: -4px; right: -4px; min-width: 22px; height: 22px; padding: 0 6px; border-radius: 999px; background: #b8321e; color: #ffffff; font-size: 12px; font-weight: 800; display: flex; align-items: center; justify-content: center; border: 2px solid #ffffff">{{qtdItens}}</span>
+          </sc-if>
+        </button>
+        <a class="btn-wa hide-sm" href="{{waGeral}}" style="text-decoration: none; background: #1b7a4b; color: #ffffff; font-weight: 700; font-size: 15px; padding: 9px 16px 9px 12px; border-radius: 999px; min-height: 48px; display: inline-flex; align-items: center; gap: 10px; line-height: 1.15">
+          <span aria-hidden="true" style="width: 32px; height: 32px; border-radius: 50%; background: #2a9a62; display: flex; align-items: center; justify-content: center"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.4L3 21l2.1-5.4A8.4 8.4 0 1 1 21 11.5z"></path></svg></span>
+          <span style="display: flex; flex-direction: column"><span style="font-size: 12px; font-weight: 600">Peça pelo WhatsApp</span><span style="font-variant-numeric: tabular-nums; font-weight: 800">{{loja.fone}}</span></span>
+        </a>
+        </div>
+      </div>
+    </header>
+    <nav aria-label="Categorias" style="background: #23336b">
+      <div class="wrap catnav" style="padding-top: 6px; padding-bottom: 6px">
+        <sc-for list="{{abas}}" as="a" hint-placeholder-count="8">
+          <a class="navlink" href="#produtos" onClick="{{a.pick}}" aria-current="{{a.atual}}" style="text-decoration: none; white-space: nowrap; color: {{a.texto}}; background: {{a.fundo}}; font-weight: 800; font-size: 13px; text-transform: uppercase; letter-spacing: .06em; padding: 9px 14px; border-radius: 999px; min-height: 38px; display: inline-flex; align-items: center">{{a.nome}}</a>
+        </sc-for>
+      </div>
+    </nav>
+  </div>
+
+  <!-- banner principal -->
+  <section id="inicio" aria-roledescription="carrossel" aria-label="Destaques" style="background: radial-gradient(1200px 500px at 85% 20%, #2c3d78 0%, #1d2240 60%); color: #ffffff; position: relative; overflow: hidden">
+    <svg class="gira" aria-hidden="true" viewBox="0 0 400 400" style="position: absolute; right: -120px; bottom: -160px; width: 620px; height: 620px; opacity: .18"><circle cx="200" cy="200" r="190" fill="none" stroke="#f2b31b" stroke-width="2" stroke-dasharray="2 10"></circle><circle cx="200" cy="200" r="140" fill="none" stroke="#f2b31b" stroke-width="2" stroke-dasharray="2 10"></circle></svg>
+    <div class="wrap hero" style="padding-top: 56px; padding-bottom: 92px; position: relative">
+      <div style="display: flex; flex-direction: column; gap: 20px">
+        <div class="entra d1" style="display: flex; flex-wrap: wrap; align-items: center; gap: 10px 18px">
+          <span style="display: inline-flex; align-items: center; gap: 8px; background: {{sit.fundo}}; color: {{sit.tinta}}; font-size: 13px; font-weight: 800; padding: 6px 12px; border-radius: 999px"><span class="ponto-vivo" aria-hidden="true" style="width: 8px; height: 8px; border-radius: 50%; background: {{sit.cor}}"></span>{{sit.texto}}</span>
+          <span class="eyebrow" style="color: #f2b31b; animation-name: {{anim}}">{{slide.selo}}</span>
+        </div>
+        <h1 class="disp entra d2" style="animation-name: {{anim}}; margin: 0; font-weight: 900; font-size: clamp(46px, 6.6vw, 88px); line-height: .9; text-wrap: balance">{{slide.titulo}} <span style="color: #f2b31b">{{slide.destaque}}</span></h1>
+        <p class="entra d3" style="animation-name: {{anim}}; margin: 0; font-size: 19px; color: #c9d0e6; max-width: 42ch">{{slide.texto}}</p>
+        <div class="entra d4" style="display: flex; flex-wrap: wrap; gap: 12px; padding-top: 6px">
+          <a class="btn-y" href="{{slide.link}}" style="text-decoration: none; background: #f2b31b; color: #1d2240; font-weight: 800; font-size: 15px; text-transform: uppercase; letter-spacing: .06em; padding: 16px 28px; border-radius: 999px; min-height: 52px; display: inline-flex; align-items: center; gap: 10px">{{slide.botao}} <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></a>
+          <a class="btn-ghost" href="{{waGeral}}" style="text-decoration: none; border: 2px solid #ffffff; color: #ffffff; font-weight: 800; font-size: 15px; text-transform: uppercase; letter-spacing: .06em; padding: 14px 26px; border-radius: 999px; min-height: 52px; display: inline-flex; align-items: center">Pedir no WhatsApp</a>
+        </div>
+        <div class="entra d5" style="display: flex; align-items: center; gap: 10px; padding-top: 14px">
+          <button type="button" onClick="{{anterior}}" aria-label="Destaque anterior" style="width: 44px; height: 44px; border-radius: 50%; border: 1px solid #4a5a94; background: transparent; color: #ffffff; cursor: pointer; display: inline-flex; align-items: center; justify-content: center"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M15 5l-7 7 7 7"></path></svg></button>
+          <sc-for list="{{pontos}}" as="p" hint-placeholder-count="3">
+            <button type="button" onClick="{{p.pick}}" aria-label="{{p.rotulo}}" aria-current="{{p.atual}}" style="width: {{p.largura}}; height: 10px; border-radius: 999px; border: none; background: {{p.cor}}; cursor: pointer; padding: 0"></button>
+          </sc-for>
+          <button type="button" onClick="{{proximo}}" aria-label="Próximo destaque" style="width: 44px; height: 44px; border-radius: 50%; border: 1px solid #4a5a94; background: transparent; color: #ffffff; cursor: pointer; display: inline-flex; align-items: center; justify-content: center"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M9 5l7 7-7 7"></path></svg></button>
+        </div>
+      </div>
+      <div class="bowls">
+        <sc-for list="{{tigelas}}" as="t" hint-placeholder-count="3">
+          <div class="bowl" style="width: {{t.w}}; aspect-ratio: 1; top: {{t.t}}; left: {{t.l}}; animation-duration: {{t.dur}}; animation-delay: {{t.atraso}}">
+            <div class="bowl-in" style="animation-name: {{t.pop}}; animation-delay: {{t.entrada}}">
+              <sc-if value="{{t.temFoto}}" hint-placeholder-val="{{ false }}">
+                <img src="{{t.foto}}" alt="{{t.nome}}">
+              </sc-if>
+              <sc-if value="{{t.semFoto}}" hint-placeholder-val="{{ true }}">
+                <div aria-hidden="true" style="width: 100%; height: 100%; background: {{t.bg}}"></div>
+              </sc-if>
+            </div>
+          </div>
+        </sc-for>
+        <span class="selo-250" style="position: absolute; right: 2%; top: 4%; width: 112px; height: 112px; border-radius: 50%; background: #f2b31b; color: #1d2240; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; transform: rotate(12deg); box-shadow: 0 14px 28px -12px rgba(0,0,0,.5); line-height: 1">
+          <span class="disp" style="font-weight: 900; font-size: 30px">250 g</span>
+          <span style="font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: .08em; padding-top: 4px">pesado<br>na hora</span>
+        </span>
+      </div>
+    </div>
+  </section>
+
+  <!-- fita de produtos -->
+  <div class="fita" aria-hidden="true">
+    <div class="fita-faixa">
+      <div class="fita-trilho">
+        <sc-for list="{{fita}}" as="n" hint-placeholder-count="10">
+          <span class="disp" style="display: inline-flex; align-items: center; gap: 22px; padding: 12px 11px; font-weight: 900; font-size: 22px; color: #1d2240; white-space: nowrap">{{n}} <svg width="14" height="14" viewBox="0 0 24 24" fill="#b8321e"><path d="M12 0l3 9 9 3-9 3-3 9-3-9-9-3 9-3z"></path></svg></span>
+        </sc-for>
+      </div>
+    </div>
+  </div>
+
+  <!-- vantagens -->
+  <section style="padding-top: 26px; padding-bottom: 8px">
+    <div class="wrap trust revela">
+      <div style="display: flex; gap: 14px; align-items: center; padding: 18px; border-radius: 18px; background: #f8f3ea">
+        <span aria-hidden="true" style="width: 48px; height: 48px; flex: none; border-radius: 14px; background: #ffffff; display: flex; align-items: center; justify-content: center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#b8321e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7h18l-2 13H5L3 7z"></path><path d="M8 7a4 4 0 0 1 8 0"></path></svg></span>
+        <span style="display: flex; flex-direction: column; min-width: 0"><strong style="font-size: 15px">Varejo e atacado</strong><span style="font-size: 13px; color: #5a5f78">{{loja.vantagem}}</span></span>
+      </div>
+      <div style="display: flex; gap: 14px; align-items: center; padding: 18px; border-radius: 18px; background: #f8f3ea">
+        <span aria-hidden="true" style="width: 48px; height: 48px; flex: none; border-radius: 14px; background: #ffffff; display: flex; align-items: center; justify-content: center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#b8321e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h16"></path><path d="M6 20l2-9h8l2 9"></path><path d="M12 11V5"></path><circle cx="12" cy="4" r="1.5"></circle></svg></span>
+        <span style="display: flex; flex-direction: column; min-width: 0"><strong style="font-size: 15px">Pesado na hora</strong><span style="font-size: 13px; color: #5a5f78">Na quantidade do seu pedido</span></span>
+      </div>
+      <div style="display: flex; gap: 14px; align-items: center; padding: 18px; border-radius: 18px; background: #f8f3ea">
+        <span aria-hidden="true" style="width: 48px; height: 48px; flex: none; border-radius: 14px; background: #ffffff; display: flex; align-items: center; justify-content: center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#b8321e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"></path><circle cx="12" cy="9.5" r="2.5"></circle></svg></span>
+        <span style="display: flex; flex-direction: column; min-width: 0"><strong style="font-size: 15px">Duas lojas no Brás</strong><span style="font-size: 13px; color: #5a5f78">D’Lu Empório e VKS Condimentos</span></span>
+      </div>
+      <div style="display: flex; gap: 14px; align-items: center; padding: 18px; border-radius: 18px; background: #f8f3ea">
+        <span aria-hidden="true" style="width: 48px; height: 48px; flex: none; border-radius: 14px; background: #ffffff; display: flex; align-items: center; justify-content: center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1b7a4b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.4L3 21l2.1-5.4A8.4 8.4 0 1 1 21 11.5z"></path></svg></span>
+        <span style="display: flex; flex-direction: column; min-width: 0"><strong style="font-size: 15px">Pedido pelo WhatsApp</strong><span style="font-size: 13px; color: #5a5f78; font-variant-numeric: tabular-nums">{{loja.fone}}</span></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- categorias -->
+  <section style="padding-top: 56px; padding-bottom: 28px">
+    <div class="wrap" style="display: flex; flex-direction: column; gap: 32px">
+      <div class="revela" style="display: flex; flex-direction: column; align-items: center; gap: 6px; text-align: center">
+        <span class="eyebrow" style="color: #b8321e">Compre por categoria</span>
+        <h2 class="disp" style="margin: 0; font-weight: 900; font-size: clamp(36px, 4.6vw, 56px); line-height: .95; color: #1d2240">Tem tempero pra tudo</h2>
+      </div>
+      <div class="circles">
+        <sc-for list="{{circulos}}" as="c" hint-placeholder-count="8">
+          <a class="circ revela" href="#produtos" onClick="{{c.pick}}" style="text-decoration: none; display: flex; flex-direction: column; align-items: center; gap: 12px; text-align: center">
+            <sc-if value="{{c.temFoto}}" hint-placeholder-val="{{ false }}">
+              <img class="dot" src="{{c.foto}}" alt="" style="width: 100%; max-width: 150px; aspect-ratio: 1; object-fit: cover; border-radius: 50%; border: 5px solid {{c.borda}}; box-shadow: 0 0 0 1px #ece5d6; display: block">
+            </sc-if>
+            <sc-if value="{{c.semFoto}}" hint-placeholder-val="{{ true }}">
+              <span class="dot" aria-hidden="true" style="width: 100%; max-width: 150px; aspect-ratio: 1; border-radius: 50%; background: {{c.bg}}; border: 5px solid {{c.borda}}; box-shadow: 0 0 0 1px #ece5d6; display: block"></span>
+            </sc-if>
+            <span style="display: flex; flex-direction: column; gap: 2px">
+              <span style="font-weight: 800; font-size: 14px; text-transform: uppercase; letter-spacing: .04em; color: #1d2240">{{c.nome}}</span>
+              <span style="font-size: 12px; color: #5a5f78">{{c.qtd}}</span>
+            </span>
+          </a>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <!-- destaques -->
+  <section style="padding-top: 40px; padding-bottom: 64px">
+    <div class="wrap" style="display: flex; flex-direction: column; gap: 28px">
+      <div style="display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 12px">
+        <div class="revela-esq" style="display: flex; flex-direction: column; gap: 6px">
+          <span class="eyebrow" style="color: #b8321e">{{destaqueSub}}</span>
+          <h2 class="disp" style="margin: 0; font-weight: 900; font-size: clamp(36px, 4.6vw, 56px); line-height: .95">Destaques da semana</h2>
+        </div>
+        <a href="#produtos" style="font-weight: 800; font-size: 15px; display: inline-flex; align-items: center; gap: 8px">Ver todos os produtos <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></a>
+      </div>
+      <div class="prods">
+        <sc-for list="{{destaques}}" as="p" hint-placeholder-count="6">
+          <div class="revela cel"><dc-import name="Cartao" p="{{p}}" hint-size="100%,420px"></dc-import></div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <!-- galeria das misturas (fotos reais) -->
+  <sc-if value="{{temGaleria}}" hint-placeholder-val="{{ true }}">
+    <section style="background: #1d2240; color: #ffffff">
+      <svg aria-hidden="true" viewBox="0 0 1440 48" preserveAspectRatio="none" style="display: block; width: 100%; height: 36px; background: #ffffff"><path d="M0 48 C 240 0 480 0 720 24 C 960 48 1200 48 1440 8 L1440 48 Z" fill="#1d2240"></path></svg>
+      <div class="wrap" style="padding-top: 40px; padding-bottom: 72px; display: flex; flex-direction: column; gap: 28px">
+        <div style="display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 16px">
+          <div class="revela-esq" style="display: flex; flex-direction: column; gap: 6px; max-width: 640px">
+            <span class="eyebrow" style="color: #f2b31b">Misturas da casa</span>
+            <h2 class="disp" style="margin: 0; font-weight: 900; font-size: clamp(36px, 4.6vw, 56px); line-height: .95">Direto da bandeja para a sua cozinha</h2>
+            <p style="margin: 0; color: #c9d0e6; font-size: 17px">Misturas montadas aqui na loja, do jeito que os clientes pedem há anos.</p>
+          </div>
+          <a class="btn-y" href="#produtos" onClick="{{pickMisturas}}" style="text-decoration: none; background: #f2b31b; color: #1d2240; font-weight: 800; font-size: 14px; text-transform: uppercase; letter-spacing: .06em; padding: 14px 24px; border-radius: 999px; min-height: 48px; display: inline-flex; align-items: center">Ver todas as misturas</a>
+        </div>
+        <div class="bento">
+          <sc-for list="{{galeria}}" as="g" hint-placeholder-count="5">
+            <a class="bento-item revela" href="#produtos" onClick="{{g.pick}}" style="position: relative; display: block; border-radius: 22px; overflow: hidden; text-decoration: none; min-height: 0">
+              <img src="{{g.foto}}" alt="{{g.nome}}" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block">
+              <span style="position: absolute; inset: 0; background: linear-gradient(180deg, rgba(20,24,48,0) 45%, rgba(20,24,48,.85) 100%)"></span>
+              <span class="disp" style="position: absolute; left: 18px; right: 18px; bottom: 14px; font-weight: 900; font-size: 26px; line-height: 1; color: #ffffff">{{g.nome}}</span>
+            </a>
+          </sc-for>
+        </div>
+      </div>
+      <svg aria-hidden="true" viewBox="0 0 1440 48" preserveAspectRatio="none" style="display: block; width: 100%; height: 36px; background: #f8f3ea"><path d="M0 0 L1440 0 L1440 24 C 1200 48 960 0 720 20 C 480 40 240 48 0 16 Z" fill="#1d2240"></path></svg>
+    </section>
+  </sc-if>
+
+  <!-- todos os produtos -->
+  <section id="produtos" style="padding-top: 64px; padding-bottom: 72px; background: #f8f3ea">
+    <div class="wrap" style="display: flex; flex-direction: column; gap: 26px">
+      <div style="display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 12px">
+        <div class="revela-esq" style="display: flex; flex-direction: column; gap: 6px">
+          <span class="eyebrow" style="color: #b8321e">{{contagem}}</span>
+          <h2 class="disp" style="margin: 0; font-weight: 900; font-size: clamp(36px, 4.6vw, 56px); line-height: .95">{{tituloLista}}</h2>
+        </div>
+        <sc-if value="{{temFiltro}}" hint-placeholder-val="{{ false }}">
+          <button type="button" onClick="{{limpar}}" style="font: inherit; font-weight: 800; font-size: 14px; padding: 10px 18px; min-height: 44px; border-radius: 999px; border: 2px solid #1d2240; background: #ffffff; color: #1d2240; cursor: pointer">Limpar filtro ✕</button>
+        </sc-if>
+      </div>
+      <div class="catnav" style="gap: 8px; padding-bottom: 4px" role="group" aria-label="Filtrar por categoria">
+        <sc-for list="{{abas}}" as="a" hint-placeholder-count="8">
+          <button type="button" onClick="{{a.pick}}" aria-pressed="{{a.atual}}" style="font: inherit; white-space: nowrap; font-weight: 800; font-size: 13px; padding: 9px 16px; min-height: 40px; border-radius: 999px; border: 1px solid #e2d9c6; background: {{a.fundoClaro}}; color: {{a.textoClaro}}; cursor: pointer">{{a.nome}}</button>
+        </sc-for>
+      </div>
+      <div class="prods">
+        <sc-for list="{{lista}}" as="p" hint-placeholder-count="12">
+          <div class="revela cel"><dc-import name="Cartao" p="{{p}}" hint-size="100%,420px"></dc-import></div>
+        </sc-for>
+      </div>
+      <sc-if value="{{vazio}}" hint-placeholder-val="{{ false }}">
+        <p style="margin: 0; padding: 36px; text-align: center; background: #ffffff; border-radius: 20px; color: #5a5f78">Não achamos esse produto no site. <a href="{{waGeral}}" style="font-weight: 800">Pergunte pelo WhatsApp</a>: temos muito mais na loja.</p>
+      </sc-if>
+    </div>
+  </section>
+
+  <!-- atacado -->
+  <section style="background: #b8321e; color: #ffffff; position: relative; overflow: hidden">
+    <div aria-hidden="true" style="position: absolute; inset: 0; opacity: .5; background: radial-gradient(circle at 30% 35%, #8f2414 0 1.5px, transparent 2.4px) 0 0 / 14px 14px, radial-gradient(circle at 60% 70%, #d4553a 0 1.6px, transparent 2.6px) 5px 7px / 17px 17px"></div>
+    <div class="wrap atacado" style="padding-top: 72px; padding-bottom: 72px; position: relative">
+      <div class="revela-esq" style="display: flex; flex-direction: column; gap: 16px">
+        <span class="eyebrow" style="color: #f2b31b">Atacado {{loja.nome}}</span>
+        <h2 class="disp" style="margin: 0; font-weight: 900; font-size: clamp(40px, 5.4vw, 68px); line-height: .92">Compra para o seu negócio? A gente abastece.</h2>
+        <p style="margin: 0; color: #fde3da; font-size: 18px; max-width: 46ch">{{loja.textoAtacado}}</p>
+        <a class="btn-y" href="{{waAtacado}}" style="align-self: flex-start; text-decoration: none; background: #f2b31b; color: #1d2240; font-weight: 800; font-size: 15px; text-transform: uppercase; letter-spacing: .06em; padding: 16px 28px; border-radius: 999px; min-height: 52px; display: inline-flex; align-items: center; gap: 10px">Pedir orçamento de atacado <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></a>
+      </div>
+      <div class="tags revela">
+        <sc-for list="{{loja.quadros}}" as="q" hint-placeholder-count="3">
+          <div class="etiqueta" style="position: relative; background: #fdf6e8; color: #1d2240; border-radius: 16px 16px 20px 20px; padding: 34px 12px 22px; text-align: center; display: flex; flex-direction: column; gap: 6px; box-shadow: 0 18px 30px -18px rgba(0,0,0,.6)">
+            <span aria-hidden="true" style="position: absolute; top: 12px; left: 50%; transform: translateX(-50%); width: 14px; height: 14px; border-radius: 50%; background: #b8321e; box-shadow: inset 0 2px 3px rgba(0,0,0,.4)"></span>
+            <span class="disp" style="font-weight: 900; font-size: clamp(30px, 3.4vw, 46px); line-height: 1; color: #b8321e">{{q.n}}</span>
+            <span style="font-size: 13px; font-weight: 700; color: #1d2240; line-height: 1.3">{{q.t}}</span>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <!-- como pedir -->
+  <section id="como-pedir" style="padding-top: 72px; padding-bottom: 72px">
+    <div class="wrap pedir">
+      <div class="revela-esq" style="display: flex; flex-direction: column; gap: 26px">
+        <div style="display: flex; flex-direction: column; gap: 6px">
+          <span class="eyebrow" style="color: #b8321e">Simples e rápido</span>
+          <h2 class="disp" style="margin: 0; font-weight: 900; font-size: clamp(36px, 4.6vw, 56px); line-height: .95">Como pedir</h2>
+        </div>
+        <ol style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 20px">
+          <li style="display: flex; gap: 18px; align-items: flex-start">
+            <span class="disp" style="flex: none; width: 52px; height: 52px; border-radius: 50%; background: #f2b31b; color: #1d2240; font-weight: 900; font-size: 26px; display: flex; align-items: center; justify-content: center">1</span>
+            <span style="display: flex; flex-direction: column; gap: 2px; padding-top: 4px"><strong style="font-size: 18px">Escolha os temperos</strong><span style="color: #5a5f78">No site ou perguntando pelo que precisa. No varejo, a partir de 250 g por produto.</span></span>
+          </li>
+          <li style="display: flex; gap: 18px; align-items: flex-start">
+            <span class="disp" style="flex: none; width: 52px; height: 52px; border-radius: 50%; background: #f2b31b; color: #1d2240; font-weight: 900; font-size: 26px; display: flex; align-items: center; justify-content: center">2</span>
+            <span style="display: flex; flex-direction: column; gap: 2px; padding-top: 4px"><strong style="font-size: 18px">Mande a lista no WhatsApp</strong><span style="color: #5a5f78">Escolha a quantidade e toque em “Adicionar” em cada produto. No fim, abra a sacola e envie tudo de uma vez.</span></span>
+          </li>
+          <li style="display: flex; gap: 18px; align-items: flex-start">
+            <span class="disp" style="flex: none; width: 52px; height: 52px; border-radius: 50%; background: #f2b31b; color: #1d2240; font-weight: 900; font-size: 26px; display: flex; align-items: center; justify-content: center">3</span>
+            <span style="display: flex; flex-direction: column; gap: 2px; padding-top: 4px"><strong style="font-size: 18px">A gente pesa e separa</strong><span style="color: #5a5f78">Conferimos o pedido, pesamos na hora e avisamos quando estiver pronto.</span></span>
+          </li>
+        </ol>
+        <a class="btn-wa" href="{{waGeral}}" style="align-self: flex-start; text-decoration: none; background: #1b7a4b; color: #ffffff; font-weight: 800; font-size: 15px; text-transform: uppercase; letter-spacing: .06em; padding: 16px 28px; border-radius: 999px; min-height: 52px; display: inline-flex; align-items: center">Fazer meu pedido</a>
+      </div>
+      <figure class="revela" aria-label="Exemplo de conversa de pedido" style="margin: 0; background: #e9e1d2; border-radius: 28px; padding: 18px; box-shadow: 0 30px 50px -30px rgba(29,34,64,.45)">
+        <div style="background: #efe7d9; border-radius: 18px; overflow: hidden">
+          <div style="background: #1b7a4b; color: #ffffff; padding: 14px 16px; display: flex; align-items: center; gap: 12px">
+            <span style="width: 38px; height: 38px; border-radius: 50%; background: #ffffff; color: #23336b; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 13px" class="disp">{{lojaCurta}}</span>
+            <span style="display: flex; flex-direction: column; line-height: 1.2"><strong style="font-size: 15px">{{loja.nome}}</strong><span style="font-size: 12px; color: #d3f0df">conta comercial</span></span>
+          </div>
+          <div style="padding: 18px 14px 22px; display: flex; flex-direction: column; gap: 10px; font-size: 15px">
+            <div class="bolha b1" style="align-self: flex-end; max-width: 82%; background: #d9fdd3; color: #1a2a1f; border-radius: 14px 14px 4px 14px; padding: 10px 12px; white-space: pre-line; box-shadow: 0 1px 1px rgba(0,0,0,.08)">Bom dia! Quero:
+Cominho – 500 g
+Páprica defumada – 1 kg
+Ana Maria – 10 kg</div>
+            <div class="bolha b2" style="align-self: flex-start; max-width: 82%; background: #ffffff; color: #1a2a1f; border-radius: 14px 14px 14px 4px; padding: 10px 12px; box-shadow: 0 1px 1px rgba(0,0,0,.08)">Bom dia! Já estamos separando. Avisamos assim que estiver pesado e pronto.</div>
+            <div class="bolha b3" style="align-self: flex-end; max-width: 82%; background: #d9fdd3; color: #1a2a1f; border-radius: 14px 14px 4px 14px; padding: 10px 12px; box-shadow: 0 1px 1px rgba(0,0,0,.08)">Perfeito, obrigado!</div>
+          </div>
+        </div>
+      </figure>
+    </div>
+  </section>
+
+  <!-- nossas lojas -->
+  <section id="visite" style="padding-top: 72px; padding-bottom: 80px; background: #f8f3ea">
+    <div class="wrap" style="display: flex; flex-direction: column; gap: 32px">
+      <div class="revela" style="display: flex; flex-direction: column; align-items: center; gap: 6px; text-align: center">
+        <span class="eyebrow" style="color: #b8321e">Duas lojas no Brás</span>
+        <h2 class="disp" style="margin: 0; font-weight: 900; font-size: clamp(36px, 4.6vw, 56px); line-height: .95">Visite nossas lojas</h2>
+      </div>
+      <div class="lojas">
+        <sc-for list="{{lojasLista}}" as="l" hint-placeholder-count="2">
+          <article class="revela" style="background: #ffffff; border-radius: 24px; padding: 30px; display: flex; flex-direction: column; gap: 18px; box-shadow: 0 0 0 2px {{l.borda}}, 0 24px 40px -30px rgba(29,34,64,.5)">
+            <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap">
+              <h3 class="disp" style="margin: 0; font-weight: 900; font-size: 36px; line-height: 1; color: #23336b">{{l.nome}}</h3>
+              <span style="display: inline-flex; align-items: center; gap: 8px; background: {{l.sitFundo}}; color: {{l.sitTinta}}; font-size: 13px; font-weight: 800; padding: 6px 12px; border-radius: 999px"><span class="ponto-vivo" aria-hidden="true" style="width: 8px; height: 8px; border-radius: 50%; background: {{l.sitCor}}"></span>{{l.sitTxt}}</span>
+            </div>
+            <p style="margin: 0; color: #5a5f78">{{l.historia}}</p>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 16px; padding: 18px; border-radius: 16px; background: #f8f3ea">
+              <div style="display: flex; flex-direction: column; gap: 2px"><span style="font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: .1em; color: #b8321e">Endereço</span><span style="font-weight: 700">{{l.endereco}}</span><a href="{{l.mapa}}" style="font-weight: 800; font-size: 14px">Abrir no mapa →</a></div>
+              <div style="display: flex; flex-direction: column; gap: 2px"><span style="font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: .1em; color: #b8321e">Horário</span><span style="font-weight: 700">{{l.horario}}</span><span style="font-size: 14px; color: #5a5f78">{{l.dias}}</span></div>
+              <div style="display: flex; flex-direction: column; gap: 2px"><span style="font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: .1em; color: #b8321e">WhatsApp</span><span style="font-weight: 700; font-variant-numeric: tabular-nums">{{l.fone}}</span></div>
+            </div>
+            <div style="display: flex; flex-wrap: wrap; gap: 10px">
+              <a class="btn-wa" href="{{l.wa}}" style="text-decoration: none; background: #1b7a4b; color: #ffffff; font-weight: 800; font-size: 15px; padding: 13px 22px; border-radius: 999px; min-height: 48px; display: inline-flex; align-items: center">Pedir na {{l.nome}}</a>
+              <button type="button" onClick="{{l.pick}}" style="font: inherit; font-weight: 800; font-size: 15px; padding: 13px 22px; min-height: 48px; border-radius: 999px; border: 2px solid #1d2240; background: #ffffff; color: #1d2240; cursor: pointer">Ver produtos desta loja</button>
+            </div>
+          </article>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <!-- rodapé -->
+  <footer style="background: #1d2240; color: #c9d0e6; font-size: 14px">
+    <svg aria-hidden="true" viewBox="0 0 1440 48" preserveAspectRatio="none" style="display: block; width: 100%; height: 36px; background: #f8f3ea"><path d="M0 48 C 240 0 480 0 720 24 C 960 48 1200 48 1440 8 L1440 48 Z" fill="#1d2240"></path></svg>
+    <div class="wrap foot" style="padding-top: 40px; padding-bottom: 32px">
+      <div style="display: flex; flex-direction: column; gap: 14px">
+        <img src="../imagens/logo-dlu.png" alt="D’Lu Empório" style="height: 76px; width: auto; align-self: flex-start; background: #ffffff; border-radius: 16px; padding: 8px">
+        <p style="margin: 0; max-width: 34ch">Temperos, ervas, misturas da casa, pimentas e molhos no Brás. Varejo e atacado, pesado na hora.</p>
+        <a class="btn-wa" href="{{waGeral}}" style="align-self: flex-start; text-decoration: none; background: #1b7a4b; color: #ffffff; font-weight: 800; font-size: 14px; padding: 11px 18px; border-radius: 999px; min-height: 44px; display: inline-flex; align-items: center">Pedir no WhatsApp</a>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 8px">
+        <strong style="color: #f2b31b; text-transform: uppercase; letter-spacing: .1em; font-size: 12px">Categorias</strong>
+        <sc-for list="{{rodapeCats}}" as="a" hint-placeholder-count="6">
+          <a href="#produtos" onClick="{{a.pick}}" style="color: #c9d0e6; text-decoration: none">{{a.nome}}</a>
+        </sc-for>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 8px">
+        <strong style="color: #f2b31b; text-transform: uppercase; letter-spacing: .1em; font-size: 12px">D’Lu Empório</strong>
+        <span>Rua Santa Rosa, 244 – Brás</span>
+        <span>Seg. a sáb. · 5h30 às 16h</span>
+        <span style="font-variant-numeric: tabular-nums">(11) 3313-6697</span>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 8px">
+        <strong style="color: #f2b31b; text-transform: uppercase; letter-spacing: .1em; font-size: 12px">VKS Condimentos</strong>
+        <span>Avenida Mercúrio, 330 – Brás</span>
+        <span>Seg. a sáb. · 6h às 16h</span>
+        <span style="font-variant-numeric: tabular-nums">(11) 3311-7153</span>
+      </div>
+    </div>
+    <div class="wrap" style="border-top: 1px solid #333a5c; padding-top: 16px; padding-bottom: 22px; font-size: 13px">São Paulo – SP</div>
+  </footer>
+
+  <!-- aviso de item adicionado -->
+  <sc-if value="{{temAviso}}" hint-placeholder-val="{{ false }}">
+    <div class="aviso" role="status" style="position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%); z-index: 60; background: #1d2240; color: #ffffff; padding: 12px 18px; border-radius: 999px; display: flex; align-items: center; gap: 12px; box-shadow: 0 14px 30px -10px rgba(0,0,0,.5); max-width: calc(100% - 32px)">
+      <span aria-hidden="true" style="width: 24px; height: 24px; flex: none; border-radius: 50%; background: #4cc27f; display: flex; align-items: center; justify-content: center"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"></path></svg></span>
+      <span style="font-size: 14px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">Na sacola: <b>{{aviso}}</b></span>
+      <button type="button" onClick="{{abrirSacola}}" style="font: inherit; cursor: pointer; border: none; background: #f2b31b; color: #1d2240; font-weight: 800; font-size: 13px; padding: 7px 12px; border-radius: 999px; min-height: 34px; white-space: nowrap">Ver pedido</button>
+    </div>
+  </sc-if>
+
+  <!-- botão flutuante da sacola -->
+  <sc-if value="{{temItens}}" hint-placeholder-val="{{ false }}">
+    <button type="button" onClick="{{abrirSacola}}" style="position: fixed; left: 20px; bottom: 20px; z-index: 50; font: inherit; cursor: pointer; border: none; background: #1d2240; color: #ffffff; padding: 0 20px 0 14px; height: 58px; border-radius: 999px; display: flex; align-items: center; gap: 10px; box-shadow: 0 12px 24px -8px rgba(0,0,0,.45)">
+      <span class="pulo" style="animation-name: {{pulo}}; width: 34px; height: 34px; border-radius: 50%; background: #f2b31b; color: #1d2240; font-weight: 900; font-size: 15px; display: flex; align-items: center; justify-content: center">{{qtdItens}}</span>
+      <span style="font-weight: 800; font-size: 14px; text-transform: uppercase; letter-spacing: .06em">Ver meu pedido</span>
+    </button>
+  </sc-if>
+
+  <!-- sacola (meu pedido) -->
+  <sc-if value="{{sacolaAberta}}" hint-placeholder-val="{{ false }}">
+    <div style="position: fixed; inset: 0; z-index: 80">
+      <button type="button" class="gaveta-fundo" onClick="{{fecharSacola}}" aria-label="Fechar meu pedido" style="position: absolute; inset: 0; border: none; padding: 0; background: rgba(15,18,38,.55); cursor: pointer"></button>
+      <aside class="gaveta" role="dialog" aria-label="Meu pedido" style="position: absolute; top: 0; right: 0; bottom: 0; width: min(440px, 100%); background: #ffffff; display: flex; flex-direction: column; box-shadow: -20px 0 40px -20px rgba(0,0,0,.5)">
+        <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 20px 22px; border-bottom: 1px solid #ece5d6">
+          <div style="display: flex; flex-direction: column; gap: 2px">
+            <span class="eyebrow" style="color: #b8321e">{{loja.nome}}</span>
+            <h2 class="disp" style="margin: 0; font-weight: 900; font-size: 34px; line-height: 1">Meu pedido</h2>
+          </div>
+          <button type="button" onClick="{{fecharSacola}}" aria-label="Fechar" style="width: 44px; height: 44px; border-radius: 50%; border: 1px solid #ece5d6; background: #ffffff; color: #1d2240; cursor: pointer; font-size: 20px; line-height: 1">✕</button>
+        </div>
+
+        <div style="flex: 1; overflow-y: auto; padding: 16px 22px; display: flex; flex-direction: column; gap: 12px">
+          <sc-if value="{{semItens}}" hint-placeholder-val="{{ false }}">
+            <div style="text-align: center; padding: 40px 12px; color: #5a5f78; display: flex; flex-direction: column; align-items: center; gap: 12px">
+              <svg aria-hidden="true" width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="#e2d9c6" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 8h14l-1.2 12H6.2L5 8z"></path><path d="M9 8V6a3 3 0 0 1 6 0v2"></path></svg>
+              <strong style="color: #1d2240; font-size: 17px">Sua sacola está vazia</strong>
+              <span>Escolha a quantidade nos produtos e toque em “Adicionar”.</span>
+              <button type="button" onClick="{{fecharSacola}}" style="font: inherit; cursor: pointer; border: 2px solid #1d2240; background: #ffffff; color: #1d2240; font-weight: 800; padding: 10px 18px; border-radius: 999px; min-height: 44px">Ver produtos</button>
+            </div>
+          </sc-if>
+          <sc-for list="{{sacola}}" as="x" hint-placeholder-count="3">
+            <div style="display: flex; align-items: center; gap: 12px; padding: 12px; border-radius: 16px; background: #f8f3ea">
+              <div style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px">
+                <strong style="font-size: 15px; line-height: 1.2">{{x.nome}}</strong>
+                <span style="font-size: 13px; color: #5a5f78">{{x.resumo}}</span>
+              </div>
+              <div style="display: flex; align-items: center; gap: 2px; background: #ffffff; border-radius: 999px; border: 1px solid #e2d9c6">
+                <button type="button" class="qtd-btn" onClick="{{x.menos}}" aria-label="Diminuir {{x.nome}}" style="width: 36px; height: 36px; border: none; border-radius: 50%; background: transparent; color: #1d2240; font-size: 18px; font-weight: 800; cursor: pointer">−</button>
+                <span style="min-width: 22px; text-align: center; font-weight: 800; font-variant-numeric: tabular-nums">{{x.n}}</span>
+                <button type="button" class="qtd-btn" onClick="{{x.mais}}" aria-label="Aumentar {{x.nome}}" style="width: 36px; height: 36px; border: none; border-radius: 50%; background: transparent; color: #1d2240; font-size: 18px; font-weight: 800; cursor: pointer">+</button>
+              </div>
+              <button type="button" onClick="{{x.tirar}}" aria-label="Tirar {{x.nome}} do pedido" style="width: 36px; height: 36px; border: none; border-radius: 50%; background: transparent; color: #8a8fa8; cursor: pointer"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"></path></svg></button>
+            </div>
+          </sc-for>
+        </div>
+
+        <sc-if value="{{temItens}}" hint-placeholder-val="{{ false }}">
+          <div style="border-top: 1px solid #ece5d6; padding: 16px 22px 22px; display: flex; flex-direction: column; gap: 12px; background: #ffffff">
+            <div style="display: flex; gap: 6px; flex-wrap: wrap" role="group" aria-label="Retirada ou entrega">
+              <sc-for list="{{entregas}}" as="e" hint-placeholder-count="2">
+                <button type="button" onClick="{{e.pick}}" aria-pressed="{{e.ativo}}" style="flex: 1; font: inherit; cursor: pointer; font-size: 13px; font-weight: 800; padding: 9px 10px; min-height: 40px; border-radius: 999px; border: 1.5px solid #1d2240; background: {{e.fundo}}; color: {{e.texto}}">{{e.t}}</button>
+              </sc-for>
+            </div>
+            <sc-if value="{{mostraEndereco}}" hint-placeholder-val="{{ false }}">
+              <label for="sacolaEnd" style="font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: .1em; color: #5a5f78">Endereço de entrega</label>
+              <input id="sacolaEnd" value="{{endereco}}" onInput="{{onEndereco}}" autocomplete="street-address" placeholder="Rua, número, bairro e cidade" style="font: inherit; font-size: 16px; padding: 11px 14px; border-radius: 12px; border: 1.5px solid #e2d9c6; background: #f8f3ea; color: #1d2240">
+            </sc-if>
+            <span style="font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: .1em; color: #5a5f78">Precisa de nota fiscal?</span>
+            <div style="display: flex; gap: 6px; flex-wrap: wrap" role="group" aria-label="Nota fiscal">
+              <sc-for list="{{nfOpcoes}}" as="o" hint-placeholder-count="2">
+                <button type="button" onClick="{{o.pick}}" aria-pressed="{{o.ativo}}" style="flex: 1; font: inherit; cursor: pointer; font-size: 13px; font-weight: 800; padding: 9px 10px; min-height: 40px; border-radius: 999px; border: 1.5px solid #1d2240; background: {{o.fundo}}; color: {{o.texto}}">{{o.t}}</button>
+              </sc-for>
+            </div>
+            <sc-if value="{{querNf}}" hint-placeholder-val="{{ false }}">
+              <div style="display: flex; flex-direction: column; gap: 8px; padding: 12px; border-radius: 14px; background: #fdf6e8; border: 1px solid #f0e2c0">
+                <label for="sacolaDoc" style="font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: .1em; color: #5a5f78">CPF ou CNPJ</label>
+                <input id="sacolaDoc" value="{{docTxt}}" onInput="{{onDoc}}" inputmode="numeric" autocomplete="off" placeholder="Só os números" style="font: inherit; font-size: 16px; padding: 11px 14px; border-radius: 12px; border: 1.5px solid #e2d9c6; background: #f8f3ea; color: #1d2240">
+                <span style="font-size: 13px; font-weight: 700; color: {{docDicaCor}}">{{docDica}}</span>
+                <sc-if value="{{mostraRazao}}" hint-placeholder-val="{{ false }}">
+                  <label for="sacolaRazao" style="font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: .1em; color: #5a5f78">Razão social (opcional)</label>
+                  <input id="sacolaRazao" value="{{razao}}" onInput="{{onRazao}}" placeholder="Nome da empresa" style="font: inherit; font-size: 16px; padding: 11px 14px; border-radius: 12px; border: 1.5px solid #e2d9c6; background: #f8f3ea; color: #1d2240">
+                </sc-if>
+              </div>
+            </sc-if>
+            <label for="sacolaNome" style="font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: .1em; color: #5a5f78">Seu nome</label>
+            <input id="sacolaNome" value="{{nomeCliente}}" onInput="{{onNome}}" autocomplete="name" placeholder="Para a gente identificar o pedido" style="font: inherit; font-size: 16px; padding: 11px 14px; border-radius: 12px; border: 1.5px solid #e2d9c6; background: #f8f3ea; color: #1d2240">
+            <label for="sacolaObs" style="font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: .1em; color: #5a5f78">Observação (opcional)</label>
+            <input id="sacolaObs" value="{{obs}}" onInput="{{onObs}}" placeholder="Ex.: separar em pacotes de 1 kg" style="font: inherit; font-size: 16px; padding: 11px 14px; border-radius: 12px; border: 1.5px solid #e2d9c6; background: #f8f3ea; color: #1d2240">
+            <sc-if value="{{naoPodeEnviar}}" hint-placeholder-val="{{ false }}">
+              <p role="alert" style="margin: 0; padding: 10px 12px; border-radius: 12px; background: #fde6e2; color: #9b2a1c; font-size: 14px; font-weight: 700">{{erro}}</p>
+            </sc-if>
+            <sc-if value="{{podeEnviar}}" hint-placeholder-val="{{ true }}">
+              <a class="btn-wa" href="{{waPedido}}" onClick="{{registrar}}" style="text-decoration: none; background: #1b7a4b; color: #ffffff; font-weight: 800; font-size: 15px; text-transform: uppercase; letter-spacing: .06em; padding: 15px; border-radius: 999px; min-height: 52px; display: flex; align-items: center; justify-content: center; gap: 10px">
+                <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.4L3 21l2.1-5.4A8.4 8.4 0 1 1 21 11.5z"></path></svg>
+                Enviar pedido · {{qtdTxt}}
+              </a>
+            </sc-if>
+            <button type="button" onClick="{{limpar2}}" style="align-self: center; font: inherit; cursor: pointer; border: none; background: transparent; color: #b8321e; font-weight: 700; font-size: 14px; padding: 6px 10px; min-height: 36px">{{limparTxt}}</button>
+          </div>
+        </sc-if>
+      </aside>
+    </div>
+  </sc-if>
+
+  <!-- minha conta -->
+  <sc-if value="{{contaAberta}}" hint-placeholder-val="{{ false }}">
+    <div style="position: fixed; inset: 0; z-index: 80">
+      <button type="button" class="gaveta-fundo" onClick="{{fecharConta}}" aria-label="Fechar minha conta" style="position: absolute; inset: 0; border: none; padding: 0; background: rgba(15,18,38,.55); cursor: pointer"></button>
+      <aside class="gaveta" role="dialog" aria-label="Minha conta" style="position: absolute; top: 0; right: 0; bottom: 0; width: min(440px, 100%); background: #ffffff; display: flex; flex-direction: column; box-shadow: -20px 0 40px -20px rgba(0,0,0,.5)">
+        <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 20px 22px 0">
+          <div style="display: flex; flex-direction: column; gap: 2px">
+            <span class="eyebrow" style="color: #b8321e">D’Lu e VKS</span>
+            <h2 class="disp" style="margin: 0; font-weight: 900; font-size: 34px; line-height: 1">Minha conta</h2>
+          </div>
+          <button type="button" onClick="{{fecharConta}}" aria-label="Fechar" style="width: 44px; height: 44px; border-radius: 50%; border: 1px solid #ece5d6; background: #ffffff; color: #1d2240; cursor: pointer; font-size: 20px; line-height: 1">✕</button>
+        </div>
+        <div role="tablist" style="display: flex; gap: 18px; padding: 14px 22px 0; border-bottom: 1px solid #ece5d6">
+          <sc-for list="{{abas2}}" as="a" hint-placeholder-count="2">
+            <button type="button" role="tab" onClick="{{a.pick}}" aria-selected="{{a.ativo}}" style="font: inherit; cursor: pointer; border: none; background: transparent; padding: 10px 0; font-weight: 800; font-size: 15px; color: {{a.cor}}; border-bottom: 3px solid {{a.borda}}; margin-bottom: -1px">{{a.t}}</button>
+          </sc-for>
+        </div>
+        <div style="flex: 1; overflow-y: auto; padding: 18px 22px 24px; display: flex; flex-direction: column; gap: 10px">
+          <sc-if value="{{abaDados}}" hint-placeholder-val="{{ true }}">
+            <p style="margin: 0 0 4px; font-size: 14px; color: #5a5f78">Preencha uma vez e seus pedidos já saem com tudo pronto. <b style="color: #1d2240">Seus dados ficam salvos só neste aparelho</b> e só vão para a loja quando você envia um pedido.</p>
+            <label for="contaNome" style="font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: .1em; color: #5a5f78">Nome</label>
+            <input id="contaNome" value="{{nomeCliente}}" onInput="{{onNome}}" autocomplete="name" placeholder="Seu nome ou da empresa" style="font: inherit; font-size: 16px; padding: 11px 14px; border-radius: 12px; border: 1.5px solid #e2d9c6; background: #f8f3ea; color: #1d2240">
+            <label for="contaFone" style="font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: .1em; color: #5a5f78">WhatsApp</label>
+            <input id="contaFone" value="{{fone}}" onInput="{{onFone}}" type="tel" autocomplete="tel" placeholder="(11) 90000-0000" style="font: inherit; font-size: 16px; padding: 11px 14px; border-radius: 12px; border: 1.5px solid #e2d9c6; background: #f8f3ea; color: #1d2240">
+            <label for="contaDoc" style="font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: .1em; color: #5a5f78">CPF ou CNPJ (para nota fiscal)</label>
+            <input id="contaDoc" value="{{docTxt}}" onInput="{{onDoc}}" inputmode="numeric" autocomplete="off" placeholder="Só os números" style="font: inherit; font-size: 16px; padding: 11px 14px; border-radius: 12px; border: 1.5px solid #e2d9c6; background: #f8f3ea; color: #1d2240">
+            <span style="font-size: 13px; font-weight: 700; color: {{docDicaCor}}">{{docDica}}</span>
+            <sc-if value="{{mostraRazao}}" hint-placeholder-val="{{ false }}">
+              <label for="contaRazao" style="font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: .1em; color: #5a5f78">Razão social</label>
+              <input id="contaRazao" value="{{razao}}" onInput="{{onRazao}}" placeholder="Nome da empresa" style="font: inherit; font-size: 16px; padding: 11px 14px; border-radius: 12px; border: 1.5px solid #e2d9c6; background: #f8f3ea; color: #1d2240">
+            </sc-if>
+            <label for="contaEnd" style="font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: .1em; color: #5a5f78">Endereço de entrega</label>
+            <input id="contaEnd" value="{{endereco}}" onInput="{{onEndereco}}" autocomplete="street-address" placeholder="Rua, número, bairro e cidade" style="font: inherit; font-size: 16px; padding: 11px 14px; border-radius: 12px; border: 1.5px solid #e2d9c6; background: #f8f3ea; color: #1d2240">
+            <span style="font-size: 13px; color: #1b7a4b; font-weight: 700">Salvo automaticamente ✓</span>
+            <button type="button" onClick="{{apagarDados}}" style="align-self: flex-start; margin-top: 8px; font: inherit; cursor: pointer; border: none; background: transparent; color: #b8321e; font-weight: 700; font-size: 14px; padding: 6px 0; min-height: 36px">{{apagarTxt}}</button>
+          </sc-if>
+          <sc-if value="{{abaPedidos}}" hint-placeholder-val="{{ false }}">
+            <sc-if value="{{semHistorico}}" hint-placeholder-val="{{ true }}">
+              <p style="margin: 0; padding: 30px 8px; text-align: center; color: #5a5f78">Os pedidos que você enviar pelo site aparecem aqui, para pedir de novo com um toque.</p>
+            </sc-if>
+            <sc-for list="{{historico}}" as="h" hint-placeholder-count="2">
+              <div style="padding: 14px; border-radius: 16px; background: #f8f3ea; display: flex; flex-direction: column; gap: 6px">
+                <div style="display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap">
+                  <strong style="font-size: 15px">{{h.lojaNome}}</strong>
+                  <span style="font-size: 13px; color: #5a5f78; font-variant-numeric: tabular-nums">{{h.dataTxt}}</span>
+                </div>
+                <span style="font-size: 14px; color: #5a5f78">{{h.qtd}} · {{h.resumo}}</span>
+                <button type="button" onClick="{{h.repetir}}" style="align-self: flex-start; font: inherit; cursor: pointer; border: 2px solid #1d2240; background: #ffffff; color: #1d2240; font-weight: 800; font-size: 14px; padding: 8px 16px; border-radius: 999px; min-height: 40px">Pedir de novo</button>
+              </div>
+            </sc-for>
+          </sc-if>
+        </div>
+      </aside>
+    </div>
+  </sc-if>
+
+  <!-- botão flutuante -->
+  <a class="btn-wa pulso" href="{{waGeral}}" aria-label="Pedir pelo WhatsApp da {{loja.nome}}" style="position: fixed; right: 20px; bottom: 20px; width: 62px; height: 62px; border-radius: 50%; background: #1b7a4b; color: #ffffff; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 0 6px rgba(27,122,75,.18), 0 12px 24px -8px rgba(0,0,0,.45); z-index: 50">
+    <svg aria-hidden="true" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.4L3 21l2.1-5.4A8.4 8.4 0 1 1 21 11.5z"></path></svg>
+  </a>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":6400}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { cat: 'Todos', loja: 'dlu', busca: '', slide: 0, carrinhos: { dlu: [], vks: [] }, sacola: false, nome: '', fone: '', doc: '', razao: '', endereco: '', nf: 'nao', conta: false, contaAba: 'dados', historico: [], apagarOk: false, obs: '', entrega: 'Retirar na loja', aviso: '', pulo: 0, limparOk: false, agora: Date.now() };
+  }
+  componentDidMount() {
+    var reduz = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!reduz) this.timer = setInterval(() => this.setState((s) => ({ slide: (s.slide + 1) % 3 })), 7000);
+    this.relogio = setInterval(() => this.setState({ agora: Date.now() }), 30000);
+    try {
+      const salvo = JSON.parse(localStorage.getItem('dlu-sacola') || 'null');
+      if (salvo && salvo.carrinhos) this.setState({ carrinhos: { dlu: salvo.carrinhos.dlu || [], vks: salvo.carrinhos.vks || [] }, nome: salvo.nome || '' });
+    } catch (e) {}
+    try {
+      const c = JSON.parse(localStorage.getItem('dlu-conta') || 'null');
+      if (c) this.setState({ ...(c.dados || {}), historico: c.historico || [] });
+    } catch (e) {}
+  }
+  componentWillUnmount() { clearInterval(this.timer); clearInterval(this.relogio); clearTimeout(this.avisoT); }
+  guardar(carrinhos, nome) {
+    try { localStorage.setItem('dlu-sacola', JSON.stringify({ carrinhos: carrinhos, nome: nome })); } catch (e) {}
+  }
+  guardarConta(mudanca) {
+    this.setState((s) => {
+      const n = { ...s, ...mudanca };
+      try {
+        localStorage.setItem('dlu-conta', JSON.stringify({
+          dados: { nome: n.nome, fone: n.fone, doc: n.doc, razao: n.razao, endereco: n.endereco },
+          historico: n.historico
+        }));
+        localStorage.setItem('dlu-sacola', JSON.stringify({ carrinhos: n.carrinhos, nome: n.nome }));
+      } catch (e) {}
+      return mudanca;
+    });
+  }
+  mudarSacola(loja, fn) {
+    this.setState((s) => {
+      const carrinhos = { ...s.carrinhos, [loja]: fn(s.carrinhos[loja].slice()) };
+      this.guardar(carrinhos, s.nome);
+      return { carrinhos: carrinhos, limparOk: false };
+    });
+  }
+  adicionar(loja, p, op) {
+    const chave = p.nome + '|' + (p.marca || '') + '|' + op.r;
+    this.mudarSacola(loja, (lista) => {
+      const i = lista.findIndex((x) => x.chave === chave);
+      if (i >= 0) lista[i] = { ...lista[i], n: lista[i].n + 1 };
+      else lista.push({ chave: chave, nome: p.nome, marca: p.marca || '', r: op.r, g: op.g || 0, un: op.un || '', fechado: op.fechado || '', n: 1 });
+      return lista;
+    });
+    clearTimeout(this.avisoT);
+    this.setState((s) => ({ aviso: p.nome + ' · ' + op.r, pulo: s.pulo + 1 }));
+    this.avisoT = setTimeout(() => this.setState({ aviso: '' }), 2200);
+  }
+  /* opções de quantidade, ardência e o botão Adicionar de cada produto */
+  extras(p, loja) {
+    const fardo = loja.id === 'vks' ? { r: 'Saco 25 kg', g: 25000, fechado: 'saco fechado' } : { r: 'Fardo 10 kg', g: 10000, fechado: 'fardo fechado' };
+    let opcoes;
+    if (p.nome === 'Alho roxo nacional') opcoes = [{ r: 'Caixa 10 kg', un: 'caixa de 10 kg' }];
+    else if (p.nome === 'Alho descascado') opcoes = [{ r: 'Pacote 1 kg', un: 'pacote de 1 kg' }];
+    else if (p.emb) opcoes = (p.tamanhos || ['Unidade']).map((t) => ({ r: t, un: 'un' }));
+    else opcoes = [{ r: '250 g', g: 250 }, { r: '500 g', g: 500 }, { r: '1 kg', g: 1000 }, (p.selo === 'Saco 25 kg' ? { r: 'Saco 25 kg', g: 25000, fechado: 'saco fechado' } : fardo)];
+    const ard = typeof p.ard === 'number' ? p.ard : null;
+    const nomes = ['Sem ardência', 'Suave', 'Média', 'Média-forte', 'Muito forte', 'Extrema'];
+    const cores = ['#3f7a3a', '#3f7a3a', '#b7791f', '#c2410c', '#b8321e', '#7a1010'];
+    return {
+      opcoes: opcoes,
+      rotuloOpcoes: p.emb ? 'Tamanho' : 'Quantidade',
+      temArd: ard !== null,
+      ardTxt: ard !== null ? (p.ardRotulo || nomes[ard]) : '',
+      ardCor: ard !== null ? cores[ard] : '#1d2240',
+      pimentas: ard !== null ? [0, 1, 2, 3, 4].map((i) => (i < ard ? '#d6261a' : '#e2d9c6')) : [],
+      add: (op) => this.adicionar(loja.id, p, op)
+    };
+  }
+  renderVals() {
+    const lojas = {
+      dlu: {
+        id: 'dlu', nome: 'D’Lu Empório', temLogo: true, semLogo: false,
+        endereco: 'Rua Santa Rosa, 244 – Brás, São Paulo – SP',
+        mapa: 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent('Rua Santa Rosa 244 Brás São Paulo'),
+        horarioCurto: 'Seg. a sáb. · 5h30 às 16h', horario: '5h30 às 16h', dias: 'De segunda a sábado',
+        fone: '(11) 3313-6697', waNum: '551133136697',
+        textoAtacado: 'Restaurantes, lanchonetes, açougues e revendas: fardos fechados de 10 kg ou a quantidade que você precisar, pesada na hora.',
+        quadros: [{ n: '10 kg', t: 'fardo fechado' }, { n: '250 g', t: 'ou mais, pesado na hora' }, { n: 'Mix', t: 'monte seu pedido com vários temperos' }],
+        vantagem: 'Fardos de 10 kg ou fracionado',
+        historia: '[Conte aqui a história da D’Lu: há quanto tempo está no Brás, quem começou e o que vocês fazem de diferente.]'
+      },
+      vks: {
+        id: 'vks', nome: 'VKS Condimentos', temLogo: false, semLogo: true,
+        endereco: 'Avenida Mercúrio, 330 – Brás, São Paulo – SP',
+        mapa: 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent('Avenida Mercúrio 330 Brás São Paulo'),
+        horarioCurto: 'Seg. a sáb. · 6h às 16h', horario: '6h às 16h', dias: 'De segunda a sábado',
+        fone: '(11) 3311-7153', waNum: '551133117153',
+        textoAtacado: 'Restaurantes, lanchonetes, açougues e revendas: sacos fechados de 25 kg ou a quantidade que você precisar, pesada na hora.',
+        quadros: [{ n: '25 kg', t: 'saco fechado' }, { n: '10 kg', t: 'caixa de alho roxo' }, { n: '250 g', t: 'ou mais, pesado na hora' }],
+        vantagem: 'Sacos de 25 kg ou fracionado',
+        historia: '[Conte aqui a história da VKS Condimentos e o que ela tem de diferente da D’Lu.]'
+      }
+    };
+    const loja = lojas[this.state.loja] || lojas.dlu;
+    /* ---------- aberto agora ---------- */
+    lojas.dlu.abre = 330; lojas.dlu.abreTxt = '5h30';
+    lojas.vks.abre = 360; lojas.vks.abreTxt = '6h';
+    const partes = new Intl.DateTimeFormat('en-US', { timeZone: 'America/Sao_Paulo', weekday: 'short', hour: '2-digit', minute: '2-digit', hourCycle: 'h23' }).formatToParts(new Date(this.state.agora));
+    const pt = (t) => (partes.find((x) => x.type === t) || {}).value;
+    const dia = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].indexOf(pt('weekday'));
+    const minuto = parseInt(pt('hour'), 10) * 60 + parseInt(pt('minute'), 10);
+    const situacao = (l) => {
+      const util = dia >= 1 && dia <= 6, fecha = 960;
+      if (util && minuto >= l.abre && minuto < fecha) {
+        const falta = fecha - minuto;
+        return { aberto: true, texto: falta <= 60 ? 'Aberto · fecha em ' + falta + ' min' : 'Aberto agora · fecha às 16h', cor: '#4cc27f', fundo: '#e3f5ea', tinta: '#146b3f' };
+      }
+      let quando = 'amanhã';
+      if (util && minuto < l.abre) quando = 'hoje';
+      else if (dia === 6) quando = 'segunda';
+      return { aberto: false, texto: 'Fechado · abre ' + quando + ' às ' + l.abreTxt, cor: '#f26b5b', fundo: '#fde6e2', tinta: '#9b2a1c' };
+    };
+    lojas.dlu.sit = situacao(lojas.dlu); lojas.vks.sit = situacao(lojas.vks);
+    /* ---------- cores e texturas ---------- */
+    const hx = (h) => [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16));
+    const mix = (a, b, t) => { const x = hx(a), y = hx(b); return '#' + x.map((v, i) => Math.round(v + (y[i] - v) * t).toString(16).padStart(2, '0')).join(''); };
+    /* granulado: camadas de pontinhos claros e escuros sobre a cor do tempero */
+    const grao = (c) => {
+      const cl = mix(c, '#ffffff', 0.38), ce = mix(c, '#000000', 0.32), cm = mix(c, '#ffffff', 0.16);
+      return 'radial-gradient(circle at 30% 35%, ' + ce + ' 0 1.4px, transparent 2.2px) 0 0 / 9px 9px, '
+        + 'radial-gradient(circle at 60% 70%, ' + cl + ' 0 1.6px, transparent 2.4px) 3px 5px / 11px 11px, '
+        + 'radial-gradient(circle at 50% 50%, ' + cm + ' 0 1px, transparent 1.7px) 6px 2px / 7px 7px, '
+        + 'radial-gradient(circle at 50% 30%, ' + cl + ', ' + c + ' 55%, ' + ce + ')';
+    };
+    const waDe = (l, txt) => 'https://wa.me/' + l.waNum + '?text=' + encodeURIComponent(txt);
+    const wa = (txt) => waDe(loja, txt);
+    const M = 'Mistura pronta da casa. Pergunte a composição no WhatsApp.';
+    const base = [
+      { nome: 'Páprica defumada', cat: 'Pimentas e pápricas', cor: '#8e2a16', uso: 'Sabor de churrasco em carnes, feijão, batatas e molhos.' },
+      { nome: 'Páprica doce', cat: 'Pimentas e pápricas', cor: '#c8442a', uso: 'Cor e sabor suave para frango, arroz e maionese.' },
+      { nome: 'Pimenta do reino moída', cat: 'Pimentas e pápricas', cor: '#3b332c', uso: 'A base de quase todo tempero do dia a dia.' },
+      { nome: 'Lemon pepper', cat: 'Pimentas e pápricas', cor: '#c9b83a', uso: 'Pimenta com limão para peixe, frango e saladas.', fotosT: { vks: '../imagens/vks/lemon-pepper.webp' } },
+      { nome: 'Cominho', cat: 'Especiarias', cor: '#8a6a3b', uso: 'Essencial em carne moída, feijão e cozinha árabe.' },
+      { nome: 'Açafrão puro', cat: 'Especiarias', cor: '#e2a21b', uso: 'Açafrão puro para dar cor e sabor a arroz, caldos, frango e risotos.', fotosT: { vks: '../imagens/vks/acafrao-puro.webp' } },
+      { nome: 'Canela em pó', cat: 'Especiarias', cor: '#9a5a2e', uso: 'Doces, mingau, bolos e bebidas quentes.' },
+      { nome: 'Orégano', cat: 'Ervas', cor: '#6e7f3a', uso: 'Pizza, molho de tomate e pão de alho.', fotosT: { vks: '../imagens/vks/oregano.webp' } },
+      { nome: 'Louro em folha', cat: 'Ervas', cor: '#4f6b3a', uso: 'Feijão, ensopados e caldos de cozimento longo.', fotosT: { vks: '../imagens/vks/louro.webp' } },
+      { nome: 'Alho desidratado', cat: 'Desidratados', cor: '#e6dcc4', uso: 'Praticidade para refogados, pães e temperos secos.' },
+      { nome: 'Cebola desidratada', cat: 'Desidratados', cor: '#d9c39a', uso: 'Sopas, molhos e farofas sem precisar picar.' },
+      { nome: 'Tempero Ana Maria', foto: '../imagens/dlu/ana-maria.jpg', cat: 'Misturas da casa', cor: '#b5651d', uso: M, top: true, so: 'dlu' },
+      { nome: 'Tempero Master Chef', foto: '../imagens/dlu/master-chef.jpg', cat: 'Misturas da casa', cor: '#7a3b1f', uso: M, so: 'dlu' },
+      { nome: 'Edu Guedes tradicional', foto: '../imagens/dlu/edu-guedes.jpg', cat: 'Misturas da casa', cor: '#a0522d', uso: M, top: true, so: 'dlu' },
+      { nome: 'Chimichurri tradicional', foto: '../imagens/dlu/chimichurri-tradicional.jpg', cat: 'Misturas da casa', cor: '#5e7a35', uso: 'Mistura de ervas para churrasco e marinadas.', so: 'dlu' },
+      { nome: 'Chimichurri especial', cat: 'Misturas da casa', cor: '#3f5a26', uso: 'A versão especial do chimichurri para o seu churrasco.', top: true },
+      { nome: 'Mix gourmet', foto: '../imagens/dlu/mix-gourmet.jpg', cat: 'Misturas da casa', cor: '#c2872f', uso: M, so: 'dlu' },
+      { nome: 'Tempero para feijão', foto: '../imagens/dlu/tempero-feijao.jpg', cat: 'Misturas da casa', cor: '#6b4a2b', uso: 'Mistura pronta para deixar o feijão mais saboroso.', top: true, so: 'dlu' },
+      { nome: 'Tempero italiano', cat: 'Misturas da casa', cor: '#7d8f45', uso: 'Salsa, cebola e alho. Para molhos, massas e carnes.' },
+      { nome: 'Edu Guedes sabor carne', cat: 'Misturas da casa', cor: '#7b3a24', uso: M, so: 'dlu' },
+      { nome: 'Mix gourmet com cebola miúda', cat: 'Misturas da casa', cor: '#b9873f', uso: M, so: 'dlu' },
+      { nome: 'Tempera tudo', cat: 'Misturas da casa', cor: '#9b6a35', uso: M, so: 'dlu' },
+      { nome: 'Pega marido', foto: '../imagens/dlu/pega-marido.jpg', cat: 'Misturas da casa', cor: '#a13d2b', uso: M, so: 'dlu', top: true },
+      { nome: 'Tempero mineiro', cat: 'Misturas da casa', cor: '#8c5a2b', uso: M, so: 'dlu' },
+      { nome: 'Tempero paulista', cat: 'Misturas da casa', cor: '#9a4f2a', uso: M, so: 'dlu' },
+      { nome: 'Tempero baiano sem pimenta', cat: 'Misturas da casa', cor: '#c46a1f', uso: 'Mistura no estilo baiano, sem ardência.', so: 'dlu' },
+      { nome: 'Tempero gaúcho', foto: '../imagens/dlu/tempero-gaucho.jpg', cat: 'Misturas da casa', cor: '#d8b21f', uso: 'Mistura no estilo do Sul para churrasco, carnes e frango.', top: true, so: 'dlu' },
+      { nome: 'Mix gourmet defumado', foto: '../imagens/dlu/mix-gourmet-defumado.jpg', cat: 'Misturas da casa', cor: '#c4402a', uso: 'A versão defumada do mix gourmet, com sabor de churrasco.', so: 'dlu' },
+      { nome: 'Tempero bife acebolado', foto: '../imagens/dlu/bife-acebolado.jpg', cat: 'Misturas da casa', cor: '#8a4a2a', uso: 'Cebola tostada temperada para bifes, carne moída e arroz.', so: 'dlu' },
+      { nome: 'Tempero Jacquan', cat: 'Misturas da casa', cor: '#8d4b33', uso: M, so: 'dlu' },
+      { nome: 'Tempero vaca atolada', cat: 'Misturas da casa', cor: '#6f4a2f', uso: 'Mistura para o clássico prato de costela com mandioca.', so: 'dlu' },
+      { nome: 'Tempero calabresa', cat: 'Misturas da casa', cor: '#a8452e', uso: 'Sabor de calabresa para farofas, caldos e massas.', so: 'dlu' },
+      { nome: 'Tempero para vinagrete', foto: '../imagens/dlu/vinagrete.jpg', cat: 'Misturas da casa', cor: '#6d8a3e', uso: 'Mistura pronta para preparar o vinagrete.', so: 'dlu' },
+      { nome: 'Caldo de galinha', cat: 'Misturas da casa', cor: '#d9a441', uso: 'Caldo em pó para arroz, sopas e refogados.', venda: 'a partir de 250 g · saco de 25 kg', selo: 'Saco 25 kg', so: 'dlu' },
+      { nome: 'Orange pepper', cat: 'Pimentas e pápricas', cor: '#d9782d', uso: 'Pimenta com toque de laranja para peixes, frango e saladas.', so: 'dlu' },
+      { nome: 'Limão defumado', cat: 'Pimentas e pápricas', cor: '#a8a03a', uso: 'Sabor de limão com toque defumado para carnes e peixes.', so: 'dlu' },
+      { nome: 'Pimenta branca', cat: 'Pimentas e pápricas', cor: '#d8cfb8', uso: 'Pimenta suave e clara para molhos brancos e peixes.', so: 'dlu' },
+      { nome: 'Colorau caseiro (colorífico)', cat: 'Especiarias', cor: '#b8321e', uso: 'Dá cor avermelhada a arroz, carnes e ensopados.', venda: 'a partir de 250 g · saco de 25 kg', selo: 'Saco 25 kg', so: 'dlu' },
+      { nome: 'Curry', cat: 'Especiarias', cor: '#d79a1c', uso: 'Mistura de especiarias para frango, arroz e molhos.', so: 'dlu' },
+      { nome: 'Coentro em pó', cat: 'Especiarias', cor: '#9a8a52', uso: 'Para peixes, moquecas e pratos nordestinos.', so: 'dlu' },
+      { nome: 'Coentro em grão', cat: 'Especiarias', cor: '#b3a06a', uso: 'Inteiro, para conservas, marinadas ou moer na hora.', so: 'dlu' },
+      { nome: 'Salsa desidratada', cat: 'Ervas', cor: '#4e7a2f', uso: 'Salsa pronta para molhos, sopas e refogados.', so: 'dlu' },
+      { nome: 'Pimenta malagueta', ard: 4, cat: 'Pimentas em conserva', cor: '#c4241b', uso: 'Malagueta em conserva, ardida e saborosa.', tamanhos: ['30 g', '90 g', '220 g', '1 L'], emb: true, marca: 'Nativa', so: 'dlu' },
+      { nome: 'Pimenta cumari', ard: 4, cat: 'Pimentas em conserva', cor: '#d6491a', uso: 'Pimentinha pequena e bem ardida, em conserva.', tamanhos: ['30 g', '90 g', '1 L'], emb: true, marca: 'Nativa', so: 'dlu' },
+      { nome: 'Pimenta biquinho', ard: 0, cat: 'Pimentas em conserva', cor: '#e0662a', uso: 'Doce e sem ardência. Vai bem em saladas, petiscos e carnes.', tamanhos: ['90 g', '180 g', '320 g', '1 L'], emb: true, marca: 'Nativa' },
+      { nome: 'Pimenta biquinho balde', ard: 0, cat: 'Pimentas em conserva', cor: '#d8552a', uso: 'Biquinho em conserva no balde, para restaurantes e revenda.', tamanhos: ['balde 1,6 kg'], emb: true },
+      { nome: 'Pimenta mista', ard: 2, cat: 'Pimentas em conserva', cor: '#b5371f', uso: 'Mistura de pimentas em conserva.', tamanhos: ['90 g', '1 L'], emb: true, marca: 'Nativa', so: 'dlu' },
+      { nome: 'Pimenta de bode (de cheiro)', ard: 2, cat: 'Pimentas em conserva', cor: '#e3a21c', uso: 'Pimenta perfumada, de ardência média, em conserva.', tamanhos: ['90 g', '1 L'], emb: true, marca: 'Nativa' },
+      { nome: 'Molho de pimenta caipira', ard: 1, ardRotulo: 'Picante, sem ardência', cat: 'Molhos', cor: '#a52a1a', uso: 'Molho de pimenta no estilo caipira.', emb: true, marca: 'Aroma D’Minas', tamanhos: ['150 ml'], fotos: { vks: '../imagens/vks/molho-caipira.webp' } },
+      { nome: 'Molho Carolina Reaper', ard: 5, cat: 'Molhos', cor: '#7a1010', uso: 'Feito com uma das pimentas mais ardidas do mundo. Para os fortes.', emb: true, marca: 'Nativa' },
+      { nome: 'Molho Scorpion', ard: 5, cat: 'Molhos', cor: '#8f1a12', uso: 'Molho com pimenta Scorpion, de ardência extrema.', emb: true, marca: 'Nativa' },
+      { nome: 'Molho mexicana habanero', ard: 4, cat: 'Molhos', cor: '#e0661a', uso: 'Ardência forte com sabor frutado da habanero.', emb: true, marca: 'Nativa', tamanhos: ['150 ml'], fotos: { vks: '../imagens/vks/habanero.webp' } },
+      { nome: 'Molho mata sogra', ard: 3, cat: 'Molhos', cor: '#9b1f16', uso: 'Molho de pimenta da linha da casa, com ardência na medida: nem fraco, nem forte demais.', emb: true, marca: 'Nativa', tamanhos: ['150 ml'], fotos: { vks: '../imagens/vks/mata-sogra.webp' } },
+      { nome: 'Molho mata genro', ard: 3, cat: 'Molhos', cor: '#a8301a', uso: 'Molho de pimenta da linha da casa, com ardência na medida: nem fraco, nem forte demais.', emb: true, marca: 'Nativa', tamanhos: ['150 ml'], fotos: { vks: '../imagens/vks/mata-genro.webp' } },
+      { nome: 'Molho espanta visita', ard: 3, cat: 'Molhos', cor: '#b8401c', uso: 'Molho de pimenta da linha da casa, com ardência na medida: nem fraco, nem forte demais.', emb: true, marca: 'Nativa', tamanhos: ['150 ml'], fotos: { vks: '../imagens/vks/espanta-visita.webp' } },
+      { nome: 'Molho de pequi', ard: 2, cat: 'Molhos', cor: '#d9a520', uso: 'Com o sabor marcante do pequi, típico do cerrado.', emb: true, marca: 'Nativa' },
+      { nome: 'Creme de alho', cat: 'Molhos', cor: '#efe6c8', uso: 'Pronto para pão de alho, carnes e refogados.', emb: true, marca: 'Nativa' },
+      { nome: 'Pimenta saborosa', cat: 'Pimentas em conserva', cor: '#d9541f', uso: 'Pimentas misturadas com vinagre e ervas finas, em vidro.', tamanhos: ['300 g'], emb: true, marca: 'Aroma D’Minas', so: 'vks', top: true, fotos: { vks: '../imagens/vks/pimenta-saborosa.webp' } },
+      { nome: 'Pimenta malagueta', cat: 'Pimentas em conserva', cor: '#c4241b', uso: 'Malagueta em conserva, ardida e saborosa.', tamanhos: ['75 g', '200 g', '480 g', '780 g'], emb: true, marca: 'Aroma D’Minas', ard: 4, so: 'vks', top: true, fotos: { vks: '../imagens/vks/set-malagueta.webp' } },
+      { nome: 'Pimenta cumari verde', cat: 'Pimentas em conserva', cor: '#7f8f2a', uso: 'Cumari verde em conserva, pequena e bem ardida.', tamanhos: ['200 g', '500 g', '850 g'], emb: true, marca: 'Aroma D’Minas', ard: 4, so: 'vks', fotos: { vks: '../imagens/vks/set-cumari-verde.webp' } },
+      { nome: 'Pimenta mista', cat: 'Pimentas em conserva', cor: '#e0662a', uso: 'Camadas de pimentas coloridas em conserva.', tamanhos: ['120 g', '500 g', '850 g'], emb: true, marca: 'Aroma D’Minas', ard: 2, so: 'vks', fotos: { vks: '../imagens/vks/set-mista.webp' } },
+      { nome: 'Pimenta misturada', cat: 'Pimentas em conserva', cor: '#d6491a', uso: 'Pimentas variadas com sal e vinagre.', tamanhos: ['200 g', '880 g', '1 kg'], emb: true, marca: 'Nativa', ard: 2, so: 'vks', fotos: { vks: '../imagens/vks/set-misturada.webp' } },
+      { nome: 'Molho de pimenta verde cremoso', cat: 'Molhos', cor: '#a8b83a', uso: 'Molho cremoso de pimentas verdes com ervas finas.', tamanhos: ['150 ml'], emb: true, marca: 'Aroma D’Minas', so: 'vks', fotos: { vks: '../imagens/vks/molho-verde-cremoso.webp' } },
+      { nome: 'Molho de pimenta calabresa cremoso', cat: 'Molhos', cor: '#e0662a', uso: 'Molho cremoso de pimenta calabresa com ervas finas.', tamanhos: ['150 ml'], emb: true, marca: 'Nativa', so: 'vks', fotos: { vks: '../imagens/vks/calabresa-cremoso.webp' } },
+      { nome: 'Pimenta de bico', cat: 'Pimentas em conserva', cor: '#d8331f', uso: 'Pimenta de bico em conserva. Não arde: sabor suave para saladas, petiscos e carnes.', tamanhos: ['200 g', '780 g'], emb: true, marca: 'Aroma D’Minas', ard: 0, ardRotulo: 'Não arde', so: 'vks', top: true, fotos: { vks: '../imagens/vks/set-bico.webp' } },
+      { nome: 'Pimenta cumari do Pará', cat: 'Pimentas em conserva', cor: '#e8a21c', uso: 'Cumari amarela do Pará em conserva, perfumada e bem ardida.', tamanhos: ['750 g'], emb: true, marca: 'Aroma D’Minas', ard: 4, so: 'vks', fotos: { vks: '../imagens/vks/cumari-para-750.webp' } },
+      { nome: 'Pimenta cumari verde', cat: 'Pimentas em conserva', cor: '#8a9a2a', uso: 'Cumari verde em conserva, no frasco pequeno.', tamanhos: ['80 g'], emb: true, marca: 'Nativa', ard: 4, so: 'vks', fotos: { vks: '../imagens/vks/cumari-nativa-80.webp' } },
+      { nome: 'Alho picado sem sal', cat: 'Alho', cor: '#efe3c4', uso: 'Alho picado pronto para usar, sem sal. Depois de aberto, guardar na geladeira por até 30 dias.', tamanhos: ['250 g'], emb: true, marca: 'Muniz', so: 'vks', fotos: { vks: '../imagens/vks/alho-picado-muniz.webp' } },
+      { nome: 'Pimenta calabresa em flocos', cat: 'Pimentas e pápricas', cor: '#c4321b', uso: 'Para pizza, molhos, carnes e conservas.', so: 'vks', fotosT: { vks: '../imagens/vks/calabresa-flocos.webp' } },
+      { nome: 'Pimenta do reino em grão', cat: 'Pimentas e pápricas', cor: '#3b332c', uso: 'Inteira, para moer na hora ou usar em conservas e caldos.', so: 'vks', fotosT: { vks: '../imagens/vks/pimenta-reino-grao.webp' } },
+      { nome: 'Erva-doce', cat: 'Especiarias', cor: '#b9b58a', uso: 'Para chás, pães, bolos e biscoitos.', so: 'vks', fotosT: { vks: '../imagens/vks/erva-doce.webp' } },
+      { nome: 'Canela em pau', cat: 'Especiarias', cor: '#9a5a2e', uso: 'Para doces, quentão, chás e caldas.', so: 'vks', fotosT: { vks: '../imagens/vks/canela-pau.webp' } },
+      { nome: 'Cravo-da-índia', cat: 'Especiarias', cor: '#6b3a22', uso: 'Para doces, compotas, quentão e carnes.', so: 'vks', fotosT: { vks: '../imagens/vks/cravo.webp' } },
+      { nome: 'Limão natural (limão siciliano)', cat: 'Especiarias', cor: '#d9d21c', uso: 'Tempero de limão siciliano para peixes, frango, saladas e legumes.', so: 'vks', fotosT: { vks: '../imagens/vks/limao-natural.webp' } },
+      { nome: 'Tempero do Chefe', cat: 'Misturas da casa', cor: '#c9a54a', uso: 'Mistura pronta da casa. Pergunte a composição no WhatsApp.', so: 'vks', fotosT: { vks: '../imagens/vks/do-chefe.webp' } },
+      { nome: 'Tempero baiano em grão', cat: 'Misturas da casa', cor: '#8a7a4a', uso: 'Coentro, cominho e pimentas em grão com ervas, para moer ou usar inteiro.', so: 'vks', fotosT: { vks: '../imagens/vks/baiano-grao.webp' } },
+      { nome: 'Colorau extraforte', cat: 'Especiarias', cor: '#b8321e', uso: 'Colorau de cor bem intensa para arroz, carnes, frango e ensopados.', so: 'vks', fotosT: { vks: '../imagens/vks/colorau-extraforte.webp' } },
+      { nome: 'Açafrão', cat: 'Especiarias', marca: 'Jomil', cor: '#d9902a', uso: 'Açafrão em pó para dar cor e sabor ao arroz, caldos e frango.', so: 'vks', fotosT: { vks: '../imagens/vks/acafrao-jomil.webp' } },
+      { nome: 'Tempero para feijão', cat: 'Misturas da casa', cor: '#6b4a2b', uso: 'Mistura pronta para deixar o feijão mais saboroso.', so: 'vks', foto: '../imagens/vks/feijao.webp' },
+      { nome: 'Tempero mineiro', cat: 'Misturas da casa', cor: '#8c5a2b', uso: M, so: 'vks', foto: '../imagens/vks/mineiro.webp' },
+      { nome: 'Tempero gaúcho', cat: 'Misturas da casa', cor: '#d8b21f', uso: 'Mistura no estilo do Sul para churrasco, carnes e frango.', so: 'vks', foto: '../imagens/vks/gaucho.webp' },
+      { nome: 'Edu Guedes tradicional', cat: 'Misturas da casa', cor: '#a0522d', uso: M, so: 'vks', foto: '../imagens/vks/edu-guedes.webp' },
+      { nome: 'Tempero para vinagrete', cat: 'Misturas da casa', cor: '#6d8a3e', uso: 'Mistura pronta para preparar o vinagrete.', so: 'vks', foto: '../imagens/vks/vinagrete.webp' },
+      { nome: 'Mix gourmet', cat: 'Misturas da casa', cor: '#c2872f', uso: M, so: 'vks', foto: '../imagens/vks/mix-gourmet.webp' },
+      { nome: 'Chimichurri tradicional', cat: 'Misturas da casa', cor: '#5e7a35', uso: 'Mistura de ervas para churrasco e marinadas.', so: 'vks', foto: '../imagens/vks/chimichurri.webp' },
+      { nome: 'Azeite de dendê', cat: 'Mel, dendê e manteiga', cor: '#d9601a', uso: 'Para moqueca, acarajé, vatapá e bobó.', tamanhos: ['200 ml', '900 ml (litro)'], emb: true },
+      { nome: 'Mel puro', cat: 'Mel, dendê e manteiga', cor: '#d99a1a', uso: 'Mel puro de abelha.', tamanhos: ['200 ml', '500 ml', '1 L'], emb: true },
+{ nome: 'Jataí do Nordeste', cat: 'Mel, dendê e manteiga', cor: '#c9781a', uso: 'Xarope sabor mel: xarope de glicose com aroma natural de mel. Produto de origem nordestina.', tamanhos: ['250 g', '680 g', '1,2 kg'], emb: true, fotos: { vks: '../imagens/vks/jatai.webp' } },
+      { nome: 'Manteiga de garrafa', cat: 'Mel, dendê e manteiga', cor: '#e6c34a', uso: 'Para carne de sol, cuscuz, macaxeira e feijão verde.', tamanhos: ['250 ml', '1 L'], emb: true },
+      { nome: 'Alho descascado', cat: 'Alho', cor: '#efe3c4', uso: 'Dentes de alho já descascados, prontos para usar. Pacote de 1 kg.', venda: 'pacote de 1 kg', unidade: 'pacote(s) de 1 kg', selo: 'Pacote 1 kg', so: 'vks' },
+      { nome: 'Manjericão', cat: 'Ervas', cor: '#3f6b2f', uso: 'Molho de tomate, pizza, massas e saladas.' },
+      { nome: 'Alecrim', cat: 'Ervas', cor: '#5b7a4a', uso: 'Carnes assadas, batatas, frango e pães.', fotosT: { vks: '../imagens/vks/alecrim.webp' } },
+      { nome: 'Tomilho', cat: 'Ervas', cor: '#6b7d4a', uso: 'Carnes, aves, legumes assados e caldos.', so: 'dlu' },
+      { nome: 'Coentro em folha', cat: 'Ervas', cor: '#4a7a3a', uso: 'Folhas desidratadas para moquecas, peixes e caldos.', so: 'dlu' },
+      { nome: 'Hibisco', cat: 'Chás', cor: '#8e1c3a', uso: 'Flor desidratada para chá, quente ou gelado.', fotosT: { vks: '../imagens/vks/hibisco.webp' } },
+      { nome: 'Camomila', cat: 'Chás', cor: '#e2c45a', uso: 'Flores desidratadas para chá calmante.', fotosT: { vks: '../imagens/vks/camomila.webp' } },
+      { nome: 'Alho roxo nacional', cat: 'Alho', cor: '#8a4a6b', uso: 'Caixa fechada de 10 kg. Entrega somente por Lalamove, Uber ou retirada na loja.', venda: 'caixa de 10 kg · Lalamove, Uber ou retirada', unidade: 'caixa(s) de 10 kg', selo: 'Caixa 10 kg', so: 'vks', top: true }
+    ];
+    const produtos = base
+      .filter((p) => !p.so || p.so === loja.id)
+      .map((p) => {
+        /* foto própria de cada loja tem prioridade */
+        const r = p.fotos && p.fotos[loja.id], t = p.fotosT && p.fotosT[loja.id];
+        if (r) return { ...p, foto: r, recorte: true };
+        if (t) return { ...p, foto: t, recorte: false };
+        return p.foto && p.so !== loja.id && loja.id !== 'dlu' ? { ...p, foto: '' } : p;
+      })
+      .map((p) => ({
+        ...p,
+        venda: p.venda || (p.emb ? (p.tamanhos ? '' : 'Consulte os tamanhos') : 'a partir de 250 g'),
+        tams: p.tamanhos || [], temTams: !!p.tamanhos, semTams: !p.tamanhos,
+        selo: p.selo || (p.marca ? 'Marca ' + p.marca : (p.cat === 'Misturas da casa' ? 'Da casa' : '')),
+        temSelo: !!(p.selo || p.marca || p.cat === 'Misturas da casa'),
+        temFoto: !!p.foto && !p.recorte, temRecorte: !!p.recorte, semFoto: !p.foto, foto: p.foto || '',
+        temGrao: !p.foto && !p.emb,
+        temPote: !p.foto && !!p.emb && (p.cat === 'Pimentas em conserva' || /^Mel/.test(p.nome)),
+        temGarrafa: !p.foto && !!p.emb && !(p.cat === 'Pimentas em conserva' || /^Mel/.test(p.nome)),
+        graoBg: grao(p.cor),
+        fundo: p.recorte ? 'radial-gradient(circle at 50% 38%, #ffffff 0%, ' + mix(p.cor, '#ffffff', 0.9) + ' 70%)' : mix(p.cor, '#ffffff', 0.87),
+        sombra: mix(p.cor, '#000000', 0.55),
+        tampa: mix(p.cor, '#000000', 0.5),
+        brilho: 'linear-gradient(100deg, ' + mix(p.cor, '#000000', 0.25) + ' 0%, ' + p.cor + ' 30%, ' + mix(p.cor, '#ffffff', 0.35) + ' 45%, ' + p.cor + ' 60%, ' + mix(p.cor, '#000000', 0.3) + ' 100%)',
+        rotulo: p.marca || (loja.id === 'vks' ? 'VKS' : 'D’Lu'),
+        curto: p.nome.replace(/^(Molho de pimenta |Molho de |Molho |Pimenta de |Pimenta )/, ''),
+        seloBg: p.marca ? '#1d2240' : (p.cat === 'Misturas da casa' && !p.selo ? '#b8321e' : '#f2b31b'),
+        seloCor: p.marca || (p.cat === 'Misturas da casa' && !p.selo) ? '#ffffff' : '#1d2240',
+        ...this.extras(p, loja, grao),
+        wa: wa('Olá, ' + loja.nome + '! Quero pedir:\n' + (p.emb
+          ? p.nome + (p.marca ? ' ' + p.marca : '') + (p.tamanhos ? ' (' + p.tamanhos.join(' / ') + ')' : '') + ' – tamanho: ___ · quantidade: ___'
+          : p.nome + ' – ___ ' + (p.unidade || 'g')))
+      }));
+    const ordem = ['Alho', 'Misturas da casa', 'Pimentas e pápricas', 'Especiarias', 'Ervas', 'Chás', 'Desidratados', 'Pimentas em conserva', 'Molhos', 'Mel, dendê e manteiga'];
+    const cats = ordem.filter((c) => produtos.some((p) => p.cat === c));
+    const sel = (this.state.cat === 'Todos' || cats.includes(this.state.cat)) ? this.state.cat : 'Todos';
+    const norm = (s) => String(s).normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+    const q = norm(this.state.busca.trim());
+    let lista = sel === 'Todos' ? produtos : produtos.filter((p) => p.cat === sel);
+    if (q) lista = lista.filter((p) => norm(p.nome + ' ' + p.cat + ' ' + (p.marca || '')).includes(q));
+    const pick = (c) => () => this.setState({ cat: c, busca: '' });
+    const ativo = (c) => c === sel && !q;
+    const comFoto = (p) => (p.foto ? 2 : 0) + (p.top ? 1 : 0);
+    const destaques = produtos.slice().sort((a, b) => comFoto(b) - comFoto(a)).slice(0, 6);
+
+    const todasCores = produtos.map((p) => p.cor);
+    const fotosLoja = produtos.filter((p) => p.foto).map((p) => p.foto);
+    const pilha = (n) => Array.from({ length: 16 }, (_, i) => {
+      const f = fotosLoja.length ? fotosLoja[(i * 3 + n) % fotosLoja.length] : '';
+      return { cor: todasCores[(i * 3 + n) % todasCores.length], foto: f, temFoto: !!f, semFoto: !f };
+    });
+    const slides = loja.id === 'vks' ? [
+      { selo: 'VKS Condimentos', titulo: 'Alho roxo nacional', destaque: 'em caixa de 10 kg', texto: 'Para restaurantes, açougues e revenda. Entrega somente por Lalamove, Uber ou retirada na Avenida Mercúrio, 330.', botao: 'Ver produtos', link: '#produtos' },
+      { selo: 'Varejo e atacado', titulo: 'Temperos a granel', destaque: 'no Brás', texto: 'Sacos de 25 kg ou a quantidade que você precisar, pesada na hora.', botao: 'Ver produtos', link: '#produtos' },
+      { selo: 'Aberto às 6h', titulo: 'Segunda a sábado,', destaque: 'das 6h às 16h', texto: 'Avenida Mercúrio, 330 – Brás. Pertinho da D’Lu Empório.', botao: 'Como chegar', link: '#visite' }
+    ] : [
+      { selo: 'Varejo e atacado', titulo: 'Temperos a granel', destaque: 'do jeito que você precisa', texto: 'De 250 g a fardos de 10 kg. Temperos, ervas e misturas da casa, pesados na hora.', botao: 'Ver produtos', link: '#produtos' },
+      { selo: 'Misturas da casa', titulo: 'Ana Maria, Edu Guedes,', destaque: 'Gaúcho e muito mais', texto: 'As misturas que os clientes mais pedem, prontas para temperar.', botao: 'Ver produtos', link: '#produtos' },
+      { selo: 'Para o seu negócio', titulo: 'Atacado em fardos de', destaque: '10 kg', texto: 'Ou a quantidade que você precisar, pesada na hora. Mande a lista no WhatsApp que a gente separa.', botao: 'Ver produtos', link: '#produtos' }
+    ];
+    const si = this.state.slide % slides.length;
+    const comF = produtos.filter((p) => p.foto && !p.recorte);
+    const tigelaCores = loja.id === 'vks' ? ['#8a4a6b', '#efe3c4', '#c4241b'] : ['#b5651d', '#5e7a35', '#c4402a'];
+    const pos = [{ w: '64%', t: '20%', l: '34%' }, { w: '40%', t: '56%', l: '2%' }, { w: '34%', t: '4%', l: '6%' }];
+    const tigelas = pos.map((ps, i) => {
+      const f = comF.length ? comF[(i + si * 3) % comF.length] : null;
+      return { ...ps, temFoto: !!f, semFoto: !f, foto: f ? f.foto : '', nome: f ? f.nome : '', bg: grao(tigelaCores[i]),
+        dur: ['6.5s', '5.2s', '7.4s'][i], atraso: ['-1s', '-3s', '-2s'][i], entrada: (0.25 + i * 0.15) + 's', pop: si % 2 ? 'popB' : 'popA' };
+    });
+    const nomesFita = produtos.filter((p) => p.top || p.foto || p.marca).concat(produtos).map((p) => p.nome).filter((n, i, a) => a.indexOf(n) === i).slice(0, 14);
+    const fita = nomesFita.concat(nomesFita);
+    const galeria = comF.filter((p) => p.cat === 'Misturas da casa').slice(0, 5).map((p, i) => ({ nome: p.nome, foto: p.foto, pick: pick('Misturas da casa'), grande: i === 0 }));
+    const slide = { ...slides[si], pilha: pilha(si * 5) };
+
+    const nCat = (c) => produtos.filter((p) => p.cat === c);
+    const circulos = cats.map((c) => {
+      const ps = nCat(c);
+      const cor = (i) => (ps[i % ps.length] || {}).cor || '#cccccc';
+      const fc = (ps.find((p) => p.foto && !p.recorte) || {}).foto || '';
+      return { nome: c, temFoto: !!fc, semFoto: !fc, foto: fc, bg: grao(cor(0)), qtd: ps.length + (ps.length === 1 ? ' produto' : ' produtos'), c1: cor(0), c2: cor(1), c3: cor(2), c4: cor(3), borda: ativo(c) ? '#f2b31b' : '#ffffff', pick: pick(c) };
+    }).concat([{ nome: 'Todos', temFoto: false, semFoto: true, foto: '', bg: grao('#c2872f'), qtd: produtos.length + ' produtos', c1: todasCores[0], c2: todasCores[5 % todasCores.length], c3: todasCores[7 % todasCores.length], c4: todasCores[12 % todasCores.length], borda: sel === 'Todos' && !q ? '#f2b31b' : '#ffffff', pick: pick('Todos') }]);
+
+    /* ---------- sacola ---------- */
+    const fmtG = (g) => g >= 1000 ? String(+(g / 1000).toFixed(3)).replace('.', ',') + ' kg' : g + ' g';
+    const linhaTxt = (x) => {
+      const nome = x.nome + (x.marca ? ' ' + x.marca : '');
+      if (x.g) return nome + (x.fechado ? ' (' + x.n + ' ' + x.fechado.replace(' ', (x.n > 1 ? 's ' : ' ')) + (x.n > 1 ? 's' : '') + ')' : '') + ' – ' + fmtG(x.g * x.n);
+      if (x.un === 'un') return nome + ' ' + (x.r === 'Unidade' ? '' : x.r + ' ') + '– ' + x.n + ' un';
+      return nome + ' – ' + x.n + ' ' + x.un.replace(/^(caixa|pacote)/, (m) => x.n > 1 ? m + 's' : m);
+    };
+    const sacolaBruta = this.state.carrinhos[loja.id] || [];
+    const sacola = sacolaBruta.map((x, i) => ({
+      ...x, linha: linhaTxt(x), resumo: x.g ? fmtG(x.g * x.n) + (x.n > 1 ? ' · ' + x.n + '× ' + x.r : '') : x.n + '× ' + x.r,
+      mais: () => this.mudarSacola(loja.id, (l) => { l[i] = { ...l[i], n: l[i].n + 1 }; return l; }),
+      menos: () => this.mudarSacola(loja.id, (l) => { if (l[i].n > 1) l[i] = { ...l[i], n: l[i].n - 1 }; else l.splice(i, 1); return l; }),
+      tirar: () => this.mudarSacola(loja.id, (l) => { l.splice(i, 1); return l; })
+    }));
+    const qtdItens = sacola.length;
+    /* ---------- CPF / CNPJ ---------- */
+    const so = (v) => String(v || '').replace(/\D/g, '');
+    const cpfOk = (c) => {
+      if (c.length !== 11 || /^(\d)\1+$/.test(c)) return false;
+      const dv = (n) => { let t = 0; for (let i = 0; i < n; i++) t += +c[i] * (n + 1 - i); const r = (t * 10) % 11; return r === 10 ? 0 : r; };
+      return dv(9) === +c[9] && dv(10) === +c[10];
+    };
+    const cnpjOk = (c) => {
+      if (c.length !== 14 || /^(\d)\1+$/.test(c)) return false;
+      const dv = (n) => { const p = n === 12 ? [5,4,3,2,9,8,7,6,5,4,3,2] : [6,5,4,3,2,9,8,7,6,5,4,3,2]; let t = 0; for (let i = 0; i < n; i++) t += +c[i] * p[i]; const r = t % 11; return r < 2 ? 0 : 11 - r; };
+      return dv(12) === +c[12] && dv(13) === +c[13];
+    };
+    const fmtDoc = (c) => c.length === 11 ? c.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4') : c.length === 14 ? c.replace(/(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, '$1.$2.$3/$4-$5') : c;
+    const doc = so(this.state.doc);
+    const ehCnpj = doc.length > 11;
+    const docValido = ehCnpj ? cnpjOk(doc) : cpfOk(doc);
+    const querNf = this.state.nf === 'sim';
+    const entrega = this.state.entrega !== 'Retirar na loja';
+    let erro = '';
+    if (querNf && !doc) erro = 'Para a nota fiscal, informe seu CPF ou CNPJ.';
+    else if (querNf && !docValido) erro = ehCnpj ? 'Esse CNPJ não parece certo. Confira os números.' : 'Esse CPF não parece certo. Confira os números.';
+    else if (entrega && !this.state.endereco.trim()) erro = 'Para entrega, informe o endereço.';
+    const msgPedido = 'Olá, ' + loja.nome + '! Gostaria de fazer um pedido:\n\n'
+      + sacola.map((x) => x.linha).join('\n')
+      + '\n\n' + this.state.entrega
+      + (entrega && this.state.endereco.trim() ? '\nEndereço: ' + this.state.endereco.trim() : '')
+      + '\nNota fiscal: ' + (querNf ? 'sim, no ' + (ehCnpj ? 'CNPJ ' : 'CPF ') + fmtDoc(doc) + (ehCnpj && this.state.razao.trim() ? ' (' + this.state.razao.trim() + ')' : '') : 'não preciso')
+      + (this.state.nome.trim() ? '\nNome: ' + this.state.nome.trim() : '')
+      + (this.state.fone.trim() ? '\nTelefone: ' + this.state.fone.trim() : '')
+      + (this.state.obs.trim() ? '\nObs.: ' + this.state.obs.trim() : '');
+    const campo = (k) => (e) => this.guardarConta({ [k]: e.target.value });
+    const fmtData = (t) => new Date(t).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+    const historico = (this.state.historico || []).map((h, i) => ({
+      ...h, dataTxt: fmtData(h.data), lojaNome: (lojas[h.loja] || loja).nome,
+      resumo: h.itens.map((x) => x.nome).slice(0, 3).join(', ') + (h.itens.length > 3 ? ' e mais ' + (h.itens.length - 3) : ''),
+      qtd: h.itens.length === 1 ? '1 item' : h.itens.length + ' itens',
+      repetir: () => this.setState((s) => {
+        const carrinhos = { ...s.carrinhos, [h.loja]: h.itens.map((x) => ({ ...x })) };
+        try { localStorage.setItem('dlu-sacola', JSON.stringify({ carrinhos: carrinhos, nome: s.nome })); } catch (e) {}
+        return { carrinhos: carrinhos, loja: h.loja, conta: false, sacola: true, cat: 'Todos', busca: '' };
+      })
+    }));
+
+    return {
+      sacola: sacola,
+      qtdItens: qtdItens,
+      temItens: qtdItens > 0,
+      semItens: qtdItens === 0,
+      qtdTxt: qtdItens === 1 ? '1 item' : qtdItens + ' itens',
+      sacolaAberta: this.state.sacola,
+      abrirSacola: () => this.setState({ sacola: true, limparOk: false }),
+      fecharSacola: () => this.setState({ sacola: false }),
+      waPedido: wa(msgPedido),
+      podeEnviar: !erro,
+      naoPodeEnviar: !!erro,
+      erro: erro,
+      registrar: () => {
+        const h = { data: Date.now(), loja: loja.id, itens: sacolaBruta.map((x) => ({ ...x })) };
+        this.guardarConta({ historico: [h].concat(this.state.historico || []).slice(0, 20) });
+      },
+      fone: this.state.fone, onFone: campo('fone'),
+      docTxt: this.state.doc, onDoc: campo('doc'),
+      razao: this.state.razao, onRazao: campo('razao'),
+      endereco: this.state.endereco, onEndereco: campo('endereco'),
+      mostraRazao: ehCnpj,
+      mostraEndereco: entrega,
+      querNf: querNf,
+      docDica: !doc ? 'Digite só os números.' : docValido ? (ehCnpj ? 'CNPJ válido ✓' : 'CPF válido ✓') : (doc.length < 11 ? 'Faltam números.' : 'Confira os números.'),
+      docDicaCor: doc && docValido ? '#1b7a4b' : '#5a5f78',
+      nfOpcoes: [{ v: 'nao', t: 'Não preciso' }, { v: 'sim', t: 'Sim, quero nota' }].map((o) => ({
+        t: o.t, ativo: this.state.nf === o.v ? 'true' : 'false',
+        fundo: this.state.nf === o.v ? '#1d2240' : '#ffffff', texto: this.state.nf === o.v ? '#ffffff' : '#1d2240',
+        pick: () => this.setState({ nf: o.v })
+      })),
+      contaAberta: this.state.conta,
+      abrirConta: () => this.setState({ conta: true, sacola: false, apagarOk: false }),
+      fecharConta: () => this.setState({ conta: false }),
+      temNome: !!this.state.nome.trim(),
+      semNomeConta: !this.state.nome.trim(),
+      primeiroNome: this.state.nome.trim().split(' ')[0],
+      abaDados: this.state.contaAba === 'dados',
+      abaPedidos: this.state.contaAba === 'pedidos',
+      abas2: [{ v: 'dados', t: 'Meus dados' }, { v: 'pedidos', t: 'Meus pedidos (' + historico.length + ')' }].map((a) => ({
+        t: a.t, ativo: this.state.contaAba === a.v ? 'true' : 'false',
+        borda: this.state.contaAba === a.v ? '#b8321e' : 'transparent', cor: this.state.contaAba === a.v ? '#1d2240' : '#5a5f78',
+        pick: () => this.setState({ contaAba: a.v })
+      })),
+      historico: historico,
+      temHistorico: historico.length > 0,
+      semHistorico: historico.length === 0,
+      apagarTxt: this.state.apagarOk ? 'Toque de novo para apagar tudo' : 'Apagar meus dados deste aparelho',
+      apagarDados: () => this.state.apagarOk
+        ? this.guardarConta({ nome: '', fone: '', doc: '', razao: '', endereco: '', historico: [], apagarOk: false })
+        : this.setState({ apagarOk: true }),
+      nomeCliente: this.state.nome,
+      onNome: campo('nome'),
+      obs: this.state.obs,
+      onObs: (e) => this.setState({ obs: e.target.value }),
+      entregas: ['Retirar na loja', 'Entrega por Lalamove ou Uber'].map((t) => ({
+        t: t, ativo: this.state.entrega === t ? 'true' : 'false',
+        fundo: this.state.entrega === t ? '#1d2240' : '#ffffff', texto: this.state.entrega === t ? '#ffffff' : '#1d2240',
+        pick: () => this.setState({ entrega: t })
+      })),
+      limparTxt: this.state.limparOk ? 'Toque de novo para esvaziar' : 'Esvaziar sacola',
+      limpar2: () => this.state.limparOk ? this.mudarSacola(loja.id, () => []) : this.setState({ limparOk: true }),
+      aviso: this.state.aviso,
+      temAviso: !!this.state.aviso,
+      pulo: this.state.pulo % 2 ? 'puloA' : 'puloB',
+      sit: loja.sit,
+      loja: loja,
+      busca: this.state.busca,
+      onBusca: (e) => this.setState({ busca: e.target.value, cat: 'Todos' }),
+      limpar: () => this.setState({ busca: '', cat: 'Todos' }),
+      temFiltro: !!q || sel !== 'Todos',
+      vazio: lista.length === 0,
+      lista: lista,
+      contagem: lista.length + (lista.length === 1 ? ' produto' : ' produtos'),
+      tituloLista: q ? 'Resultado da busca' : (sel === 'Todos' ? 'Todos os produtos' : sel),
+      destaques: destaques,
+      destaqueSub: loja.id === 'vks' ? 'Os mais pedidos da VKS' : 'Os mais pedidos da D’Lu',
+      slide: slide,
+      tigelas: tigelas,
+      anim: si % 2 ? 'sobeB' : 'sobeA',
+      fita: fita,
+      galeria: galeria,
+      temGaleria: galeria.length >= 5,
+      lojaCurta: loja.id === 'vks' ? 'VKS' : 'D’Lu',
+      pontos: slides.map((s, i) => ({ atual: i === si ? 'true' : 'false', rotulo: 'Ir para o destaque ' + (i + 1), largura: i === si ? '28px' : '10px', cor: i === si ? '#f2b31b' : '#4a5a94', pick: () => this.setState({ slide: i }) })),
+      anterior: () => this.setState((s) => ({ slide: (s.slide + slides.length - 1) % slides.length })),
+      proximo: () => this.setState((s) => ({ slide: (s.slide + 1) % slides.length })),
+      vantagens: [
+        { sigla: 'V+A', titulo: 'Varejo e atacado', texto: loja.vantagem },
+        { sigla: 'KG', titulo: 'Pesado na hora', texto: 'Na quantidade do seu pedido' },
+        { sigla: '2', titulo: 'Duas lojas no Brás', texto: 'D’Lu Empório e VKS Condimentos' },
+        { sigla: 'WA', titulo: 'Pedido pelo WhatsApp', texto: loja.fone }
+      ],
+      circulos: circulos,
+      abas: ['Todos'].concat(cats).map((c) => ({ nome: c, atual: ativo(c) ? 'true' : 'false', fundo: ativo(c) ? '#f2b31b' : 'transparent', texto: ativo(c) ? '#1d2240' : '#ffffff', fundoClaro: ativo(c) ? '#1d2240' : '#ffffff', textoClaro: ativo(c) ? '#ffffff' : '#1d2240', pick: pick(c) })),
+      pickMisturas: pick('Misturas da casa'),
+      rodapeCats: cats.map((c) => ({ nome: c, pick: pick(c) })),
+      abasLoja: Object.values(lojas).map((l) => ({
+        nome: l.nome, ativo: l.id === loja.id ? 'true' : 'false',
+        fundo: l.id === loja.id ? '#f2b31b' : 'transparent', texto: l.id === loja.id ? '#1d2240' : '#ffffff',
+        borda: l.id === loja.id ? '#f2b31b' : '#4a5a94',
+        pick: () => this.setState({ loja: l.id, cat: 'Todos', busca: '', slide: 0 })
+      })),
+      lojasLista: Object.values(lojas).map((l) => ({
+        ...l, ehAtual: l.id === loja.id, sitTxt: l.sit.texto, sitFundo: l.sit.fundo, sitTinta: l.sit.tinta, sitCor: l.sit.cor, borda: l.id === loja.id ? '#f2b31b' : '#ffffff',
+        wa: waDe(l, 'Olá, ' + l.nome + '! Gostaria de fazer um pedido:\n'),
+        pick: () => this.setState({ loja: l.id, cat: 'Todos', busca: '', slide: 0 })
+      })),
+      waGeral: wa('Olá, ' + loja.nome + '! Gostaria de fazer um pedido:\n'),
+      waAtacado: wa('Olá, ' + loja.nome + '! Quero um orçamento de atacado:\n')
+    };
+  }
+}
+</script>
+</body>
+</html>

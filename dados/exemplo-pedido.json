@@ -1,0 +1,25 @@
+{
+  "versao": 1,
+  "origem": "site",
+  "loja": "dlu",
+  "criadoEm": "2026-10-22T21:40:00-03:00",
+  "cliente": {
+    "nome": "Marta Silva",
+    "telefone": "11999990000",
+    "documento": "11222333000181",
+    "tipoDocumento": "CNPJ",
+    "razaoSocial": "Restaurante Bom Sabor"
+  },
+  "notaFiscal": true,
+  "entrega": {
+    "tipo": "entrega",
+    "meio": "Lalamove ou Uber",
+    "endereco": "Rua X, 10 - Mooca, São Paulo - SP"
+  },
+  "observacao": "Separar em pacotes de 1 kg",
+  "itens": [
+    { "produtoId": "P005", "nome": "Cominho", "marca": null, "venda": "granel", "gramas": 1000, "quantidade": 1, "texto": "Cominho – 1 kg" },
+    { "produtoId": "P001", "nome": "Páprica defumada", "marca": null, "venda": "granel", "gramas": 10000, "quantidade": 2, "fardoFechado": true, "texto": "Páprica defumada (2 fardos fechados) – 20 kg" },
+    { "produtoId": "P043", "nome": "Pimenta malagueta", "marca": "Nativa", "venda": "embalado", "tamanho": "90 g", "quantidade": 3, "texto": "Pimenta malagueta Nativa 90 g – 3 un" }
+  ]
+}
