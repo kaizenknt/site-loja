@@ -493,15 +493,18 @@ function fillOverlay(c){
   var loja=c.loja;
   var html='';
   // aviso toast
-  if(state._aviso) html+='<div class="aviso" role="status" style="position:fixed;left:50%;bottom:24px;transform:translateX(-50%);z-index:60;background:var(--c-escuro);color:#fff;padding:12px 18px;border-radius:999px;display:flex;align-items:center;gap:12px;box-shadow:0 14px 30px -10px rgba(0,0,0,.5);max-width:calc(100% - 32px)"><span aria-hidden="true" style="width:24px;height:24px;flex:none;border-radius:50%;background:#4cc27f;display:flex;align-items:center;justify-content:center"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"></path></svg></span><span style="font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Na sacola: <b>'+esc(state._aviso)+'</b></span><button type="button" data-act="abrirSacola" style="font:inherit;cursor:pointer;border:none;background:var(--c-destaque);color:var(--c-escuro);font-weight:800;font-size:13px;padding:7px 12px;border-radius:999px;min-height:34px;white-space:nowrap">Ver pedido</button></div>';
+  var hAviso='',hFab='',hWa='',hGav='';
+  if(state._aviso) hAviso='<div class="aviso" role="status" style="position:fixed;left:50%;bottom:24px;transform:translateX(-50%);z-index:60;background:var(--c-escuro);color:#fff;padding:12px 18px;border-radius:999px;display:flex;align-items:center;gap:12px;box-shadow:0 14px 30px -10px rgba(0,0,0,.5);max-width:calc(100% - 32px)"><span aria-hidden="true" style="width:24px;height:24px;flex:none;border-radius:50%;background:#4cc27f;display:flex;align-items:center;justify-content:center"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"></path></svg></span><span style="font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Na sacola: <b>'+esc(state._aviso)+'</b></span><button type="button" data-act="abrirSacola" style="font:inherit;cursor:pointer;border:none;background:var(--c-destaque);color:var(--c-escuro);font-weight:800;font-size:13px;padding:7px 12px;border-radius:999px;min-height:34px;white-space:nowrap">Ver pedido</button></div>';
   // FAB sacola
   var qtd=(state.carrinhos[loja.id]||[]).length;
-  if(qtd>0) html+='<button type="button" data-act="abrirSacola" style="position:fixed;left:20px;bottom:20px;z-index:50;font:inherit;cursor:pointer;border:none;background:var(--c-escuro);color:#fff;padding:0 20px 0 14px;height:58px;border-radius:999px;display:flex;align-items:center;gap:10px;box-shadow:0 12px 24px -8px rgba(0,0,0,.45)"><span style="width:34px;height:34px;border-radius:50%;background:var(--c-destaque);color:var(--c-escuro);font-weight:900;font-size:15px;display:flex;align-items:center;justify-content:center">'+qtd+'</span><span style="font-weight:800;font-size:14px;text-transform:uppercase;letter-spacing:.06em">Ver meu pedido</span></button>';
+  if(qtd>0) hFab='<button type="button" data-act="abrirSacola" style="position:fixed;left:20px;bottom:20px;z-index:50;font:inherit;cursor:pointer;border:none;background:var(--c-escuro);color:#fff;padding:0 20px 0 14px;height:58px;border-radius:999px;display:flex;align-items:center;gap:10px;box-shadow:0 12px 24px -8px rgba(0,0,0,.45)"><span style="width:34px;height:34px;border-radius:50%;background:var(--c-destaque);color:var(--c-escuro);font-weight:900;font-size:15px;display:flex;align-items:center;justify-content:center">'+qtd+'</span><span style="font-weight:800;font-size:14px;text-transform:uppercase;letter-spacing:.06em">Ver meu pedido</span></button>';
   // FAB whatsapp
-  html+='<a class="btn-wa pulso" href="'+at(waGeralDe(loja))+'" target="_blank" rel="noopener" aria-label="Pedir pelo WhatsApp da '+at(loja.nome)+'" style="position:fixed;right:20px;bottom:20px;width:62px;height:62px;border-radius:50%;background:#1b7a4b;color:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 6px rgba(27,122,75,.18),0 12px 24px -8px rgba(0,0,0,.45);z-index:50"><svg aria-hidden="true" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.4L3 21l2.1-5.4A8.4 8.4 0 1 1 21 11.5z"></path></svg></a>';
-  if(state.sacola) html+=sacolaHTML(c);
-  if(state.conta) html+=contaHTML(c);
-  return html;
+  hWa='<a class="btn-wa pulso" href="'+at(waGeralDe(loja))+'" target="_blank" rel="noopener" aria-label="Pedir pelo WhatsApp da '+at(loja.nome)+'" style="position:fixed;right:20px;bottom:20px;width:62px;height:62px;border-radius:50%;background:#1b7a4b;color:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 6px rgba(27,122,75,.18),0 12px 24px -8px rgba(0,0,0,.45);z-index:50"><svg aria-hidden="true" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.4L3 21l2.1-5.4A8.4 8.4 0 1 1 21 11.5z"></path></svg></a>';
+  if(state.sacola) hGav=sacolaHTML(c);
+  else if(state.conta) hGav=contaHTML(c);
+  // cada parte fica sempre na mesma "vaga": assim, quando o aviso some ou o botão da sacola aparece, a gaveta não é recriada
+  var vaga=function(k,h){ return '<div data-vaga="'+k+'" style="display:contents">'+h+'</div>'; };
+  return vaga('aviso',hAviso)+vaga('fab',hFab)+vaga('wa',hWa)+vaga('gaveta',hGav);
 }
 
 function confirmacaoHTML(loja){
@@ -582,7 +585,7 @@ function sacolaHTML(c){
       +'<label for="sacolaFone" style="font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--c-mudo)">Seu WhatsApp</label><input id="sacolaFone" type="tel" value="'+at(state.fone)+'" data-act="campo" data-field="fone" autocomplete="tel" inputmode="tel" placeholder="(11) 90000-0000" style="font:inherit;font-size:16px;padding:11px 14px;border-radius:12px;border:1.5px solid var(--c-borda2);background:var(--c-fundo);color:var(--c-escuro)">'
       +'<input id="hpCampo" name="empresa_site" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">'
       +'<label for="sacolaObs" style="font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--c-mudo)">Observação (opcional)</label><input id="sacolaObs" value="'+at(state.obs)+'" data-act="campo" data-field="obs" placeholder="Ex.: separar em pacotes de 1 kg" style="font:inherit;font-size:16px;padding:11px 14px;border-radius:12px;border:1.5px solid var(--c-borda2);background:var(--c-fundo);color:var(--c-escuro)">'
-      +pagBloco+totalBloco+'<div id="sacolaAcao" style="display:flex;flex-direction:column;gap:12px">'+acao+'</div>'
+      +pagBloco+'<div id="sacolaTotal" style="display:flex;flex-direction:column;gap:12px">'+totalBloco+'</div><div id="sacolaAcao" style="display:flex;flex-direction:column;gap:12px">'+acao+'</div>'
       +'<button type="button" data-act="limpar2" style="align-self:center;font:inherit;cursor:pointer;border:none;background:transparent;color:var(--c-acento);font-weight:700;font-size:14px;padding:6px 10px;min-height:36px">'+(state.limparOk?'Toque de novo para esvaziar':'Esvaziar sacola')+'</button>'
     +'</div>';
   }
@@ -664,18 +667,50 @@ function renderCatalogo(){ var c=ctx(); el('catalogo').innerHTML=fillCatalogo(c)
 function renderCorpo(){ el('corpo').innerHTML=fillCorpo(ctx()); }
 function renderHero(){ el('hero').innerHTML=fillHero(ctx()); }
 var gavetaAberta='';
+/* Atualiza a árvore viva para ficar igual à nova, mexendo só no que mudou.
+   Assim a gaveta não é recriada: não "abre" de novo, não perde a rolagem, o foco nem as animações já tocadas. */
+function morphNo(de,para){
+  if(de.nodeType!==para.nodeType||de.nodeName!==para.nodeName){ de.parentNode.replaceChild(para,de); return; }
+  if(de.nodeType===3||de.nodeType===8){ if(de.nodeValue!==para.nodeValue) de.nodeValue=para.nodeValue; return; }
+  if(de.nodeType!==1) return;
+  var i,nm;
+  for(i=de.attributes.length-1;i>=0;i--){ nm=de.attributes[i].name; if(!para.hasAttribute(nm)) de.removeAttribute(nm); }
+  for(i=0;i<para.attributes.length;i++){ var a=para.attributes[i]; if(de.getAttribute(a.name)!==a.value) de.setAttribute(a.name,a.value); }
+  if(de.tagName==='INPUT'||de.tagName==='TEXTAREA'||de.tagName==='SELECT'){
+    if(de!==document.activeElement){ if(de.value!==para.value) de.value=para.value; if(de.checked!==para.checked) de.checked=para.checked; }
+    if(de.tagName!=='SELECT') return;
+  }
+  morphFilhos(de,para);
+}
+function morphFilhos(de,para){
+  var a=de.firstChild, b=para.firstChild;
+  while(b){ var bProx=b.nextSibling;
+    if(!a) de.appendChild(b); else { var aProx=a.nextSibling; morphNo(a,b); a=aProx; }
+    b=bProx; }
+  while(a){ var r=a.nextSibling; de.removeChild(a); a=r; }
+}
 function renderOverlay(c){
   var o=el('overlay'), rol=o.querySelector('.gaveta-rolar'), topoRol=rol?rol.scrollTop:0;
   var ativo=document.activeElement, idF=(ativo&&ativo.id&&o.contains(ativo))?ativo.id:'', ini=null, fim=null;
   if(idF){ try{ ini=ativo.selectionStart; fim=ativo.selectionEnd; }catch(e){} }
   var qual=state.sacola?'sacola':(state.conta?'conta':'');
-  o.innerHTML=fillOverlay(c||ctx());
   var mesma=qual&&qual===gavetaAberta; gavetaAberta=qual;
+  var html=fillOverlay(c||ctx());
+  var totV=el('sacolaTotal'), altTot=totV?totV.offsetHeight:0;
+  if(mesma&&o.firstChild){ var tmp=document.createElement('div'); tmp.innerHTML=html; morphFilhos(o,tmp); }
+  else o.innerHTML=html;
   if(mesma){
-    o.querySelectorAll('.gaveta,.gaveta-fundo').forEach(function(x){ x.style.animation='none'; });
-    var r=o.querySelector('.gaveta-rolar'); if(r) r.scrollTop=topoRol;
+    var r=o.querySelector('.gaveta-rolar');
+    if(r&&r!==rol){ // a parte que rola foi recriada: devolve a posição e não anima a abertura de novo
+      o.querySelectorAll('.gaveta,.gaveta-fundo').forEach(function(x){ x.style.animation='none'; });
+      r.scrollTop=topoRol;
+    }
+    // o total encolheu (ex.: trocou Pix por Cartão e saiu a linha do desconto) e a pessoa está no fim da gaveta:
+    // segura a altura para a tela não "pular" debaixo do dedo
+    var totN=el('sacolaTotal');
+    if(r&&totN&&altTot&&totN.offsetHeight<altTot&&topoRol>r.scrollHeight-r.clientHeight){ totN.style.minHeight=altTot+'px'; r.scrollTop=topoRol; }
   }
-  if(idF){ var n=el(idF); if(n){ try{ n.focus({preventScroll:true}); if(ini!=null) n.setSelectionRange(ini,fim); }catch(e){} } }
+  if(idF){ var n=el(idF); if(n&&n!==document.activeElement){ try{ n.focus({preventScroll:true}); if(ini!=null) n.setSelectionRange(ini,fim); }catch(e){} } }
 }
 /* enquanto a pessoa digita: atualiza só o botão de enviar e os avisos, sem recriar os campos */
 function patchGaveta(){
