@@ -184,3 +184,4 @@ button:focus-visible,a:focus-visible{outline:3px solid var(--amarelo);outline-of
 /* toque: sem espera de duplo toque para zoom e sem flash cinza */
 button,a,label,[data-act],summary{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
 @media (prefers-reduced-motion:reduce){.card:hover{transform:none}}
+section[id]{scroll-margin-top:90px}

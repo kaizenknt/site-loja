@@ -925,12 +925,25 @@ function carregarPrecos(){
 
 /* ---------- init ---------- */
 function init(){
+  // sempre abrir no topo: sem restaurar a rolagem antiga e sem pular para um #âncora guardado no endereço
+  try{ if('scrollRestoration' in history) history.scrollRestoration='manual'; }catch(e){}
+  if(location.hash){ try{ history.replaceState(null,'',location.pathname+location.search); }catch(e){} }
+  // links internos (#produtos, #visite...) rolam até a seção sem gravar o # no endereço
+  document.addEventListener('click',function(e){
+    var a=e.target.closest&&e.target.closest('a[href^="#"]'); if(!a) return;
+    var id=a.getAttribute('href').slice(1); if(!id) return;
+    e.preventDefault();
+    requestAnimationFrame(function(){ var alvo=document.getElementById(id); if(!alvo) return; alvo.scrollIntoView({behavior:'smooth',block:'start'});
+      // a página pode mudar de altura enquanto rola (filtro, fotos): confere no fim e acerta
+      setTimeout(function(){ var t=alvo.getBoundingClientRect().top; if(Math.abs(t-90)>30) alvo.scrollIntoView({block:'start'}); },900); });
+  },true);
   carregar();
   var app=el('app');
   app.addEventListener('click', onClick);
   ['pointerdown','touchstart','keydown'].forEach(function(t){ document.addEventListener(t,function(){ ultimoToque=Date.now(); },{passive:true,capture:true}); });
   app.addEventListener('input', onInput);
   renderAll();
+  window.scrollTo(0,0); requestAnimationFrame(function(){ window.scrollTo(0,0); });
   carregarPrecos();
   // relógio para "aberto agora"
   relogio=setInterval(function(){ state.agora=Date.now(); if(Date.now()-ultimoToque<2000) return; var a=document.activeElement; if(a&&/^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName)) return; renderAll(); }, 60000);
