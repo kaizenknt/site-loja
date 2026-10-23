@@ -208,6 +208,8 @@ window.CATALOGO = {
       { nome: 'Páprica doce defumada', marca: 'Tempera Bem', cat: 'Pimentas e pápricas', cor: '#a8341c', uso: 'Páprica doce com sabor defumado, para carnes, batatas, feijão e molhos.', tamanhos: ['pacote 500 g'], emb: true, so: 'dlu' },
       { nome: 'Semente de linhaça dourada', cat: 'Grãos e sementes', cor: '#c9a060', uso: 'Linhaça dourada para pães, vitaminas, iogurte e granola.', so: 'dlu' },
       { nome: 'Amaciante para carne', marca: 'Jomil', cat: 'Misturas da casa', cor: '#a8603a', uso: 'Amaciante em pó para deixar carnes mais macias antes de assar ou grelhar.', tamanhos: ['pacote 500 g'], emb: true, so: 'dlu' },
+      { nome: 'Óleo de linhaça extravirgem', marca: 'Tani', cat: 'Diversos', cor: '#c9a03a', uso: 'Óleo de linhaça extravirgem prensado a frio, para saladas e vitaminas.', tamanhos: ['250 ml'], emb: true, so: 'dlu' },
+      { nome: 'Caldo de bacon', marca: 'Tempera Bem', cat: 'Misturas da casa', cor: '#b0603a', uso: 'Caldo em pó sabor bacon, em pacote, para feijão, sopas, arroz e farofas.', emb: true, so: 'dlu' },
       { nome: 'Pimenta malagueta', ard: 4, cat: 'Pimentas em conserva', cor: '#c4241b', uso: 'Malagueta em conserva, ardida e saborosa.', tamanhos: ['30 g', '90 g', '220 g', '450 g', '1 L'], emb: true, marca: 'Nativa', so: 'dlu' },
       { nome: 'Pimenta cumari', ard: 4, cat: 'Pimentas em conserva', cor: '#d6491a', uso: 'Pimentinha pequena e bem ardida, em conserva.', tamanhos: ['30 g', '90 g', '1 L'], emb: true, marca: 'Nativa', so: 'dlu' },
       { nome: 'Pimenta biquinho', ard: 0, cat: 'Pimentas em conserva', cor: '#e0662a', uso: 'Doce e sem ardência. Vai bem em saladas, petiscos e carnes.', tamanhos: ['90 g', '100 g', '180 g', '320 g', '1 L'], emb: true, marca: 'Nativa' },
