@@ -367,7 +367,7 @@ function destaquesDe(c){
 }
 function renderDestaques(){
   var c=ctx(), d=destaquesDe(c);
-  Array.prototype.forEach.call(document.querySelectorAll('[data-dest]'),function(n){ var p=d[+n.getAttribute('data-dest')]; if(p) n.innerHTML=cartaoHTML(p); });
+  Array.prototype.forEach.call(document.querySelectorAll('[data-dest]'),function(n){ var p=d[+n.getAttribute('data-dest')]; if(p) por(n,cartaoHTML(p)); });
 }
 function fillCorpo(c){
   var loja=c.loja, produtos=c.produtos;
@@ -667,23 +667,34 @@ function campoHTML(id,label,field,val,ph,ac){
 
 /* ================= RENDER + EVENTOS ================= */
 function el(id){ return document.getElementById(id); }
+/* Põe o HTML novo mexendo só no que mudou (morph). Os botões continuam sendo os mesmos elementos:
+   um toque que começou antes do re-render não se perde, a rolagem lateral das categorias não volta
+   ao começo, as fotos não recarregam e as animações de entrada não rodam de novo. */
+function por(no,html){
+  if(!no) return;
+  if(!no.firstChild){ no.innerHTML=html; return; }
+  var tmp=document.createElement(no.tagName==='TBODY'?'tbody':'div'); tmp.innerHTML=html; morphFilhos(no,tmp);
+}
+var heroSlide=-1, heroLoja='';
 function renderAll(){
   var c=ctx();
   aplicarTemaLoja(c.loja.id);
-  el('topo').innerHTML=fillTopo(c);
-  el('hero').innerHTML=fillHero(c);
-  el('corpo').innerHTML=fillCorpo(c);
-  el('catalogo').innerHTML=fillCatalogo(c);
-  el('atacado').innerHTML=fillAtacado(c);
-  el('pedir').innerHTML=fillPedir(c);
-  el('visite').innerHTML=fillVisite(c);
-  el('rodape').innerHTML=fillRodape(c);
+  por(el('topo'),fillTopo(c));
+  renderHero(c);
+  por(el('corpo'),fillCorpo(c));
+  por(el('catalogo'),fillCatalogo(c));
+  por(el('atacado'),fillAtacado(c));
+  por(el('pedir'),fillPedir(c));
+  por(el('visite'),fillVisite(c));
+  por(el('rodape'),fillRodape(c));
   renderOverlay(c);
 }
-function renderCatalogo(){ var c=ctx(); el('catalogo').innerHTML=fillCatalogo(c); el('catnav').innerHTML=navCatsHTML(c); }
-function renderCorpo(){ el('corpo').innerHTML=fillCorpo(ctx()); }
-function renderHero(){ el('hero').innerHTML=fillHero(ctx()); }
-var gavetaAberta='';
+function renderCatalogo(){ var c=ctx(); por(el('catalogo'),fillCatalogo(c)); por(el('catnav'),navCatsHTML(c)); }
+function renderCorpo(){ por(el('corpo'),fillCorpo(ctx())); }
+// troca de slide (ou de loja) recria o destaque para tocar a animação de entrada; o resto só atualiza o que mudou
+function renderHero(c){ c=c||ctx(); var h=el('hero'), html=fillHero(c);
+  if(state.slide!==heroSlide||state.loja!==heroLoja){ heroSlide=state.slide; heroLoja=state.loja; h.innerHTML=html; } else por(h,html); }
+var gavetaAberta='', ultimoToque=0;
 /* Atualiza a árvore viva para ficar igual à nova, mexendo só no que mudou.
    Assim a gaveta não é recriada: não "abre" de novo, não perde a rolagem, o foco nem as animações já tocadas. */
 function morphNo(de,para){
@@ -794,9 +805,9 @@ function onClick(e){
     var key=t.getAttribute('data-key');
     var c=ctx(); var prod=c.todos.find(function(p){return p.chave===key;});
     if(prod){ addItem(prod);
-      // feedback no botão
-      var span=t.querySelector('.add-txt'); if(span){ span.textContent='Adicionado ✓'; t.style.background='#1b7a4b'; setTimeout(function(){ try{span.textContent='Adicionar'; t.style.background='var(--c-escuro)';}catch(_){} },1400); }
       renderOverlay(); syncBadge();
+      // feedback no botão (depois do re-render, para não ser desfeito na hora)
+      var span=t.querySelector('.add-txt'); if(span){ span.textContent='Adicionado ✓'; t.style.background='#1b7a4b'; setTimeout(function(){ try{span.textContent='Adicionar'; t.style.background='var(--c-escuro)';}catch(_){} },1400); }
     }
     return;
   }
@@ -917,14 +928,15 @@ function init(){
   carregar();
   var app=el('app');
   app.addEventListener('click', onClick);
+  ['pointerdown','touchstart','keydown'].forEach(function(t){ document.addEventListener(t,function(){ ultimoToque=Date.now(); },{passive:true,capture:true}); });
   app.addEventListener('input', onInput);
   renderAll();
   carregarPrecos();
   // relógio para "aberto agora"
-  relogio=setInterval(function(){ state.agora=Date.now(); var a=document.activeElement; if(a&&/^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName)) return; renderAll(); }, 60000);
+  relogio=setInterval(function(){ state.agora=Date.now(); if(Date.now()-ultimoToque<2000) return; var a=document.activeElement; if(a&&/^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName)) return; renderAll(); }, 60000);
   // carrossel automático
   var reduz=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if(!reduz) slideTimer=setInterval(function(){ state.slide=(state.slide+1)%3; renderHero(); }, 7000);
+  if(!reduz) slideTimer=setInterval(function(){ if(document.hidden||Date.now()-ultimoToque<8000) return; state.slide=(state.slide+1)%3; renderHero(); }, 7000);
 }
 if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', init); else init();
 })();

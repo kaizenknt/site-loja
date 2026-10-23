@@ -14,7 +14,7 @@
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{margin:0;background:#fff;color:var(--azul);font-family:'Figtree','Segoe UI',system-ui,sans-serif;font-size:16px;line-height:1.55}
-a{color:var(--azul)}a:hover{color:var(--vermelho)}
+a{color:var(--azul)}
 img{max-width:100%}
 button{font-family:inherit}
 
@@ -31,7 +31,7 @@ button{font-family:inherit}
 .bowl{position:absolute;border-radius:50%;overflow:hidden;border:8px solid var(--c-escuro3);box-shadow:0 30px 50px -20px rgba(0,0,0,.6);isolation:isolate}
 .bowl-in{border-radius:50%;overflow:hidden;clip-path:circle(50%)}
 .bowl img{width:100%;height:100%;object-fit:cover;display:block;border-radius:50%;transition:transform .6s ease}
-.bowl:hover img{transform:scale(1.08) rotate(3deg)}
+
 .fita{overflow:hidden;padding-block:22px;margin-top:-26px;position:relative;z-index:3}
 .fita-faixa{transform:rotate(-1.6deg);background:var(--amarelo);box-shadow:0 10px 24px -14px rgba(0,0,0,.5)}
 .fita-trilho{display:flex;width:max-content;animation:corre 60s linear infinite}
@@ -43,27 +43,27 @@ button{font-family:inherit}
 .bento{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));grid-auto-rows:210px;gap:14px}
 .bento > *:first-child{grid-column:span 2;grid-row:span 2}
 .bento-item img{transition:transform .5s ease}
-.bento-item:hover img{transform:scale(1.06)}
+
 .atacado{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:48px;align-items:center}
 .tags{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
 .pedir{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.9fr);gap:48px;align-items:center}
 .lojas{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px}
 .foot{display:grid;grid-template-columns:minmax(0,1.3fr) repeat(3,minmax(0,1fr));gap:32px}
 .card{transition:box-shadow .2s,transform .2s}
-.card:hover{box-shadow:0 18px 34px -18px rgba(29,34,64,.5);transform:translateY(-4px)}
+
 .card .midia-img{transition:transform .5s ease}
-.card:hover .midia-img{transform:scale(1.07)}
+
 .btn-wa{transition:background .15s}
-.btn-wa:hover{background:var(--verde-h);color:#fff}
+
 .btn-y{transition:background .15s,transform .15s}
-.btn-y:hover{background:var(--c-destaque-claro);color:var(--azul);transform:translateY(-1px)}
-.btn-ghost:hover{background:#fff;color:var(--azul)}
-.navlink:hover{background:var(--azul2);color:#fff}
+
+
+
 .circ .dot{transition:transform .2s,box-shadow .2s}
-.circ:hover .dot{transform:translateY(-4px) scale(1.03);box-shadow:0 16px 26px -14px rgba(29,34,64,.55)}
+
 .search:focus{outline:3px solid var(--amarelo);outline-offset:1px}
 button:focus-visible,a:focus-visible{outline:3px solid var(--amarelo);outline-offset:2px}
-.qtd-btn:hover{background:var(--creme)}
+
 
 /* preços */
 .preco{font-family:'Archivo','Arial Narrow',sans-serif;font-stretch:75%;font-weight:900;color:var(--azul);line-height:1}
@@ -90,10 +90,10 @@ button:focus-visible,a:focus-visible{outline:3px solid var(--amarelo);outline-of
 .pulso{position:relative}
 .pulso::before{content:"";position:absolute;inset:0;border-radius:50%;background:var(--verde);animation:ping 2.4s ease-out infinite;z-index:-1}
 .etiqueta{transform:rotate(-2deg);transform-origin:50% 0}
-.etiqueta:hover{animation:pendulo 1s ease-in-out}
+
 .btn-y{position:relative;overflow:hidden}
 .btn-y::after{content:"";position:absolute;top:0;bottom:0;left:0;width:40%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.55),transparent);transform:translateX(-120%) skewX(-20deg)}
-.btn-y:hover::after{animation:brilho .7s ease}
+
 .navlink,.catnav button{transition:background .2s,color .2s}
 .cel{display:grid}
 @supports (animation-timeline: view()){
@@ -164,3 +164,23 @@ button:focus-visible,a:focus-visible{outline:3px solid var(--amarelo);outline-of
 /* escolha de Tipo (produtos agrupados) */
 .chip-tipo.chip-falta{opacity:.6;text-decoration:line-through;text-decoration-thickness:1.5px}
 .chip-tipo.chip-falta small{text-decoration:none;font-weight:700}
+
+/* hover só onde existe mouse: no celular (iPhone) um :hover que muda a aparência faz o 1º toque só "passar o mouse" e o 2º clicar */
+@media (hover:hover) and (pointer:fine){
+  a:hover{color:var(--vermelho)}
+  .bowl:hover img{transform:scale(1.08) rotate(3deg)}
+  .bento-item:hover img{transform:scale(1.06)}
+  .card:hover{box-shadow:0 18px 34px -18px rgba(29,34,64,.5);transform:translateY(-4px)}
+  .card:hover .midia-img{transform:scale(1.07)}
+  .btn-wa:hover{background:var(--verde-h);color:#fff}
+  .btn-y:hover{background:var(--c-destaque-claro);color:var(--azul);transform:translateY(-1px)}
+  .btn-ghost:hover{background:#fff;color:var(--azul)}
+  .navlink:hover{background:var(--azul2);color:#fff}
+  .circ:hover .dot{transform:translateY(-4px) scale(1.03);box-shadow:0 16px 26px -14px rgba(29,34,64,.55)}
+  .qtd-btn:hover{background:var(--creme)}
+  .etiqueta:hover{animation:pendulo 1s ease-in-out}
+  .btn-y:hover::after{animation:brilho .7s ease}
+}
+/* toque: sem espera de duplo toque para zoom e sem flash cinza */
+button,a,label,[data-act],summary{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+@media (prefers-reduced-motion:reduce){.card:hover{transform:none}}
