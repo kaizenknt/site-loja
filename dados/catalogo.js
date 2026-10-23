@@ -266,6 +266,8 @@ window.CATALOGO = {
       { nome: 'Amendoim salgado', cat: 'Grãos e sementes', cor: '#c9965a', uso: 'Amendoim torrado e salgado, em pacote, para petiscar.', emb: true, so: 'dlu' },
       { nome: 'Azedinho de cereja', cat: 'Diversos', cor: '#c4203a', uso: 'Bala azedinha sabor cereja, a granel.', so: 'dlu' },
       { nome: 'Molho de pimenta', marca: 'Gota', ard: 3, cat: 'Molhos', cor: '#b0201a', uso: 'Molho de pimenta para petiscos, carnes, feijão e caldos.', tamanhos: ['150 ml'], emb: true, so: 'dlu' },
+      { nome: 'Páprica picante', marca: 'Tempera Bem', ard: 3, cat: 'Pimentas e pápricas', cor: '#a82a18', uso: 'Páprica com ardência, em pacote, para carnes, molhos, batatas e petiscos.', tamanhos: ['pacote 500 g'], emb: true, so: 'dlu' },
+      { nome: 'Chipotle', ard: 3, cat: 'Pimentas e pápricas', cor: '#6a2a1a', uso: 'Pimenta jalapeño defumada e moída, para carnes, molhos, chili e comida mexicana.', so: 'dlu' },
       { nome: 'Pimenta malagueta', ard: 4, cat: 'Pimentas em conserva', cor: '#c4241b', uso: 'Malagueta em conserva, ardida e saborosa.', tamanhos: ['30 g', '90 g', '220 g', '450 g', '1 L'], emb: true, marca: 'Nativa', so: 'dlu' },
       { nome: 'Pimenta cumari', ard: 4, cat: 'Pimentas em conserva', cor: '#d6491a', uso: 'Pimentinha pequena e bem ardida, em conserva.', tamanhos: ['30 g', '90 g', '1 L'], emb: true, marca: 'Nativa', so: 'dlu' },
       { nome: 'Pimenta biquinho', ard: 0, cat: 'Pimentas em conserva', cor: '#e0662a', uso: 'Doce e sem ardência. Vai bem em saladas, petiscos e carnes.', tamanhos: ['90 g', '100 g', '180 g', '320 g', '1 L'], emb: true, marca: 'Nativa' },
