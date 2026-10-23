@@ -1,0 +1,146 @@
+/* D'Lu Empório e VKS Condimentos — estilos do site.
+   Portado fielmente do design original (feira de temperos do Brás). */
+@import url('https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..100,500..900&family=Figtree:wght@400;500;600;700;800&display=swap');
+
+:root{
+  --azul:#1d2240; --azul-marca:#23336b; --azul2:#2c3d78;
+  --amarelo:#f2b31b; --vermelho:#b8321e; --verde:#1b7a4b; --verde-h:#155f3b;
+  --creme:#f8f3ea; --linha:#ece5d6; --linha2:#e2d9c6; --sec:#5a5f78;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:#fff;color:var(--azul);font-family:'Figtree','Segoe UI',system-ui,sans-serif;font-size:16px;line-height:1.55}
+a{color:var(--azul)}a:hover{color:var(--vermelho)}
+img{max-width:100%}
+button{font-family:inherit}
+
+.wrap{max-width:1240px;margin:0 auto;padding-left:clamp(16px,3vw,32px);padding-right:clamp(16px,3vw,32px)}
+.disp{font-family:'Archivo','Arial Narrow',sans-serif;font-stretch:72%;text-transform:uppercase;letter-spacing:-0.01em}
+.eyebrow{display:inline-flex;align-items:center;gap:10px;font-size:13px;font-weight:800;letter-spacing:.14em;text-transform:uppercase}
+.eyebrow::before{content:"";width:28px;height:3px;border-radius:3px;background:currentColor}
+.head-row{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:28px;align-items:center}
+.catnav{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none}
+.catnav::-webkit-scrollbar{display:none}
+.hero{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:40px;align-items:center}
+.bowls{position:relative;width:100%;max-width:540px;aspect-ratio:1;justify-self:end}
+.bowl{position:absolute;border-radius:50%;overflow:hidden;border:8px solid #2c3d78;box-shadow:0 30px 50px -20px rgba(0,0,0,.6)}
+.bowl img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .6s ease}
+.bowl:hover img{transform:scale(1.08) rotate(3deg)}
+.fita{overflow:hidden;padding-block:22px;margin-top:-26px;position:relative;z-index:3}
+.fita-faixa{transform:rotate(-1.6deg);background:var(--amarelo);box-shadow:0 10px 24px -14px rgba(0,0,0,.5)}
+.fita-trilho{display:flex;width:max-content;animation:corre 60s linear infinite}
+@keyframes corre{to{transform:translateX(-50%)}}
+.trust{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+.circles{display:flex;flex-wrap:wrap;justify-content:center;gap:28px 20px}
+.circles > *{flex:0 0 calc((100% - 100px) / 6);min-width:0}
+.prods{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:20px}
+.bento{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));grid-auto-rows:210px;gap:14px}
+.bento > *:first-child{grid-column:span 2;grid-row:span 2}
+.bento-item img{transition:transform .5s ease}
+.bento-item:hover img{transform:scale(1.06)}
+.atacado{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:48px;align-items:center}
+.tags{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.pedir{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.9fr);gap:48px;align-items:center}
+.lojas{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px}
+.foot{display:grid;grid-template-columns:minmax(0,1.3fr) repeat(3,minmax(0,1fr));gap:32px}
+.card{transition:box-shadow .2s,transform .2s}
+.card:hover{box-shadow:0 18px 34px -18px rgba(29,34,64,.5);transform:translateY(-4px)}
+.card .midia-img{transition:transform .5s ease}
+.card:hover .midia-img{transform:scale(1.07)}
+.btn-wa{transition:background .15s}
+.btn-wa:hover{background:var(--verde-h);color:#fff}
+.btn-y{transition:background .15s,transform .15s}
+.btn-y:hover{background:#ffc93d;color:var(--azul);transform:translateY(-1px)}
+.btn-ghost:hover{background:#fff;color:var(--azul)}
+.navlink:hover{background:var(--azul2);color:#fff}
+.circ .dot{transition:transform .2s,box-shadow .2s}
+.circ:hover .dot{transform:translateY(-4px) scale(1.03);box-shadow:0 16px 26px -14px rgba(29,34,64,.55)}
+.search:focus{outline:3px solid var(--amarelo);outline-offset:1px}
+button:focus-visible,a:focus-visible{outline:3px solid var(--amarelo);outline-offset:2px}
+.qtd-btn:hover{background:var(--creme)}
+
+/* preços */
+.preco{font-family:'Archivo','Arial Narrow',sans-serif;font-stretch:75%;font-weight:900;color:var(--azul);line-height:1}
+.preco-kg{font-size:12px;font-weight:800;color:var(--sec);letter-spacing:.02em;text-transform:none}
+.preco-sel{font-size:22px}
+.preco-consulta{font-size:13px;font-weight:800;color:var(--sec);text-transform:uppercase;letter-spacing:.06em}
+
+/* ===== animações ===== */
+@keyframes sobeA{from{opacity:0;transform:translateY(26px)}to{opacity:1;transform:none}}
+@keyframes popA{from{opacity:0;transform:scale(.6) rotate(-14deg)}to{opacity:1;transform:none}}
+@keyframes popB{from{opacity:0;transform:scale(.6) rotate(14deg)}to{opacity:1;transform:none}}
+@keyframes flutua{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+@keyframes gira{to{transform:rotate(360deg)}}
+@keyframes balanco{0%,100%{transform:rotate(12deg)}50%{transform:rotate(2deg) scale(1.05)}}
+@keyframes ping{from{transform:scale(1);opacity:.45}to{transform:scale(1.8);opacity:0}}
+@keyframes pendulo{0%{transform:rotate(-2deg)}30%{transform:rotate(4deg)}60%{transform:rotate(-3deg)}100%{transform:rotate(-2deg)}}
+@keyframes brilho{from{transform:translateX(-120%) skewX(-20deg)}to{transform:translateX(260%) skewX(-20deg)}}
+.entra{animation:sobeA .8s cubic-bezier(.2,.7,.2,1) both}
+.d1{animation-delay:.08s}.d2{animation-delay:.18s}.d3{animation-delay:.3s}.d4{animation-delay:.42s}.d5{animation-delay:.54s}
+.bowl{animation:flutua 6s ease-in-out infinite}
+.bowl-in{width:100%;height:100%;animation:popA .8s cubic-bezier(.2,.8,.2,1.2) both}
+.gira{animation:gira 90s linear infinite;transform-origin:50% 50%}
+.selo-250{animation:balanco 4.5s ease-in-out infinite}
+.pulso{position:relative}
+.pulso::before{content:"";position:absolute;inset:0;border-radius:50%;background:var(--verde);animation:ping 2.4s ease-out infinite;z-index:-1}
+.etiqueta{transform:rotate(-2deg);transform-origin:50% 0}
+.etiqueta:hover{animation:pendulo 1s ease-in-out}
+.btn-y{position:relative;overflow:hidden}
+.btn-y::after{content:"";position:absolute;top:0;bottom:0;left:0;width:40%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.55),transparent);transform:translateX(-120%) skewX(-20deg)}
+.btn-y:hover::after{animation:brilho .7s ease}
+.navlink,.catnav button{transition:background .2s,color .2s}
+.cel{display:grid}
+@supports (animation-timeline: view()){
+  .revela{animation:revela linear both;animation-timeline:view();animation-range:entry 0% entry 70%}
+  @keyframes revela{from{opacity:0;transform:translateY(46px) scale(.97)}to{opacity:1;transform:none}}
+  .revela-esq{animation:revelaEsq linear both;animation-timeline:view();animation-range:entry 0% entry 80%}
+  @keyframes revelaEsq{from{opacity:0;transform:translateX(-50px)}to{opacity:1;transform:none}}
+  .bolha{animation:bolha linear both;animation-timeline:view();transform-origin:100% 100%}
+  .bolha.b1{animation-range:entry 30% cover 30%}
+  .bolha.b2{animation-range:cover 25% cover 38%;transform-origin:0 100%}
+  .bolha.b3{animation-range:cover 33% cover 45%}
+  @keyframes bolha{from{opacity:0;transform:translateY(18px) scale(.85)}to{opacity:1;transform:none}}
+}
+@supports (animation-timeline: scroll()){
+  .topo{animation:topoSombra linear both;animation-timeline:scroll();animation-range:0 160px}
+  @keyframes topoSombra{to{box-shadow:0 12px 30px -14px rgba(20,24,48,.45)}}
+  .topo-barra{max-height:60px;overflow:hidden;animation:recolhe linear both;animation-timeline:scroll();animation-range:0 120px}
+  @keyframes recolhe{to{max-height:0;opacity:0}}
+  .logo-img{animation:logoMenor linear both;animation-timeline:scroll();animation-range:0 160px}
+  @keyframes logoMenor{to{height:40px}}
+  .head-pad{animation:menosPad linear both;animation-timeline:scroll();animation-range:0 160px}
+  @keyframes menosPad{to{padding-top:6px;padding-bottom:6px}}
+}
+@keyframes puloA{0%{transform:scale(1)}35%{transform:scale(1.25)}100%{transform:scale(1)}}
+@keyframes gaveta{from{transform:translateX(100%)}to{transform:none}}
+@keyframes fundoEntra{from{opacity:0}to{opacity:1}}
+@keyframes avisoSobe{from{opacity:0;transform:translate(-50%,20px)}to{opacity:1;transform:translate(-50%,0)}}
+@keyframes piscaVerde{0%,100%{box-shadow:0 0 0 0 rgba(76,194,127,.6)}50%{box-shadow:0 0 0 5px rgba(76,194,127,0)}}
+.pulo{animation:puloA .45s ease}
+.gaveta{animation:gaveta .35s cubic-bezier(.2,.8,.2,1) both}
+.gaveta-fundo{animation:fundoEntra .25s ease both}
+.aviso{animation:avisoSobe .3s ease both}
+.ponto-vivo{animation:piscaVerde 2s ease-in-out infinite}
+@media (prefers-reduced-motion:reduce){
+  .pulo,.gaveta,.gaveta-fundo,.aviso,.ponto-vivo,.entra,.bowl,.bowl-in,.gira,.selo-250,.pulso::before,.revela,.revela-esq,.bolha,.etiqueta:hover,.btn-y:hover::after{animation:none!important}
+  .fita-trilho{animation:none}.card,.circ .dot,.bowl img,.bento-item img,.card .midia-img{transition:none}.card:hover{transform:none}
+}
+@media (max-width:980px){
+  .circles > *{flex-basis:calc((100% - 60px) / 4)}
+  .trust{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .foot{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .bento{grid-template-columns:repeat(2,minmax(0,1fr));grid-auto-rows:170px}
+}
+@media (max-width:760px){
+  .head-row{grid-template-columns:1fr auto}
+  .head-search{grid-column:1 / -1;order:3}
+  .hero,.atacado,.lojas,.pedir{grid-template-columns:1fr}
+  .bowls{justify-self:center;max-width:380px}
+  .hide-sm{display:none}
+  .topo{position:static!important}
+  .circles > *{flex-basis:calc((100% - 40px) / 3)}
+}
+@media (max-width:480px){
+  .foot,.trust{grid-template-columns:1fr}
+  .tags{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+}

@@ -1,0 +1,368 @@
+{
+  "_exemplo": true,
+  "_nota": "Precos de EXEMPLO. Serao substituidos pelos precos reais publicados pelo Balcao PDV. Valores em centavos (BRL). granel: campo kg = preco por quilo; embalado/unidade: campo op = preco por tamanho/opcao.",
+  "moeda": "BRL",
+  "atualizado": "2026-10-23",
+  "itens": {
+    "paprica-defumada": {
+      "kg": 6900
+    },
+    "paprica-doce": {
+      "kg": 6900
+    },
+    "pimenta-do-reino-moida": {
+      "kg": 6900
+    },
+    "lemon-pepper": {
+      "kg": 6900
+    },
+    "cominho": {
+      "kg": 7900
+    },
+    "acafrao-puro": {
+      "kg": 7900
+    },
+    "canela-em-po": {
+      "kg": 7900
+    },
+    "oregano": {
+      "kg": 5900
+    },
+    "louro-em-folha": {
+      "kg": 5900
+    },
+    "alho-desidratado": {
+      "kg": 5900
+    },
+    "cebola-desidratada": {
+      "kg": 5900
+    },
+    "tempero-ana-maria": {
+      "kg": 5500
+    },
+    "tempero-master-chef": {
+      "kg": 5500
+    },
+    "edu-guedes-tradicional": {
+      "kg": 5500
+    },
+    "chimichurri-tradicional": {
+      "kg": 5500
+    },
+    "chimichurri-especial": {
+      "kg": 5500
+    },
+    "mix-gourmet": {
+      "kg": 5500
+    },
+    "tempero-para-feijao": {
+      "kg": 5500
+    },
+    "tempero-italiano": {
+      "kg": 5500
+    },
+    "edu-guedes-sabor-carne": {
+      "kg": 5500
+    },
+    "mix-gourmet-com-cebola-miuda": {
+      "kg": 5500
+    },
+    "tempera-tudo": {
+      "kg": 5500
+    },
+    "pega-marido": {
+      "kg": 5500
+    },
+    "tempero-mineiro": {
+      "kg": 5500
+    },
+    "tempero-paulista": {
+      "kg": 5500
+    },
+    "tempero-baiano-sem-pimenta": {
+      "kg": 5500
+    },
+    "tempero-gaucho": {
+      "kg": 5500
+    },
+    "mix-gourmet-defumado": {
+      "kg": 5500
+    },
+    "tempero-bife-acebolado": {
+      "kg": 5500
+    },
+    "tempero-jacquan": {
+      "kg": 5500
+    },
+    "tempero-vaca-atolada": {
+      "kg": 5500
+    },
+    "tempero-calabresa": {
+      "kg": 5500
+    },
+    "tempero-para-vinagrete": {
+      "kg": 5500
+    },
+    "caldo-de-galinha": {
+      "kg": 5500
+    },
+    "orange-pepper": {
+      "kg": 6900
+    },
+    "limao-defumado": {
+      "kg": 6900
+    },
+    "pimenta-branca": {
+      "kg": 6900
+    },
+    "colorau-caseiro-colorifico": {
+      "kg": 7900
+    },
+    "curry": {
+      "kg": 7900
+    },
+    "coentro-em-po": {
+      "kg": 7900
+    },
+    "coentro-em-grao": {
+      "kg": 7900
+    },
+    "salsa-desidratada": {
+      "kg": 5900
+    },
+    "pimenta-malagueta|nativa": {
+      "op": {
+        "30 g": 1590,
+        "90 g": 2390,
+        "220 g": 3190,
+        "1 L": 3990
+      }
+    },
+    "pimenta-cumari|nativa": {
+      "op": {
+        "30 g": 1590,
+        "90 g": 2390,
+        "1 L": 3190
+      }
+    },
+    "pimenta-biquinho|nativa": {
+      "op": {
+        "90 g": 1590,
+        "180 g": 2390,
+        "320 g": 3190,
+        "1 L": 3990
+      }
+    },
+    "pimenta-biquinho-balde": {
+      "op": {
+        "balde 1,6 kg": 1590
+      }
+    },
+    "pimenta-mista|nativa": {
+      "op": {
+        "90 g": 1590,
+        "1 L": 2390
+      }
+    },
+    "pimenta-de-bode-de-cheiro|nativa": {
+      "op": {
+        "90 g": 1590,
+        "1 L": 2390
+      }
+    },
+    "molho-de-pimenta-caipira|aroma-d-minas": {
+      "op": {
+        "150 ml": 1290
+      }
+    },
+    "molho-carolina-reaper|nativa": {
+      "op": {
+        "Unidade": 1290
+      }
+    },
+    "molho-scorpion|nativa": {
+      "op": {
+        "Unidade": 1290
+      }
+    },
+    "molho-mexicana-habanero|nativa": {
+      "op": {
+        "150 ml": 1290
+      }
+    },
+    "molho-mata-sogra|nativa": {
+      "op": {
+        "150 ml": 1290
+      }
+    },
+    "molho-mata-genro|nativa": {
+      "op": {
+        "150 ml": 1290
+      }
+    },
+    "molho-espanta-visita|nativa": {
+      "op": {
+        "150 ml": 1290
+      }
+    },
+    "molho-de-pequi|nativa": {
+      "op": {
+        "Unidade": 1290
+      }
+    },
+    "creme-de-alho|nativa": {
+      "op": {
+        "Unidade": 1290
+      }
+    },
+    "azeite-de-dende": {
+      "op": {
+        "200 ml": 1990,
+        "900 ml (litro)": 2790
+      }
+    },
+    "mel-puro": {
+      "op": {
+        "200 ml": 1990,
+        "500 ml": 2790,
+        "1 L": 3590
+      }
+    },
+    "jatai-do-nordeste": {
+      "op": {
+        "250 g": 1990,
+        "680 g": 2790,
+        "1,2 kg": 3590
+      }
+    },
+    "manteiga-de-garrafa": {
+      "op": {
+        "250 ml": 1990,
+        "1 L": 2790
+      }
+    },
+    "manjericao": {
+      "kg": 5900
+    },
+    "alecrim": {
+      "kg": 5900
+    },
+    "tomilho": {
+      "kg": 5900
+    },
+    "coentro-em-folha": {
+      "kg": 5900
+    },
+    "hibisco": {
+      "kg": 8900
+    },
+    "camomila": {
+      "kg": 8900
+    },
+    "pimenta-saborosa|aroma-d-minas": {
+      "op": {
+        "300 g": 1590
+      }
+    },
+    "pimenta-malagueta|aroma-d-minas": {
+      "op": {
+        "75 g": 1590,
+        "200 g": 2390,
+        "480 g": 3190,
+        "780 g": 3990
+      }
+    },
+    "pimenta-cumari-verde|aroma-d-minas": {
+      "op": {
+        "200 g": 1590,
+        "500 g": 2390,
+        "850 g": 3190
+      }
+    },
+    "pimenta-mista|aroma-d-minas": {
+      "op": {
+        "120 g": 1590,
+        "500 g": 2390,
+        "850 g": 3190
+      }
+    },
+    "pimenta-misturada|nativa": {
+      "op": {
+        "200 g": 1590,
+        "880 g": 2390,
+        "1 kg": 3190
+      }
+    },
+    "molho-de-pimenta-verde-cremoso|aroma-d-minas": {
+      "op": {
+        "150 ml": 1290
+      }
+    },
+    "molho-de-pimenta-calabresa-cremoso|nativa": {
+      "op": {
+        "150 ml": 1290
+      }
+    },
+    "pimenta-de-bico|aroma-d-minas": {
+      "op": {
+        "200 g": 1590,
+        "780 g": 2390
+      }
+    },
+    "pimenta-cumari-do-para|aroma-d-minas": {
+      "op": {
+        "750 g": 1590
+      }
+    },
+    "pimenta-cumari-verde|nativa": {
+      "op": {
+        "80 g": 1590
+      }
+    },
+    "alho-picado-sem-sal|muniz": {
+      "op": {
+        "250 g": 1990
+      }
+    },
+    "pimenta-calabresa-em-flocos": {
+      "kg": 6900
+    },
+    "pimenta-do-reino-em-grao": {
+      "kg": 6900
+    },
+    "erva-doce": {
+      "kg": 7900
+    },
+    "canela-em-pau": {
+      "kg": 7900
+    },
+    "cravo-da-india": {
+      "kg": 7900
+    },
+    "limao-natural-limao-siciliano": {
+      "kg": 7900
+    },
+    "tempero-do-chefe": {
+      "kg": 5500
+    },
+    "tempero-baiano-em-grao": {
+      "kg": 5500
+    },
+    "colorau-extraforte": {
+      "kg": 7900
+    },
+    "acafrao|jomil": {
+      "kg": 7900
+    },
+    "alho-descascado": {
+      "op": {
+        "Pacote 1 kg": 3290
+      }
+    },
+    "alho-roxo-nacional": {
+      "op": {
+        "Caixa 10 kg": 14900
+      }
+    }
+  }
+}
