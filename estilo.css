@@ -278,3 +278,5 @@ html.folha-aberta,html.folha-aberta body{overflow:hidden}
   .trust > div > span:first-child{width:40px!important;height:40px!important}
 }
 @media (max-width:360px){.loja-pill{font-size:11.5px;padding:6px 8px}.barra-status{font-size:11px}}
+.aval-grade{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+@media (max-width:760px){.aval-grade{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scroll-padding-left:16px;gap:12px;margin:0 -16px;padding:0 16px 6px}.aval-grade .aval{flex:0 0 82%;scroll-snap-align:start}}

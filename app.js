@@ -416,6 +416,25 @@ function renderDestaques(){
   var c=ctx(), d=destaquesDe(c);
   Array.prototype.forEach.call(document.querySelectorAll('[data-dest]'),function(n){ var p=d[+n.getAttribute('data-dest')]; if(p) por(n,cardFor(p)); });
 }
+/* avaliações reais do perfil da D'Lu no Google (texto copiado do Google Maps; nota e total conferidos em 24/10/2026) */
+var AVALIACOES={dlu:{nota:'4,9',total:41,link:'https://www.google.com/maps/place/?q=place_id:ChIJsU1imLlmzpQRtAk3ozh4p9I',
+  textos:['Lugar incrível, atendentes simpáticos, tem muita variedade, produtos de ótima qualidade e preço excelente. RECOMENDO!!!',
+    'Atendimento de primeira, variedades de produtos. Ótimo lugar para ir e sair satisfeita. Obrigada, voltarei sempre.',
+    'Ótimo atendimento, produtos de qualidade, tudo que procurei eu encontrei lá. Simplesmente amei tudo… voltarei mais vezes com certeza.']}};
+function avaliacoesHTML(loja){
+  var a=AVALIACOES[loja.id]; if(!a) return '';
+  var est='<span aria-hidden="true" style="color:#f2b31b;letter-spacing:2px;font-size:20px">★★★★★</span>';
+  var cards=a.textos.map(function(t){return '<figure class="aval revela" style="margin:0;display:flex;flex-direction:column;gap:12px;padding:22px;border-radius:18px;background:#fff;border:1px solid var(--c-borda)">'+est
+    +'<blockquote style="margin:0;font-size:16px;line-height:1.55;color:var(--c-escuro)">“'+esc(t)+'”</blockquote>'
+    +'<figcaption style="font-size:13px;color:var(--c-mudo);font-weight:700">Cliente no Google</figcaption></figure>';}).join('');
+  return '<section aria-labelledby="avalTit" style="padding-top:48px;padding-bottom:24px"><div class="wrap" style="display:flex;flex-direction:column;gap:24px">'
+    +'<div class="revela-esq" style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:12px"><div style="display:flex;flex-direction:column;gap:6px">'
+    +'<span class="eyebrow" style="color:var(--c-acento)">Quem compra, recomenda</span>'
+    +'<h2 id="avalTit" class="disp" style="margin:0;font-weight:900;font-size:clamp(30px,4vw,48px);line-height:1">Nota '+a.nota+' no Google</h2>'
+    +'<span style="font-size:15px;color:var(--c-mudo)">'+est+' <b style="color:var(--c-escuro)">'+a.nota+'</b> de 5, em '+a.total+' avaliações</span></div>'
+    +'<a href="'+at(a.link)+'" target="_blank" rel="noopener" style="font-weight:800;font-size:15px;display:inline-flex;align-items:center;gap:8px;min-height:44px">Ver todas no Google <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></a></div>'
+    +'<div class="aval-grade">'+cards+'</div></div></section>';
+}
 function fillCorpo(c){
   var loja=c.loja, produtos=c.produtos;
   // fita
@@ -453,6 +472,7 @@ function fillCorpo(c){
   }
   return '<div class="fita" aria-hidden="true"><div class="fita-faixa"><div class="fita-trilho">'+fita+'</div></div></div>'
     +'<section class="sec-dest" style="padding-top:40px;padding-bottom:56px"><div class="wrap" style="display:flex;flex-direction:column;gap:28px"><div style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:12px"><div class="revela-esq" style="display:flex;flex-direction:column;gap:6px"><span class="eyebrow" style="color:var(--c-acento)">'+(loja.id==='vks'?'Os mais pedidos da VKS':'Os mais vendidos da D’Lu')+'</span><h2 class="disp" style="margin:0;font-weight:900;font-size:clamp(36px,4.6vw,56px);line-height:.95">'+(loja.id==='vks'?'Destaques da semana':'Os queridinhos')+'</h2></div><a href="#produtos" style="font-weight:800;font-size:15px;display:inline-flex;align-items:center;gap:8px">Ver todos os produtos <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></a></div><div class="prods'+(state.mob?' carrossel':'')+'">'+destHTML+'</div></div></section>'
+    +avaliacoesHTML(loja)
     +'<section style="padding-top:26px;padding-bottom:8px"><div class="wrap trust revela">'+trust+'</div></section>'
     +'<section style="padding-top:56px;padding-bottom:28px"><div class="wrap" style="display:flex;flex-direction:column;gap:32px"><div class="revela" style="display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center"><span class="eyebrow" style="color:var(--c-acento)">Compre por categoria</span><h2 class="disp" style="margin:0;font-weight:900;font-size:clamp(36px,4.6vw,56px);line-height:.95;color:var(--c-escuro)">Tem tempero pra tudo</h2></div><div class="circles">'+circ+'</div></div></section>'
     +galeriaHTML;
