@@ -51,7 +51,7 @@ window.CATALOGO = {
       { nome: 'Cominho em grão', fotosT: { dlu: 'imagens/dlu/cominho-grao.webp' }, cat: 'Especiarias', cor: '#8f7040', uso: 'Cominho inteiro para moer na hora ou tostar em pratos árabes e indianos.', so: 'dlu' },
       { nome: 'Tempero Delícia D’Lu', fotosT: { dlu: 'imagens/dlu/delicia-dlu.webp' }, cat: 'Misturas da casa', cor: '#b0602a', uso: 'Mistura pronta da casa. Pergunte a composição no WhatsApp.', so: 'dlu' },
       { nome: 'Tempero caipira', fotosT: { dlu: 'imagens/dlu/tempero-caipira.webp' }, cat: 'Misturas da casa', cor: '#8a5c2c', uso: 'Mistura pronta da casa. Pergunte a composição no WhatsApp.', so: 'dlu' },
-      { nome: 'Tempero do Chefe', cat: 'Misturas da casa', cor: '#7d4325', uso: 'Mistura pronta da casa. Pergunte a composição no WhatsApp.', so: 'dlu' },
+      { nome: 'Tempero do Chefe', foto: 'imagens/dlu/tempero-do-chefe.webp', cat: 'Misturas da casa', cor: '#7d4325', uso: 'Mistura pronta da casa. Pergunte a composição no WhatsApp.', so: 'dlu' },
       { nome: 'Chimichurri defumado', fotosT: { dlu: 'imagens/dlu/chimichurri-defumado.webp' }, cat: 'Misturas da casa', cor: '#5a4a26', uso: 'O chimichurri com toque defumado, para churrasco e carnes.', so: 'dlu' },
       { nome: 'Limão natural', fotosT: { dlu: 'imagens/dlu/limao-natural.webp' }, cat: 'Pimentas e pápricas', cor: '#cfc24a', uso: 'Limão siciliano desidratado, em flocos e pó, para peixe, frango, saladas e marinadas.', so: 'dlu' },
       { nome: 'Açafrão temperado', fotosT: { dlu: 'imagens/dlu/acafrao-temperado.webp' }, cat: 'Especiarias', cor: '#d9951e', uso: 'Açafrão já temperado para arroz, frango e caldos.', so: 'dlu' },
