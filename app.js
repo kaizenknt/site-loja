@@ -208,6 +208,7 @@ function midiaDe(p){
       +'<div style="width:92%;padding:9px 4px;background:var(--c-fundo3);border-radius:4px;text-align:center;display:flex;flex-direction:column;gap:2px;box-shadow:0 2px 4px rgba(0,0,0,.15)"><span style="font-size:8px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--c-acento)">'+esc(p.rotulo)+'</span><span style="font-family:\'Archivo\',\'Arial Narrow\',sans-serif;font-stretch:68%;font-weight:900;font-size:13px;line-height:1;text-transform:uppercase;color:var(--c-escuro)">'+esc(p.curto)+'</span></div></div></div>';
 
   var selo = p.temSelo?('<span class="selo-card" style="position:absolute;z-index:1;left:12px;top:12px;background:'+p.seloBg+';color:'+p.seloCor+';font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;padding:5px 10px;border-radius:999px;transform:rotate(-3deg);box-shadow:0 4px 10px -4px rgba(0,0,0,.35)">'+esc(p.selo)+'</span>'):'';
+  if(state.anim&&state.anim===p.chave) midia=midia.replace('class="midia-img','class="midia-img troca');
   return {midia:midia, selo:selo};
 }
 function cartaoHTML(p,o){
@@ -890,9 +891,9 @@ function onClick(e){
       var j=opA?novo.opcoes.findIndex(function(o){return o.r===opA.r;}):-1;
       if(j>=0) state.sel[novo.chave]=j;
     }
-    state.tipo[g]=ti; renderCatalogo(); renderDestaques(); renderFolha(); return;
+    state.tipo[g]=ti; state.anim=novo?novo.chave:''; renderCatalogo(); renderDestaques(); renderFolha(); state.anim=''; return;
   }
-  if(act==='opt'){ var k=t.getAttribute('data-key'); state.sel[k]=+t.getAttribute('data-oi'); renderCatalogo(); renderDestaques(); renderFolha(); return; }
+  if(act==='opt'){ var k=t.getAttribute('data-key'); var oi=+t.getAttribute('data-oi'); if((state.sel[k]||0)!==oi) state.anim=k; state.sel[k]=oi; renderCatalogo(); renderDestaques(); renderFolha(); state.anim=''; return; }
   if(act==='add'){
     e.preventDefault();
     var key=t.getAttribute('data-key');
