@@ -330,8 +330,8 @@ window.CATALOGO = {
       { nome: 'Alecrim', cat: 'Ervas', cor: '#5b7a4a', uso: 'Carnes assadas, batatas, frango e pães.', fotosT: { dlu: 'imagens/dlu/alecrim.webp?v=2', vks: 'imagens/vks/alecrim.webp' } },
       { nome: 'Tomilho', fotosT: { dlu: 'imagens/dlu/tomilho.webp?v=2' }, cat: 'Ervas', cor: '#6b7d4a', uso: 'Carnes, aves, legumes assados e caldos.', so: 'dlu' },
       { nome: 'Coentro em folha', fotosT: { dlu: 'imagens/dlu/coentro-folha.webp' }, cat: 'Ervas', cor: '#4a7a3a', uso: 'Folhas desidratadas para moquecas, peixes e caldos.', so: 'dlu' },
-      { nome: 'Hibisco', cat: 'Chás', cor: '#8e1c3a', uso: 'Flor desidratada para chá, quente ou gelado.', fotosT: { vks: 'imagens/vks/hibisco.webp' } },
-      { nome: 'Camomila', cat: 'Chás', cor: '#e2c45a', uso: 'Flores desidratadas para chá calmante.', fotosT: { vks: 'imagens/vks/camomila.webp' } },
+      { nome: 'Hibisco', cat: 'Chás', cor: '#8e1c3a', uso: 'Flor desidratada para chá, quente ou gelado.', fotosT: { vks: 'imagens/vks/hibisco.webp', dlu: 'imagens/dlu/hibisco.webp' } },
+      { nome: 'Camomila', cat: 'Chás', cor: '#e2c45a', uso: 'Flores desidratadas para chá calmante.', fotosT: { vks: 'imagens/vks/camomila.webp', dlu: 'imagens/dlu/camomila.webp' } },
       { nome: 'Alho roxo nacional', cat: 'Alho', cor: '#8a4a6b', uso: 'Caixa fechada de 10 kg. Entrega somente por Lalamove, Uber ou retirada na loja.', venda: 'caixa de 10 kg · Lalamove, Uber ou retirada', unidade: 'caixa(s) de 10 kg', selo: 'Caixa 10 kg', so: 'vks', top: true }
     ],
   lojas: {
