@@ -32,7 +32,15 @@ export function lojaDoToken(env, req) {
   const token = m ? m[1].trim() : '';
   if (!token) return null;
   let tokens = {};
-  try { tokens = JSON.parse(env.PAINEL_TOKENS || '{}'); } catch (e) { tokens = {}; }
+  // aceita o segredo colado do celular (aspas curvas, espaços) e também o formato dlu=...;vks=...
+  const bruto = String(env.PAINEL_TOKENS || '{}').replace(/[\u201C\u201D\u201E\u2033\u00AB\u00BB]/g, '"').replace(/[\u2018\u2019]/g, "'").trim();
+  try { tokens = JSON.parse(bruto); } catch (e) {
+    tokens = {};
+    for (const par of bruto.replace(/[{}"']/g, '').split(/[,;\n]/)) {
+      const m2 = par.match(/^\s*(\w+)\s*[:=]\s*(\S+)\s*$/);
+      if (m2) tokens[m2[1].toLowerCase()] = m2[2];
+    }
+  }
   for (const l of LOJAS) {
     const esperado = tokens[l];
     if (esperado && timingSafeEqual(token, esperado)) return l;
