@@ -40,7 +40,6 @@ window.CATALOGO = {
       { nome: 'Tempero para vinagrete', foto: 'imagens/dlu/vinagrete-2.webp', cat: 'Misturas da casa', cor: '#6d8a3e', uso: 'Mistura pronta para preparar o vinagrete.', so: 'dlu' },
       { nome: 'Caldo de galinha', fotosT: { dlu: 'imagens/dlu/caldo-de-galinha.webp?v=2' }, cat: 'Misturas da casa', cor: '#d9a441', uso: 'Caldo em pó para arroz, sopas e refogados.', venda: 'a partir de 250 g · fardo de 25 kg', selo: 'Fardo 25 kg', so: 'dlu' },
       { nome: 'Orange pepper', fotosT: { dlu: 'imagens/dlu/orange-pepper.webp' }, cat: 'Pimentas e pápricas', cor: '#d9782d', uso: 'Pimenta com toque de laranja para peixes, frango e saladas.', so: 'dlu' },
-      { nome: 'Limão defumado', cat: 'Pimentas e pápricas', cor: '#a8a03a', uso: 'Sabor de limão com toque defumado para carnes e peixes.', so: 'dlu' },
       { nome: 'Pimenta branca', fotosT: { dlu: 'imagens/dlu/pimenta-branca.webp' }, cat: 'Pimentas e pápricas', cor: '#d8cfb8', uso: 'Pimenta branca em grão para moer na hora: molho branco, purês, peixes e pratos claros.', so: 'dlu' },
       { nome: 'Colorau caseiro (colorífico)', fotosT: { dlu: 'imagens/dlu/colorau-caseiro.webp' }, cat: 'Especiarias', cor: '#b8321e', uso: 'Dá cor avermelhada a arroz, carnes e ensopados.', venda: 'a partir de 250 g · fardo de 25 kg', selo: 'Fardo 25 kg', so: 'dlu' },
       { nome: 'Curry', fotosT: { dlu: 'imagens/dlu/curry.webp' }, cat: 'Especiarias', cor: '#d79a1c', uso: 'Mistura de especiarias para frango, arroz e molhos.', so: 'dlu' },
