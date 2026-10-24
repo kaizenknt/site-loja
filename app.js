@@ -350,7 +350,7 @@ function fillTopo(c){
   +'<header style="background:#fff;border-bottom:1px solid var(--c-borda)"><div class="wrap head-row head-pad" style="padding-top:12px;padding-bottom:12px">'
     +'<a href="#inicio" style="text-decoration:none;display:flex;align-items:center">'+logo+'</a>'
     +'<div class="head-search" style="position:relative"><label for="busca" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">Buscar tempero</label>'
-      +'<input id="busca" class="search" type="search" value="'+at(state.busca)+'" data-act="busca" placeholder="O que vai temperar hoje? Páprica, cominho, Ana Maria…" style="width:100%;font:inherit;font-size:16px;padding:13px 52px 13px 20px;border-radius:999px;border:2px solid var(--c-borda);background:var(--c-fundo);color:var(--c-escuro)">'
+      +'<input id="busca" class="search" type="search" enterkeyhint="search" autocomplete="off" value="'+at(state.busca)+'" data-act="busca" placeholder="O que vai temperar hoje? Páprica, cominho, Ana Maria…" style="width:100%;font:inherit;font-size:16px;padding:13px 52px 13px 20px;border-radius:999px;border:2px solid var(--c-borda);background:var(--c-fundo);color:var(--c-escuro)">'
       +'<span aria-hidden="true" style="position:absolute;right:6px;top:50%;transform:translateY(-50%);width:38px;height:38px;border-radius:50%;background:var(--c-escuro2);display:flex;align-items:center;justify-content:center"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-3.5-3.5"></path></svg></span></div>'
     +'<div style="display:flex;align-items:center;gap:10px">'
       +'<button type="button" data-act="abrirConta" aria-label="Minha conta" style="font:inherit;cursor:pointer;height:48px;padding:0 14px 0 8px;border-radius:999px;border:2px solid var(--c-borda);background:#fff;color:var(--c-escuro);display:flex;align-items:center;gap:8px;font-weight:800;font-size:14px"><span aria-hidden="true" style="width:32px;height:32px;border-radius:50%;background:var(--c-fundo);display:flex;align-items:center;justify-content:center"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"></circle><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"></path></svg></span><span class="hide-sm">'+(nome?('Olá, '+esc(nome)):'Minha conta')+'</span></button>'
@@ -452,7 +452,9 @@ function fillCorpo(c){
   var circ=cats.map(function(cat){
     var ps=nCat(cat); var fc=(ps.find(function(p){return p.foto&&!p.recorte;})||{}).foto||'';
     var on=cat===c.sel&&!c.q;
-    var dot=fc?('<img class="dot" src="'+at(fc)+'" alt="" loading="lazy" decoding="async" width="150" height="150" style="width:100%;max-width:150px;aspect-ratio:1;object-fit:cover;border-radius:50%;border:5px solid '+(on?'var(--c-destaque)':'#ffffff')+';box-shadow:0 0 0 1px var(--c-borda);display:block">'):('<span class="dot" aria-hidden="true" style="width:100%;max-width:150px;aspect-ratio:1;border-radius:50%;background:'+grao((ps[0]||{}).cor||'#cccccc')+';border:5px solid '+(on?'var(--c-destaque)':'#ffffff')+';box-shadow:0 0 0 1px var(--c-borda);display:block"></span>');
+    var borda='border:5px solid '+(on?'var(--c-destaque)':'#ffffff')+';box-shadow:0 0 0 1px var(--c-borda)';
+    // círculo com tamanho explícito (padding-top:100%), não aspect-ratio: no Safari do iPhone a <img> com height=150 ficava oval
+    var dot='<span class="dot" aria-hidden="true" style="'+borda+';background:'+grao((ps[0]||{}).cor||'#cccccc')+'"><span class="dot-in">'+(fc?'<img src="'+at(fc)+'" alt="" loading="lazy" decoding="async">':'')+'</span></span>';
     return '<a class="circ revela" href="#produtos" data-act="cat" data-cat="'+at(cat)+'" style="text-decoration:none;display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center">'+dot+'<span style="display:flex;flex-direction:column;gap:2px"><span style="font-weight:800;font-size:15px;color:var(--c-escuro);line-height:1.2">'+esc(cat)+'</span><span style="font-size:12px;color:var(--c-mudo)">'+ps.length+(ps.length===1?' produto':' produtos')+'</span></span></a>';
   }).join('');
   // destaques
@@ -492,7 +494,7 @@ function fillCatalogo(c){
   var verMais=resta>0?('<div class="ver-mais"><button type="button" data-act="verMais" class="btn-mais">Ver mais produtos <span>('+resta+(resta===1?' restante':' restantes')+')</span></button><span class="ver-mais-info">Mostrando '+c.visivel.length+' de '+c.lista.length+'</span></div>'):'';
   var outra=Object.keys(LOJAS).filter(function(id){return id!==c.loja.id;})[0], lo=LOJAS[outra];
   var notaLojas=lo?('<p class="nota-lojas">Este é o catálogo da <b>'+esc(c.loja.nome)+'</b>. A '+esc(lo.nome)+', nossa vizinha no Brás, tem catálogo e preços próprios. <button type="button" data-act="loja" data-loja="'+outra+'">Ver a '+esc(lo.nome)+' →</button></p>'):'';
-  var vazio=c.lista.length===0?('<p style="margin:0;padding:36px;text-align:center;background:#fff;border-radius:20px;color:var(--c-mudo)">Não achamos esse produto no site. <a href="'+at(waGeralDe(c.loja))+'" target="_blank" rel="noopener" style="font-weight:800">Pergunte pelo WhatsApp</a>: temos muito mais na loja.</p>'):'';
+  var vazio=c.lista.length===0?('<p class="busca-vazio" style="margin:0;padding:36px;text-align:center;background:#fff;border-radius:20px;color:var(--c-mudo)">Não achamos esse produto no site. <a href="'+at(waGeralDe(c.loja))+'" target="_blank" rel="noopener" style="font-weight:800">Pergunte pelo WhatsApp</a>: temos muito mais na loja.</p>'):'';
   var limpar=temFiltro?('<button type="button" data-act="limpar" style="font:inherit;font-weight:800;font-size:14px;padding:10px 18px;min-height:44px;border-radius:999px;border:2px solid var(--c-escuro);background:#fff;color:var(--c-escuro);cursor:pointer">Limpar filtro ✕</button>'):'';
   var rd=regraDesconto();
   var faixaDesc = rd?'<p class="faixa-desc"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12l-8 8-9-9V3h8z"></path><circle cx="7.5" cy="7.5" r="1.5"></circle></svg>'+esc(textoDesconto(rd))+'</p>':'';
@@ -935,10 +937,36 @@ function onClick(e){
   }
 }
 
+/* busca: depois de parar de digitar, desce até os resultados (uma vez por busca).
+   No celular (toque) só rola ao apertar "Ir" ou fechar o teclado: rolar com o teclado aberto faz o iPhone
+   voltar a página para o campo a cada letra. */
+var buscaTimer=null, buscaRolada='';
+function ehToque(){ return !!(window.matchMedia&&window.matchMedia('(hover: none) and (pointer: coarse)').matches); }
+function agendarRolarBusca(){
+  clearTimeout(buscaTimer);
+  if(!String(state.busca||'').trim()){ buscaRolada=''; return; }
+  if(ehToque()) return;
+  buscaTimer=setTimeout(function(){ rolarParaResultados(false); },400);
+}
+function rolarParaResultados(forcar){
+  clearTimeout(buscaTimer);
+  var q=String(state.busca||'').trim(); if(!q) return;
+  if(!forcar&&q===buscaRolada) return;
+  var alvo=document.querySelector('#catalogo .busca-vazio')||document.querySelector('#catalogo .prods');
+  if(!alvo) return;
+  buscaRolada=q;
+  var r=alvo.getBoundingClientRect(), off=90;
+  if(r.top>=off-10&&r.top<window.innerHeight*0.55) return; // já está vendo os resultados
+  var reduz=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  window.scrollTo({top:Math.max(0,r.top+window.scrollY-off),behavior:reduz?'auto':'smooth'});
+  // fotos carregando acima podem mudar a altura no meio da rolagem: confere no fim e acerta
+  setTimeout(function(){ var a=document.querySelector('#catalogo .busca-vazio')||document.querySelector('#catalogo .prods'); if(!a) return;
+    var t=a.getBoundingClientRect().top; if(Math.abs(t-off)>24) window.scrollTo({top:Math.max(0,t+window.scrollY-off),behavior:'auto'}); },reduz?0:800);
+}
 function onInput(e){
   var t=e.target.closest('[data-act]'); if(!t) return;
   var act=t.getAttribute('data-act');
-  if(act==='busca'){ state.busca=t.value; state.cat='Todos'; state.limite=POR_PAGINA; renderCatalogo(); return; }
+  if(act==='busca'){ state.busca=t.value; state.cat='Todos'; state.limite=POR_PAGINA; renderCatalogo(); agendarRolarBusca(); return; }
   if(act==='campo'){
     var f=t.getAttribute('data-field');
     state[f]=t.value;
@@ -1067,6 +1095,8 @@ function init(){
   app.addEventListener('click', onClick);
   ['pointerdown','touchstart','keydown'].forEach(function(t){ document.addEventListener(t,function(){ ultimoToque=Date.now(); },{passive:true,capture:true}); });
   app.addEventListener('input', onInput);
+  app.addEventListener('keydown',function(e){ var t=e.target; if(!t||t.id!=='busca'||e.key!=='Enter') return; e.preventDefault(); if(ehToque()) t.blur(); rolarParaResultados(true); });
+  app.addEventListener('focusout',function(e){ if(e.target&&e.target.id==='busca'&&ehToque()) setTimeout(function(){ rolarParaResultados(false); },50); });
   renderAll();
   window.scrollTo(0,0); requestAnimationFrame(function(){ window.scrollTo(0,0); });
   carregarPrecos();
