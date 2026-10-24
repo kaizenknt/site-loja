@@ -23,7 +23,7 @@ window.CATALOGO = {
       { nome: 'Chimichurri especial', queridinho: 8, fotosT: { dlu: 'imagens/dlu/chimichurri-especial.webp' }, cat: 'Misturas da casa', cor: '#3f5a26', uso: 'A versão especial do chimichurri para o seu churrasco.', top: true, so: 'dlu' },
       { nome: 'Mix gourmet', queridinho: 3, foto: 'imagens/dlu/mix-gourmet-2.webp', cat: 'Misturas da casa', cor: '#c2872f', uso: 'Ideal para molhos em geral. Leva cebola em tiras, louro, pimentão vermelho e verde, cenoura desidratada e açafrão.', so: 'dlu' },
       { nome: 'Tempero para feijão', foto: 'imagens/dlu/tempero-feijao-2.webp', cat: 'Misturas da casa', cor: '#6b4a2b', uso: 'Mistura pronta para deixar o feijão mais saboroso.', top: true, so: 'dlu' },
-      { nome: 'Tempero italiano', cat: 'Misturas da casa', cor: '#7d8f45', uso: 'Salsa, cebola e alho. Para molhos, massas e carnes.' },
+      { nome: 'Tempero italiano', cat: 'Misturas da casa', cor: '#7d8f45', uso: 'Salsa, cebola e alho. Para molhos, massas e carnes.', so: 'vks' },
       { nome: 'Edu Guedes sabor carne', fotosT: { dlu: 'imagens/dlu/edu-guedes-carne.webp' }, cat: 'Misturas da casa', cor: '#7b3a24', uso: 'Mistura pronta da casa. Pergunte a composição no WhatsApp.', so: 'dlu' },
       { nome: 'Mix gourmet com cebola miúda', cat: 'Misturas da casa', cor: '#b9873f', uso: 'Mistura pronta da casa. Pergunte a composição no WhatsApp.', so: 'dlu' },
       { nome: 'Tempera tudo', fotosT: { dlu: 'imagens/dlu/tempera-tudo.webp' }, cat: 'Misturas da casa', cor: '#9b6a35', uso: 'Mistura pronta da casa. Pergunte a composição no WhatsApp.', so: 'dlu' },
