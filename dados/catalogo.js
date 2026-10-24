@@ -10,7 +10,7 @@ window.CATALOGO = {
       { nome: 'Pimenta do reino moída', cat: 'Pimentas e pápricas', cor: '#3b332c', uso: 'A base de quase todo tempero do dia a dia.' },
       { nome: 'Lemon pepper', cat: 'Pimentas e pápricas', cor: '#c9b83a', uso: 'Pimenta com limão para peixe, frango e saladas.', fotosT: { vks: 'imagens/vks/lemon-pepper.webp' } },
       { nome: 'Cominho', cat: 'Especiarias', cor: '#8a6a3b', uso: 'Essencial em carne moída, feijão e cozinha árabe.' },
-      { nome: 'Açafrão puro', cat: 'Especiarias', cor: '#e2a21b', uso: 'Açafrão puro para dar cor e sabor a arroz, caldos, frango e risotos.' },
+      { nome: 'Açafrão puro', cat: 'Especiarias', cor: '#e2a21b', uso: 'Açafrão puro para dar cor e sabor a arroz, caldos, frango e risotos.', fotosT: { vks: 'imagens/vks/acafrao-puro-2.webp' } },
       { nome: 'Canela em pó', fotosT: { dlu: 'imagens/dlu/canela-em-po.webp' }, cat: 'Especiarias', cor: '#9a5a2e', uso: 'Doces, mingau, bolos e bebidas quentes.' },
       { nome: 'Orégano', cat: 'Ervas', cor: '#6e7f3a', uso: 'Pizza, molho de tomate e pão de alho.', fotosT: { vks: 'imagens/vks/oregano.webp' } },
       { nome: 'Louro em folha', cat: 'Ervas', cor: '#4f6b3a', uso: 'Feijão, ensopados e caldos de cozimento longo.', fotosT: { vks: 'imagens/vks/louro.webp' } },
