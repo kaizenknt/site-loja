@@ -13,7 +13,7 @@ var state = {
   nome:'', fone:'', doc:'', razao:'', endereco:'', obs:'',
   nf:'nao', entrega:'Retirar na loja',
   historico:[], apagarOk:false, limparOk:false,
-  sel:{}, tipo:{}, agora:Date.now(),
+  sel:{}, tipo:{}, qtd:{}, qtdErro:{}, agora:Date.now(),
   enviando:false, enviado:null, erroEnvio:'', statusPed:{},
   pag:'pix',
   limite:24, folha:null, mob:false
@@ -100,6 +100,27 @@ function precoUnit(p,op,n){
 }
 function precoOpcao(p,op,n){ var x=precoUnit(p,op,n); return x?x.c:null; }
 function fmtKg(kg){ return String(+(+kg).toFixed(3)).replace('.',',')+' kg'; }
+function fmtG(g){ return g>=1000?fmtKg(g/1000):Math.round(g)+' g'; }
+var QTD_MIN=250, QTD_MAX=50000;
+/* lê "300", "300 g", "1,5 kg", "1.5kg", "2" (até 50 sem unidade = kg). Volta gramas ou null */
+function lerQtd(txt){
+  var t=String(txt||'').toLowerCase().replace(/\s+/g,''); if(!t) return null;
+  var m=/^(\d+(?:[.,]\d+)?)(kg|k|quilos?|g|gr|gramas?)?$/.exec(t); if(!m) return null;
+  var n=parseFloat(m[1].replace(',','.')); if(!(n>0)) return null;
+  var u=m[2]||'';
+  var g=/^k|^q/.test(u)?n*1000:(u?n:(n<=50?n*1000:n));
+  return Math.round(g);
+}
+/* quantidade digitada pelo cliente vira mais uma opção do produto a granel */
+function aplicarQtd(lista){
+  lista.forEach(function(p){
+    var g=state.qtd[p.chave]; if(!g) return;
+    if(!p.opcoes.some(function(o){return o.g!=null&&!o.fechado;})) return;
+    var ja=p.opcoes.findIndex(function(o){return o.g===g&&!o.fechado;});
+    if(ja<0){ p.opcoes=p.opcoes.concat([{r:fmtG(g),g:g,livre:true}]); }
+  });
+  return lista;
+}
 
 /* ---------- opções de quantidade / ardência de cada produto ---------- */
 function extras(p,loja){
@@ -211,6 +232,15 @@ function midiaDe(p){
   if(state.anim&&state.anim===p.chave) midia=midia.replace('class="midia-img','class="midia-img troca');
   return {midia:midia, selo:selo};
 }
+function qtdLivreHTML(p){
+  if(p.emb||!p.opcoes.some(function(o){return o.g!=null&&!o.fechado;})) return '';
+  var g=state.qtd[p.chave], err=state.qtdErro[p.chave]||'';
+  var id='qtd-'+String(p.chave).replace(/[^a-z0-9]/gi,'-');
+  return '<div class="qtd-livre"><label for="'+at(id)+'">Outra quantidade</label>'
+    +'<div class="qtd-linha"><input id="'+at(id)+'" type="text" inputmode="decimal" autocomplete="off" data-qtd="'+at(p.chave)+'" placeholder="ex.: 300 g ou 1,5 kg" value="'+at(g?fmtG(g):'')+'" aria-describedby="'+at(id)+'-d">'
+    +'<button type="button" data-act="qtd" data-key="'+at(p.chave)+'">Usar</button></div>'
+    +'<span id="'+at(id)+'-d" class="qtd-dica'+(err?' qtd-erro':'')+'">'+esc(err||'Mínimo de 250 g no varejo.')+'</span></div>';
+}
 function cartaoHTML(p,o){
   o=o||{};
   var sel=selDe(p), opEsc=p.opcoes[sel]||{}, md=midiaDe(p), midia=md.midia, selo=md.selo;
@@ -249,6 +279,11 @@ function cartaoHTML(p,o){
       else if(pr.opAt&&opSel&&pr.opAt[opSel.r]!=null) linhaAt='<span class="linha-atac">Atacado: <b>'+brl(pr.opAt[opSel.r])+' cada</b> a partir de '+ra.minUn+' un.</span>';
     }
     if(opSel&&opSel.fechado) linhaAt='<span class="linha-atac">Fardo fechado de <b style="color:var(--c-escuro)">'+fmtKg(opSel.g/1000)+'</b></span>'+linhaAt;
+    if(pr&&pr.kg!=null&&opSel&&opSel.g!=null){ // granel: o preço do kg em destaque, o total da quantidade escolhida embaixo
+      var kgV=uSel&&uSel.at?pr.kgAt:pr.kg;
+      precoHTML='<div style="display:flex;flex-direction:column;gap:3px"><div style="display:flex;align-items:baseline;gap:8px;flex-wrap:wrap"><span class="preco preco-sel">'+brl(kgV)+'<small class="por-kg"> / kg</small></span>'+tagAt+'</div>'
+        +'<span class="preco-qtd">'+esc(opSel.fechado?'Fardo':opSel.r)+': <b>'+brl(cent)+'</b></span>'+linhaAt+'</div>';
+    } else
     precoHTML='<div style="display:flex;flex-direction:column;gap:3px"><div style="display:flex;align-items:baseline;gap:8px;flex-wrap:wrap"><span class="preco preco-sel">'+brl(cent)+'</span>'+extra+tagAt+'</div>'+linhaAt+'</div>';
   } else {
     precoHTML='<span class="preco-consulta">Preço sob consulta</span>';
@@ -262,7 +297,7 @@ function cartaoHTML(p,o){
       +'<p style="margin:0;font-size:14px;color:var(--c-mudo);flex:1">'+esc(p.uso)+'</p>'
       +ard
       +tiposHTML
-      +'<div style="display:flex;flex-direction:column;gap:6px"><span style="font-size:11px;font-weight:800;color:var(--c-mudo);text-transform:uppercase;letter-spacing:.1em">'+esc(p.rotuloOpcoes)+'</span><div style="display:flex;flex-wrap:wrap;gap:6px" role="group" aria-label="'+at(p.rotuloOpcoes)+'">'+opc+'</div>'+(opEsc.liq?'<span class="peso-liq">Peso drenado (só a pimenta, sem o líquido). Pote de '+esc(opEsc.liq).replace(/ /g,'\u00a0')+' no rótulo.</span>':'')+'</div>'
+      +'<div style="display:flex;flex-direction:column;gap:6px"><span style="font-size:11px;font-weight:800;color:var(--c-mudo);text-transform:uppercase;letter-spacing:.1em">'+esc(p.rotuloOpcoes)+'</span><div style="display:flex;flex-wrap:wrap;gap:6px" role="group" aria-label="'+at(p.rotuloOpcoes)+'">'+opc+'</div>'+qtdLivreHTML(p)+(opEsc.liq?'<span class="peso-liq">Peso drenado (só a pimenta, sem o líquido). Pote de '+esc(opEsc.liq).replace(/ /g,'\u00a0')+' no rótulo.</span>':'')+'</div>'
       +precoHTML
       +'<div style="display:flex;gap:8px;margin-top:4px">'
         +'<button type="button" data-act="add" data-key="'+at(p.chave)+'"'+(falta?' disabled aria-disabled="true"':'')+' style="flex:1;font:inherit;cursor:'+(falta?'not-allowed':'pointer')+';opacity:'+(falta?'.45':'1')+';border:none;background:var(--c-escuro);color:#fff;font-weight:800;font-size:14px;padding:12px;border-radius:999px;min-height:46px;display:flex;align-items:center;justify-content:center;gap:8px;transition:background .2s"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 8h14l-1.2 12H6.2L5 8z"></path><path d="M9 8V6a3 3 0 0 1 6 0v2"></path></svg><span class="add-txt">Adicionar</span></button>'
@@ -279,6 +314,7 @@ function compactoHTML(p){
   var precoTxt;
   if(falta) precoTxt='<span class="mini-preco mini-falta">Em falta</span>';
   else if(min==null) precoTxt='<span class="mini-preco mini-consulta">Preço sob consulta</span>';
+  else if(!p.emb&&precoDe(p)&&precoDe(p).kg!=null&&!p.grupoInfo) precoTxt='<span class="mini-preco">'+brl(precoDe(p).kg)+' <small>/ kg</small></span>';
   else if(p.opcoes.length>1||p.grupoInfo) precoTxt='<span class="mini-preco"><small>a partir de</small> '+brl(min)+'</span>';
   else precoTxt='<span class="mini-preco">'+brl(min)+' <small>· '+esc((p.opcoes[0]||{}).r||'')+'</small></span>';
   var marca=p.marca?('<span class="mini-marca">'+esc(p.marca)+'</span>'):(p.grupoInfo?('<span class="mini-marca">'+p.grupoInfo.membros.length+' tipos</span>'):'');
@@ -311,7 +347,7 @@ function folhaHTML(c){
 /* ================= REGIÕES ================= */
 function ctx(){
   var loja=LOJAS[state.loja]||LOJAS.dlu;
-  var todos=montarProdutos(loja);
+  var todos=aplicarQtd(montarProdutos(loja));
   var produtos=agrupar(todos);
   var ordem=['Alho','Misturas da casa','Pimentas e pápricas','Especiarias','Ervas','Chás','Desidratados','Grãos e sementes','Pimentas em conserva','Molhos','Mel, dendê e manteiga','Diversos'];
   var cats=ordem.filter(function(c){return produtos.some(function(p){return p.cat===c;});});
@@ -863,6 +899,20 @@ function mudarSacola(fn){
   state.limparOk=false; guardarSacola();
 }
 
+function usarQtd(k,inp){
+  var txt=inp?inp.value:''; var g=lerQtd(txt);
+  if(!String(txt).trim()){ delete state.qtd[k]; state.qtdErro[k]=''; renderCatalogo(); renderDestaques(); renderFolha(); return; }
+  if(g==null){ state.qtdErro[k]='Não entendi. Escreva, por exemplo, 300 g ou 1,5 kg.'; }
+  else if(g<QTD_MIN){ state.qtdErro[k]='O mínimo no varejo é 250 g.'; }
+  else if(g>QTD_MAX){ state.qtdErro[k]='Para mais de 50 kg, fale com a gente pelo WhatsApp.'; }
+  else {
+    state.qtdErro[k]=''; state.qtd[k]=g;
+    var c=ctx(), p=c.todos.find(function(x){return x.chave===k;});
+    if(p){ var i=p.opcoes.findIndex(function(o){return o.g===g&&!o.fechado;}); if(i>=0){ if((state.sel[k]||0)!==i) state.anim=k; state.sel[k]=i; } }
+  }
+  renderCatalogo(); renderDestaques(); renderFolha(); state.anim='';
+  var novo=document.querySelector('[data-qtd="'+(window.CSS&&CSS.escape?CSS.escape(k):k)+'"]'); if(novo&&state.qtdErro[k]){ try{novo.focus();novo.select();}catch(_){} }
+}
 function onClick(e){
   var t=e.target.closest('[data-act]'); if(!t) return;
   var act=t.getAttribute('data-act');
@@ -894,6 +944,7 @@ function onClick(e){
     state.tipo[g]=ti; state.anim=novo?novo.chave:''; renderCatalogo(); renderDestaques(); renderFolha(); state.anim=''; return;
   }
   if(act==='opt'){ var k=t.getAttribute('data-key'); var oi=+t.getAttribute('data-oi'); if((state.sel[k]||0)!==oi) state.anim=k; state.sel[k]=oi; renderCatalogo(); renderDestaques(); renderFolha(); state.anim=''; return; }
+  if(act==='qtd'){ usarQtd(t.getAttribute('data-key'), t.parentNode.querySelector('input')); return; }
   if(act==='add'){
     e.preventDefault();
     var key=t.getAttribute('data-key');
@@ -1096,6 +1147,7 @@ function init(){
   app.addEventListener('click', onClick);
   ['pointerdown','touchstart','keydown'].forEach(function(t){ document.addEventListener(t,function(){ ultimoToque=Date.now(); },{passive:true,capture:true}); });
   app.addEventListener('input', onInput);
+  app.addEventListener('keydown',function(e){ var t=e.target; if(t&&t.getAttribute&&t.getAttribute('data-qtd')&&e.key==='Enter'){ e.preventDefault(); usarQtd(t.getAttribute('data-qtd'),t); if(ehToque()) t.blur(); } });
   app.addEventListener('keydown',function(e){ var t=e.target; if(!t||t.id!=='busca'||e.key!=='Enter') return; e.preventDefault(); if(ehToque()) t.blur(); rolarParaResultados(true); });
   app.addEventListener('focusout',function(e){ if(e.target&&e.target.id==='busca'&&ehToque()) setTimeout(function(){ rolarParaResultados(false); },50); });
   renderAll();

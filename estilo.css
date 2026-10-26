@@ -291,3 +291,16 @@ html.folha-aberta,html.folha-aberta body{overflow:hidden}
 .midia-img.troca{animation:troca-foto .35s cubic-bezier(.2,.8,.3,1.2)}
 @keyframes troca-foto{from{opacity:0;transform:scale(.9) translateY(6px)}to{opacity:1;transform:none}}
 @media (prefers-reduced-motion:reduce){.midia-img.troca{animation:none}}
+
+/* granel: preço do kg em destaque e caixinha de quantidade livre */
+.preco .por-kg{font-size:.55em;font-weight:800;color:var(--c-mudo)}
+.preco-qtd{font-size:13px;color:var(--c-mudo)}
+.preco-qtd b{color:var(--c-escuro)}
+.qtd-livre{display:flex;flex-direction:column;gap:4px;margin-top:4px}
+.qtd-livre label{font-size:12px;font-weight:800;color:var(--c-mudo)}
+.qtd-linha{display:flex;gap:6px}
+.qtd-linha input{flex:1;min-width:0;font:inherit;font-size:16px;padding:8px 12px;min-height:40px;border-radius:999px;border:1.5px solid var(--c-borda2);background:#fff;color:var(--c-escuro)}
+.qtd-linha input:focus{outline:2px solid var(--c-destaque);outline-offset:1px;border-color:var(--c-escuro)}
+.qtd-linha button{font:inherit;font-size:13px;font-weight:800;padding:0 16px;min-height:40px;border-radius:999px;border:1.5px solid var(--c-escuro);background:#fff;color:var(--c-escuro);cursor:pointer}
+.qtd-dica{font-size:12px;color:var(--c-mudo)}
+.qtd-dica.qtd-erro{color:var(--c-acento-esc);font-weight:700}
