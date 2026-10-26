@@ -1142,6 +1142,12 @@ function init(){
   document.addEventListener('touchstart',function(e){ var h=e.target.closest&&e.target.closest('.folha-pega'); if(!h||!state.folha) return; var d=document.querySelector('#folha .folha'); arr={y:e.touches[0].clientY, dy:0, d:d}; if(d) d.style.transition='none'; },{passive:true});
   document.addEventListener('touchmove',function(e){ if(!arr) return; arr.dy=Math.max(0,e.touches[0].clientY-arr.y); if(arr.d) arr.d.style.transform='translateY('+arr.dy+'px)'; },{passive:true});
   document.addEventListener('touchend',function(){ if(!arr) return; var a=arr; arr=null; if(a.d){ a.d.style.transition=''; a.d.style.transform=''; } if(a.dy>90) fecharFolha(); },{passive:true});
+  // loja de entrada: pelo endereço (domínio com "vks", ou ?loja=vks / ?loja=dlu)
+  try{
+    var qs=new URLSearchParams(location.search).get('loja');
+    if(qs&&LOJAS[qs]) state.loja=qs;
+    else if(/vks/i.test(location.hostname)) state.loja='vks';
+  }catch(e){}
   carregar();
   var app=el('app');
   app.addEventListener('click', onClick);
