@@ -36,7 +36,6 @@ window.CATALOGO = {
       { nome: 'Tempero bife acebolado', foto: 'imagens/dlu/bife-acebolado-2.webp', cat: 'Misturas da casa', cor: '#8a4a2a', uso: 'Cebola tostada temperada para bifes, carne moída e arroz.', so: 'dlu' },
       { nome: 'Tempero Jacquin', fotosT: { dlu: 'imagens/dlu/tempero-jacquin.webp' }, cat: 'Misturas da casa', cor: '#8d4b33', uso: 'Mistura pronta da casa. Pergunte a composição no WhatsApp.', so: 'dlu' },
       { nome: 'Tempero vaca atolada', fotosT: { dlu: 'imagens/dlu/tempero-vaca-atolada.webp' }, cat: 'Misturas da casa', cor: '#6f4a2f', uso: 'Mistura para o clássico prato de costela com mandioca.', so: 'dlu' },
-      { nome: 'Tempero calabresa', cat: 'Misturas da casa', cor: '#a8452e', uso: 'Sabor de calabresa para farofas, caldos e massas.', so: 'dlu' },
       { nome: 'Tempero para vinagrete', foto: 'imagens/dlu/vinagrete-2.webp', cat: 'Misturas da casa', cor: '#6d8a3e', uso: 'Mistura pronta para preparar o vinagrete.', so: 'dlu' },
       { nome: 'Caldo de galinha', fotosT: { dlu: 'imagens/dlu/caldo-de-galinha.webp?v=2' }, cat: 'Misturas da casa', cor: '#d9a441', uso: 'Caldo em pó para arroz, sopas e refogados.', venda: 'a partir de 250 g · fardo de 25 kg', selo: 'Fardo 25 kg', so: 'dlu' },
       { nome: 'Orange pepper', fotosT: { dlu: 'imagens/dlu/orange-pepper.webp' }, cat: 'Pimentas e pápricas', cor: '#d9782d', uso: 'Pimenta com toque de laranja para peixes, frango e saladas.', so: 'dlu' },
