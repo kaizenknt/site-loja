@@ -155,6 +155,8 @@ function montarProdutos(loja){
       if(t) return Object.assign({},p,{foto:t,recorte:false});
       return (p.foto&&p.so!==loja.id&&loja.id!=='dlu')?Object.assign({},p,{foto:''}):p;
     })
+    // produto sem foto nesta loja fica escondido até a foto chegar (continua cadastrado no catálogo e no Balcão)
+    .filter(function(p){ var ft=p.fotosTam&&p.fotosTam[loja.id]; return !!p.foto || !!(ft&&Object.keys(ft).length); })
     .map(function(p){
       var ex=extras(p,loja);
       var emb=!!p.emb;
@@ -349,6 +351,9 @@ function folhaHTML(c){
 function ctx(){
   var loja=LOJAS[state.loja]||LOJAS.dlu;
   var todos=aplicarQtd(montarProdutos(loja));
+  // tamanho inicial: o primeiro que tem foto (para o cartão não abrir no desenho)
+  todos.forEach(function(p){ var ft=p.fotosTam&&p.fotosTam[loja.id]; if(!ft||state.sel[p.chave]!=null) return;
+    var i=p.opcoes.findIndex(function(o){return !!ft[o.r];}); if(i>0) state.sel[p.chave]=i; });
   var produtos=agrupar(todos);
   var ordem=['Alho','Misturas da casa','Pimentas e pápricas','Especiarias','Ervas','Chás','Desidratados','Grãos e sementes','Pimentas em conserva','Molhos','Mel, dendê e manteiga','Diversos'];
   function norm(s){return String(s).normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase();}
