@@ -1,4 +1,10 @@
 # Site D’Lu Empório e VKS Condimentos — resumo para continuar o trabalho
+## Endereços
+- D'Lu: https://dluemporiobras.com.br
+- VKS: https://vkscondimentos.com.br (abre direto na VKS porque o domínio tem "vks")
+- Também continua valendo https://site-loja.pages.dev (abre na D'Lu; `?loja=vks` abre na VKS).
+- Os dois domínios apontam para o mesmo projeto Pages: todo push na main atualiza os dois.
+
 
 Site-catálogo de duas lojas de temperos do mesmo dono, no Brás (São Paulo). O cliente monta o pedido no site e envia pelo WhatsApp da loja escolhida. O próximo passo combinado é **enviar o pedido direto para o Balcão PDV** (repositório `kaizenknt/balcao-pdv`).
 
