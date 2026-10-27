@@ -1,0 +1,13 @@
+# O site muda com frequência: o navegador sempre confere se há versão nova de página, código e catálogo
+/
+  Cache-Control: no-cache
+/index.html
+  Cache-Control: no-cache
+/*.js
+  Cache-Control: no-cache
+/*.css
+  Cache-Control: no-cache
+/dados/*
+  Cache-Control: no-cache
+/precos.json
+  Cache-Control: no-cache
