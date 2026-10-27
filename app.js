@@ -19,6 +19,7 @@ var state = {
   limite:24, folha:null, mob:false
 };
 var POR_PAGINA=24;
+var MARCAS_ABA=['Tempera Bem','Jomil'];
 var PRECOS = null;         // { itens:{ chave:{kg|op} }, indisponivel:[chaves], _exemplo:bool }
 var PRECOS_CACHE = {};     // preços por loja (cada loja publica os seus pelo Balcão)
 var avisoTimer=null, relogio=null, slideTimer=null;
@@ -350,14 +351,18 @@ function ctx(){
   var todos=aplicarQtd(montarProdutos(loja));
   var produtos=agrupar(todos);
   var ordem=['Alho','Misturas da casa','Pimentas e pápricas','Especiarias','Ervas','Chás','Desidratados','Grãos e sementes','Pimentas em conserva','Molhos','Mel, dendê e manteiga','Diversos'];
-  var cats=ordem.filter(function(c){return produtos.some(function(p){return p.cat===c;});});
-  var sel=(state.cat==='Todos'||cats.indexOf(state.cat)>=0)?state.cat:'Todos';
   function norm(s){return String(s).normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase();}
+  var cats=ordem.filter(function(c){return produtos.some(function(p){return p.cat===c;});});
+  // abas por marca (Tempera Bem, Jomil): aparecem só se a loja tiver produtos dela
+  var ehDaMarca=function(p,m){ var k=norm(m); return norm(p.marca||'')===k || (!!p.grupoInfo && norm(p.textoBusca||'').indexOf(k)>=0); };
+  var marcas=MARCAS_ABA.filter(function(m){return produtos.some(function(p){return ehDaMarca(p,m);});});
+  cats=cats.concat(marcas);
+  var sel=(state.cat==='Todos'||cats.indexOf(state.cat)>=0)?state.cat:'Todos';
   var q=norm(state.busca.trim());
-  var lista=sel==='Todos'?produtos:produtos.filter(function(p){return p.cat===sel;});
+  var lista=sel==='Todos'?produtos:(marcas.indexOf(sel)>=0?produtos.filter(function(p){return ehDaMarca(p,sel);}):produtos.filter(function(p){return p.cat===sel;}));
   if(q) lista=lista.filter(function(p){return norm((p.textoBusca||p.nome)+' '+p.cat+' '+(p.marca||'')).indexOf(q)>=0;});
   var visivel=q?lista:lista.slice(0,Math.max(state.limite||POR_PAGINA,POR_PAGINA));
-  return {loja:loja, produtos:produtos, todos:todos, cats:cats, sel:sel, q:q, lista:lista, visivel:visivel, sit:situacao(loja)};
+  return {loja:loja, produtos:produtos, todos:todos, cats:cats, marcas:marcas, ehDaMarca:ehDaMarca, sel:sel, q:q, lista:lista, visivel:visivel, sit:situacao(loja)};
 }
 function waGeralDe(loja){ return 'https://wa.me/'+loja.waNum+'?text='+encodeURIComponent('Olá, '+loja.nome+'! Gostaria de fazer um pedido:\n'); }
 
@@ -485,9 +490,9 @@ function fillCorpo(c){
    +vItem('<path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.4L3 21l2.1-5.4A8.4 8.4 0 1 1 21 11.5z"></path>','Pedido pelo WhatsApp',loja.fone,'#1b7a4b');
   // circulos
   var cats=c.cats;
-  function nCat(cat){return produtos.filter(function(p){return p.cat===cat;});}
+  function nCat(cat){return (c.marcas||[]).indexOf(cat)>=0?produtos.filter(function(p){return c.ehDaMarca(p,cat);}):produtos.filter(function(p){return p.cat===cat;});}
   var circ=cats.map(function(cat){
-    var ps=nCat(cat); var fc=(ps.find(function(p){return p.foto&&!p.recorte;})||{}).foto||'';
+    var ps=nCat(cat); var fc=(ps.find(function(p){return p.foto&&!p.recorte;})||ps.find(function(p){return p.foto;})||{}).foto||'';
     var on=cat===c.sel&&!c.q;
     var borda='border:5px solid '+(on?'var(--c-destaque)':'#ffffff')+';box-shadow:0 0 0 1px var(--c-borda)';
     // círculo com tamanho explícito (padding-top:100%), não aspect-ratio: no Safari do iPhone a <img> com height=150 ficava oval
