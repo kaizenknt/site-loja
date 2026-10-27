@@ -1,5 +1,7 @@
 # Site D’Lu Empório e VKS Condimentos — resumo para continuar o trabalho
 ## Endereços
+- **Limites do KV grátis:** 1.000 list()/dia e 1.000 gravações/dia (leituras: 100.000). Por isso a fila de pedidos fica numa chave só (`filaidx:<loja>`), lida com get a cada consulta do Balcão (30 s). Não usar list() em rotas chamadas com frequência. Diagnóstico: `/api/diag`.
+
 - D'Lu: https://dluemporiobras.com.br
 - VKS: https://vkscondimentos.com.br (abre direto na VKS porque o domínio tem "vks")
 - Também continua valendo https://site-loja.pages.dev (abre na D'Lu; `?loja=vks` abre na VKS).
