@@ -1,7 +1,7 @@
 /* POST /api/pedido
    O site envia o pedido montado na sacola. A ponte guarda numa fila por loja;
    o Balcão da loja vem buscar. Nada aqui alcança o computador da loja. */
-import { json, lojaValida, limitePedido, texto, soNum, codigoCurto, idPedido } from '../_lib.js';
+import { filaAdicionar, json, lojaValida, limitePedido, texto, soNum, codigoCurto, idPedido } from '../_lib.js';
 
 function mesmaOrigem(request) {
   const origem = request.headers.get('origin');
@@ -79,7 +79,7 @@ export async function onRequestPost(context) {
     // guarda o pedido (14 dias) e um atalho pelo código, para o cliente acompanhar
     await env.LOJA.put('ped:' + loja + ':' + id, JSON.stringify(registro), { expirationTtl: 14 * 86400 });
     await env.LOJA.put('cod:' + loja + ':' + codigo, id, { expirationTtl: 14 * 86400 });
-    await env.LOJA.put('fila:' + loja + ':' + id, '1', { expirationTtl: 14 * 86400 }); // aguardando o Balcão buscar
+    await filaAdicionar(env, loja, id); // aguardando o Balcão buscar
   } catch (e) {
     return json({ erro: 'guardar', mensagem: 'Não consegui registrar o pedido agora. Tente de novo ou use o WhatsApp.' }, 500);
   }

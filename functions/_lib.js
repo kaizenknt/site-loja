@@ -87,3 +87,24 @@ export function codigoCurto() {
 export function idPedido() {
   return Date.now().toString(36) + '-' + crypto.randomUUID().slice(0, 8);
 }
+
+// ---------- fila de pedidos numa chave só ----------
+// O plano grátis do KV permite só 1.000 list() por dia; o Balcão consulta a cada 30 s.
+// Por isso a fila fica numa lista guardada em "filaidx:<loja>" (leitura com get, que tem limite de 100.000/dia).
+const FILA_TTL = 14 * 86400;
+export async function lerFila(env, loja) {
+  const v = await env.LOJA.get('filaidx:' + loja, { type: 'json' });
+  return Array.isArray(v) ? v : null;
+}
+export async function gravarFila(env, loja, ids) {
+  await env.LOJA.put('filaidx:' + loja, JSON.stringify([...new Set(ids)].slice(-500)), { expirationTtl: FILA_TTL });
+}
+export async function filaAdicionar(env, loja, id) {
+  const f = (await lerFila(env, loja)) || [];
+  if (!f.includes(id)) { f.push(id); await gravarFila(env, loja, f); }
+}
+export async function filaRemover(env, loja, ids) {
+  const f = await lerFila(env, loja); if (!f) return;
+  const fora = new Set(ids); const n = f.filter(x => !fora.has(x));
+  if (n.length !== f.length) await gravarFila(env, loja, n);
+}

@@ -9,7 +9,7 @@ export async function onRequestGet(context) {
   out.kvLigado = !!env.LOJA;
   if (env.LOJA) {
     try { await env.LOJA.get('diag:teste'); out.kvLeitura = 'ok'; } catch (e) { out.kvLeitura = 'falhou: ' + String(e && e.message || e).slice(0, 160); out.ok = false; }
-    try { await env.LOJA.list({ prefix: 'fila:', limit: 1 }); out.kvLista = 'ok'; } catch (e) { out.kvLista = 'falhou: ' + String(e && e.message || e).slice(0, 160); out.ok = false; }
+    try { const f = await env.LOJA.get('filaidx:dlu', { type: 'json' }); out.filaDlu = Array.isArray(f) ? f.length : 'vazia'; } catch (e) { out.filaDlu = 'falhou: ' + String(e && e.message || e).slice(0, 160); out.ok = false; }
   } else out.ok = false;
   // tokens (só diz quais lojas têm token, nunca o valor)
   const bruto = env.PAINEL_TOKENS;

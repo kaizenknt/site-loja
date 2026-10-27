@@ -1,7 +1,7 @@
 /* POST /api/painel/status  (Authorization: Bearer <token da loja>)
    Corpo: { id, status, numeroLoja? }  ou  { lista: [ {id, status, numeroLoja?}, ... ] }
    "recebido" tira o pedido da fila; os demais só atualizam o que o cliente vê. */
-import { json, lojaDoToken } from '../../_lib.js';
+import { json, lojaDoToken, filaRemover } from '../../_lib.js';
 
 const VALIDOS = ['recebido', 'separando', 'pronto', 'entregue', 'cancelado'];
 
@@ -26,8 +26,8 @@ export async function onRequestPost(context) {
     p.atualizadoEm = new Date().toISOString();
     if (x.numeroLoja != null) p.numeroLoja = Number(x.numeroLoja) || null;
     await env.LOJA.put(chave, JSON.stringify(p), { expirationTtl: 14 * 86400 });
-    await env.LOJA.delete('fila:' + loja + ':' + id); // já está no Balcão
     feitos.push(id);
   }
+  await filaRemover(env, loja, feitos); // já estão no Balcão: saem da fila (uma gravação só)
   return json({ ok: true, atualizados: feitos.length });
 }
