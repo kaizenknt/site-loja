@@ -356,7 +356,7 @@ function ctx(){
   // abas por marca (Tempera Bem, Jomil): aparecem só se a loja tiver produtos dela
   var ehDaMarca=function(p,m){ var k=norm(m); return norm(p.marca||'')===k || (!!p.grupoInfo && norm(p.textoBusca||'').indexOf(k)>=0); };
   var marcas=MARCAS_ABA.filter(function(m){return produtos.some(function(p){return ehDaMarca(p,m);});});
-  cats=cats.concat(marcas);
+  cats=marcas.concat(cats); // marcas logo depois de "Todos", para ficarem à vista
   var sel=(state.cat==='Todos'||cats.indexOf(state.cat)>=0)?state.cat:'Todos';
   var q=norm(state.busca.trim());
   var lista=sel==='Todos'?produtos:(marcas.indexOf(sel)>=0?produtos.filter(function(p){return ehDaMarca(p,sel);}):produtos.filter(function(p){return p.cat===sel;}));
@@ -492,11 +492,11 @@ function fillCorpo(c){
   var cats=c.cats;
   function nCat(cat){return (c.marcas||[]).indexOf(cat)>=0?produtos.filter(function(p){return c.ehDaMarca(p,cat);}):produtos.filter(function(p){return p.cat===cat;});}
   var circ=cats.map(function(cat){
-    var ps=nCat(cat); var fc=(ps.find(function(p){return p.foto&&!p.recorte;})||ps.find(function(p){return p.foto;})||{}).foto||'';
+    var ps=nCat(cat), ehM=(c.marcas||[]).indexOf(cat)>=0; var fc=(ehM?ps.find(function(p){return p.foto&&p.recorte;}):null); fc=(fc||ps.find(function(p){return p.foto&&!p.recorte;})||ps.find(function(p){return p.foto;})||{}).foto||'';
     var on=cat===c.sel&&!c.q;
     var borda='border:5px solid '+(on?'var(--c-destaque)':'#ffffff')+';box-shadow:0 0 0 1px var(--c-borda)';
     // círculo com tamanho explícito (padding-top:100%), não aspect-ratio: no Safari do iPhone a <img> com height=150 ficava oval
-    var dot='<span class="dot" aria-hidden="true" style="'+borda+';background:'+grao((ps[0]||{}).cor||'#cccccc')+'"><span class="dot-in">'+(fc?'<img src="'+at(fc)+'" alt="" loading="lazy" decoding="async">':'')+'</span></span>';
+    var dot='<span class="dot" aria-hidden="true" style="'+borda+';background:'+(ehM&&fc?'#ffffff':grao((ps[0]||{}).cor||'#cccccc'))+'"><span class="dot-in">'+(fc?'<img src="'+at(fc)+'" alt="" loading="lazy" decoding="async"'+(ehM?' style="object-fit:contain;padding:14%;background:#ffffff"':'')+'>':'')+'</span></span>';
     return '<a class="circ revela" href="#produtos" data-act="cat" data-cat="'+at(cat)+'" style="text-decoration:none;display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center">'+dot+'<span style="display:flex;flex-direction:column;gap:2px"><span style="font-weight:800;font-size:15px;color:var(--c-escuro);line-height:1.2">'+esc(cat)+'</span><span style="font-size:12px;color:var(--c-mudo)">'+ps.length+(ps.length===1?' produto':' produtos')+'</span></span></a>';
   }).join('');
   // destaques
