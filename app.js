@@ -13,7 +13,7 @@ var state = {
   nome:'', fone:'', doc:'', razao:'', endereco:'', obs:'',
   nf:'nao', entrega:'Retirar na loja',
   historico:[], apagarOk:false, limparOk:false,
-  sel:{}, tipo:{}, qtd:{}, qtdErro:{}, agora:Date.now(),
+  sel:{}, tipo:{}, qtd:{}, qtdErro:{}, formato:'todos', agora:Date.now(),
   enviando:false, enviado:null, erroEnvio:'', statusPed:{},
   pag:'pix',
   limite:24, folha:null, mob:false
@@ -366,6 +366,8 @@ function ctx(){
   var q=norm(state.busca.trim());
   var lista=sel==='Todos'?produtos:(marcas.indexOf(sel)>=0?produtos.filter(function(p){return ehDaMarca(p,sel);}):produtos.filter(function(p){return p.cat===sel;}));
   if(q) lista=lista.filter(function(p){return norm((p.textoBusca||p.nome)+' '+p.cat+' '+(p.marca||'')).indexOf(q)>=0;});
+  if(state.formato==='granel') lista=lista.filter(function(p){return !p.emb;});
+  else if(state.formato==='emb') lista=lista.filter(function(p){return !!p.emb;});
   var visivel=q?lista:lista.slice(0,Math.max(state.limite||POR_PAGINA,POR_PAGINA));
   return {loja:loja, produtos:produtos, todos:todos, cats:cats, marcas:marcas, ehDaMarca:ehDaMarca, sel:sel, q:q, lista:lista, visivel:visivel, sit:situacao(loja)};
 }
@@ -531,11 +533,16 @@ function vItem(path,titulo,texto,stroke){
 }
 
 function fillCatalogo(c){
-  var temFiltro=!!c.q||c.sel!=='Todos';
+  var temFiltro=!!c.q||c.sel!=='Todos'||state.formato!=='todos';
   var abas=['Todos'].concat(c.cats).map(function(cat){
     var on=(cat===c.sel)&&!c.q;
     return '<button type="button" data-act="cat" data-cat="'+at(cat)+'" aria-pressed="'+on+'" style="font:inherit;white-space:nowrap;font-weight:800;font-size:13px;padding:9px 16px;min-height:40px;border-radius:999px;border:1px solid var(--c-borda2);background:'+(on?'var(--c-escuro)':'#ffffff')+';color:'+(on?'#ffffff':'var(--c-escuro)')+';cursor:pointer">'+esc(cat)+'</button>';
   }).join('');
+  var fmts=[['todos','Todos'],['granel','A granel'],['emb','Em pacote ou pote']].map(function(f){
+    var on=state.formato===f[0];
+    return '<button type="button" data-act="formato" data-v="'+f[0]+'" aria-pressed="'+on+'" style="font:inherit;white-space:nowrap;font-weight:800;font-size:13px;padding:8px 14px;min-height:38px;border:0;border-radius:999px;background:'+(on?'var(--c-acento)':'transparent')+';color:'+(on?'#ffffff':'var(--c-escuro)')+';cursor:pointer">'+f[1]+'</button>';
+  }).join('');
+  var formatoHTML='<div class="formato" role="group" aria-label="A granel ou em pacote" style="display:inline-flex;align-self:flex-start;gap:2px;padding:3px;border-radius:999px;background:#ffffff;box-shadow:0 0 0 1px var(--c-borda2)">'+fmts+'</div>';
   var grid=c.visivel.map(function(p){return '<div class="'+(state.mob?'':'revela ')+'cel">'+cardFor(p)+'</div>';}).join('');
   var resta=c.lista.length-c.visivel.length;
   var verMais=resta>0?('<div class="ver-mais"><button type="button" data-act="verMais" class="btn-mais">Ver mais produtos <span>('+resta+(resta===1?' restante':' restantes')+')</span></button><span class="ver-mais-info">Mostrando '+c.visivel.length+' de '+c.lista.length+'</span></div>'):'';
@@ -547,9 +554,10 @@ function fillCatalogo(c){
   var faixaDesc = rd?'<p class="faixa-desc"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12l-8 8-9-9V3h8z"></path><circle cx="7.5" cy="7.5" r="1.5"></circle></svg>'+esc(textoDesconto(rd))+'</p>':'';
   var exemplo = (PRECOS&&PRECOS._exemplo)?'<p style="margin:0;font-size:13px;color:var(--c-acento);font-weight:700">⚠️ Preços de exemplo — serão substituídos pelos preços reais do Balcão.</p>':'';
   return '<section id="produtos" style="padding-top:64px;padding-bottom:72px;background:var(--c-fundo)"><div class="wrap" style="display:flex;flex-direction:column;gap:26px">'
-    +'<div style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:12px"><div class="revela-esq" style="display:flex;flex-direction:column;gap:6px"><span class="eyebrow" style="color:var(--c-acento)">'+c.lista.length+(c.lista.length===1?' produto':' produtos')+'</span><h2 class="disp" style="margin:0;font-weight:900;font-size:clamp(36px,4.6vw,56px);line-height:.95">'+esc(c.q?'Resultado da busca':(c.sel==='Todos'?'Todos os produtos':c.sel))+'</h2></div>'+limpar+'</div>'
+    +'<div style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:12px"><div class="revela-esq" style="display:flex;flex-direction:column;gap:6px"><span class="eyebrow" style="color:var(--c-acento)">'+c.lista.length+(c.lista.length===1?' produto':' produtos')+'</span><h2 class="disp" style="margin:0;font-weight:900;font-size:clamp(36px,4.6vw,56px);line-height:.95">'+esc(c.q?'Resultado da busca':(c.sel==='Todos'?(state.formato==='granel'?'A granel':state.formato==='emb'?'Em pacote ou pote':'Todos os produtos'):c.sel))+'</h2></div>'+limpar+'</div>'
  +faixaDesc+exemplo
     +'<div class="catnav" style="gap:8px;padding-bottom:4px" role="group" aria-label="Filtrar por categoria">'+abas+'</div>'
+    +formatoHTML
     +'<div class="prods'+(state.mob?' prods-mini':'')+'">'+grid+'</div>'+vazio+verMais+notaLojas
   +'</div></section>';
 }
@@ -941,7 +949,8 @@ function onClick(e){
     return; }
   if(act==='loja'){ var id=t.getAttribute('data-loja'); if(id!==state.loja){ state.loja=id; state.cat='Todos'; state.busca=''; state.slide=0; state.limite=POR_PAGINA; state.folha=null; state.sacola=false; state.conta=false; state.enviado=null; state.erroEnvio=''; PRECOS=PRECOS_CACHE[id]||null; renderAll(); carregarPrecos(); } return; }
   if(act==='cat'){ state.cat=t.getAttribute('data-cat'); state.busca=''; state.limite=POR_PAGINA; renderAll(); return; }
-  if(act==='limpar'){ state.busca=''; state.cat='Todos'; state.limite=POR_PAGINA; renderAll(); return; }
+  if(act==='formato'){ state.formato=t.getAttribute('data-v'); state.limite=POR_PAGINA; renderCatalogo(); return; }
+  if(act==='limpar'){ state.busca=''; state.cat='Todos'; state.formato='todos'; state.limite=POR_PAGINA; renderAll(); return; }
   if(act==='slide'){ state.slide=+t.getAttribute('data-i'); renderHero(); return; }
   if(act==='slidePrev'){ state.slide=(state.slide+2)%3; renderHero(); return; }
   if(act==='slideNext'){ state.slide=(state.slide+1)%3; renderHero(); return; }
