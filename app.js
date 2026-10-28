@@ -567,7 +567,7 @@ function fillPedir(c){
     +'<ol style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:20px">'
     +passo('1','Escolha os temperos','No site ou perguntando pelo que precisa. No varejo, a partir de 250 g por produto.')
     +passo('2','Monte sua sacola','Escolha a quantidade e toque em “Adicionar” em cada produto. No fim, abra a sacola e envie direto para a loja (ou pelo WhatsApp, se preferir).')
-    +passo('3','A gente pesa e separa','Conferimos o pedido, pesamos na hora e avisamos quando estiver pronto.')
+    +passo('3','A gente pesa e separa','Conferimos o pedido, pesamos na hora e avisamos quando estiver pronto. Você busca na loja ou chama um Uber ou Lalamove (frete por conta do cliente).')
     +'</ol><a class="btn-wa" href="'+at(waGeralDe(loja))+'" target="_blank" rel="noopener" style="align-self:flex-start;text-decoration:none;background:#1b7a4b;color:#fff;font-weight:800;font-size:15px;padding:16px 28px;border-radius:999px;min-height:52px;display:inline-flex;align-items:center">Fazer meu pedido</a></div>'
     +'<figure class="revela" aria-label="Exemplo de conversa de pedido" style="margin:0;background:var(--c-borda4);border-radius:28px;padding:18px;box-shadow:0 30px 50px -30px rgba(29,34,64,.45)"><div style="background:var(--c-borda3);border-radius:18px;overflow:hidden"><div style="background:#1b7a4b;color:#fff;padding:14px 16px;display:flex;align-items:center;gap:12px"><span style="width:38px;height:38px;border-radius:50%;background:#fff;color:var(--c-escuro2);display:flex;align-items:center;justify-content:center;font-weight:900;font-size:13px" class="disp">'+(loja.id==='vks'?'VKS':'D’Lu')+'</span><span style="display:flex;flex-direction:column;line-height:1.2"><strong style="font-size:15px">'+esc(loja.nome)+'</strong><span style="font-size:12px;color:#d3f0df">conta comercial</span></span></div><div style="padding:18px 14px 22px;display:flex;flex-direction:column;gap:10px;font-size:15px"><div class="bolha b1" style="align-self:flex-end;max-width:82%;background:#d9fdd3;color:#1a2a1f;border-radius:14px 14px 4px 14px;padding:10px 12px;white-space:pre-line;box-shadow:0 1px 1px rgba(0,0,0,.08)">Bom dia! Quero:\nCominho – 500 g\nPáprica defumada – 1 kg</div><div class="bolha b2" style="align-self:flex-start;max-width:82%;background:#fff;color:#1a2a1f;border-radius:14px 14px 14px 4px;padding:10px 12px;box-shadow:0 1px 1px rgba(0,0,0,.08)">Bom dia! Já estamos separando. Avisamos assim que estiver pesado e pronto.</div><div class="bolha b3" style="align-self:flex-end;max-width:82%;background:#d9fdd3;color:#1a2a1f;border-radius:14px 14px 4px 14px;padding:10px 12px;box-shadow:0 1px 1px rgba(0,0,0,.08)">Perfeito, obrigado!</div></div></div></figure></div></section>';
 }
@@ -616,16 +616,17 @@ function precoItem(x){ var u=unitItem(x); return u?u.c*x.n:null; }
 function totalSacola(loja){
   var itens=state.carrinhos[loja.id]||[];
   var algum=false, soma=0, falta=false, base=0, temAtac=false;
-  // itens no preço de atacado não entram no desconto Pix/dinheiro (nem no mínimo): igual ao caixa do Balcão
-  itens.forEach(function(x){ var u=unitItem(x), c=u?u.c*x.n:null; if(c!=null){algum=true;soma+=c; if(u.at) temAtac=true; else base+=c;} else falta=true; });
+  // varejo: 5% a partir de R$ 100 no Pix/dinheiro. Atacado já tem preço próprio por kg: se algum item está no atacado, a compra é de atacado e não tem os 5%.
+  itens.forEach(function(x){ var u=unitItem(x), c=u?u.c*x.n:null; if(c!=null){algum=true;soma+=c; if(u.at) temAtac=true;} else falta=true; });
+  base=temAtac?0:soma;
   var d=regraDesconto(), desc=0, faltaDesc=0;
-  if(d&&algum){
+  if(d&&algum&&!temAtac){
     if(base>0&&base>=d.min){ if(d.formas.indexOf(state.pag)>=0) desc=Math.round(base*d.pct/100); }
     else if(base>0) faltaDesc=d.min-base;
   }
   return {algum:algum, soma:soma, base:base, temAtac:temAtac, falta:falta, desc:desc, total:soma-desc, faltaDesc:faltaDesc, regra:d};
 }
-function textoDesconto(d){ return d.pct+'% de desconto no '+d.formas.filter(function(f){return f!=='cartao';}).map(function(f){return f==='pix'?'Pix':'dinheiro';}).join(' ou ')+' acima de '+brl(d.min); }
+function textoDesconto(d){ return d.pct+'% de desconto no varejo, no '+d.formas.filter(function(f){return f!=='cartao';}).map(function(f){return f==='pix'?'Pix':'dinheiro';}).join(' ou ')+' acima de '+brl(d.min); }
 
 function fillOverlay(c){
   var loja=c.loja;
@@ -685,7 +686,7 @@ function sacolaHTML(c){
     var doc=soNum(state.doc), ehCnpj=doc.length>11, docValido=ehCnpj?cnpjOk(doc):cpfOk(doc);
     var querNf=state.nf==='sim', entrega=state.entrega!=='Retirar na loja';
     var tot=totalSacola(loja);
-    var entregas=['Retirar na loja','Entrega por Lalamove ou Uber'].map(function(t){var on=state.entrega===t;return '<button type="button" data-act="entrega" data-v="'+at(t)+'" aria-pressed="'+on+'" style="flex:1;font:inherit;cursor:pointer;font-size:13px;font-weight:800;padding:9px 10px;min-height:40px;border-radius:999px;border:1.5px solid var(--c-escuro);background:'+(on?'var(--c-escuro)':'#ffffff')+';color:'+(on?'#ffffff':'var(--c-escuro)')+'">'+esc(t)+'</button>';}).join('');
+    var entregas=['Retirar na loja','Uber ou Lalamove (frete por conta do cliente)'].map(function(t){var on=state.entrega===t;return '<button type="button" data-act="entrega" data-v="'+at(t)+'" aria-pressed="'+on+'" style="flex:1;font:inherit;cursor:pointer;font-size:13px;font-weight:800;padding:9px 10px;min-height:40px;border-radius:999px;border:1.5px solid var(--c-escuro);background:'+(on?'var(--c-escuro)':'#ffffff')+';color:'+(on?'#ffffff':'var(--c-escuro)')+'">'+esc(t)+'</button>';}).join('');
     var endBloco=entrega?('<label for="sacolaEnd" style="font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--c-mudo)">Endereço de entrega</label><input id="sacolaEnd" value="'+at(state.endereco)+'" data-act="campo" data-field="endereco" autocomplete="street-address" placeholder="Rua, número, bairro e cidade" style="font:inherit;font-size:16px;padding:11px 14px;border-radius:12px;border:1.5px solid var(--c-borda2);background:var(--c-fundo);color:var(--c-escuro)">'):'';
     var nfOp=[{v:'nao',t:'Não preciso'},{v:'sim',t:'Sim, quero nota'}].map(function(o){var on=state.nf===o.v;return '<button type="button" data-act="nf" data-v="'+o.v+'" aria-pressed="'+on+'" style="flex:1;font:inherit;cursor:pointer;font-size:13px;font-weight:800;padding:9px 10px;min-height:40px;border-radius:999px;border:1.5px solid var(--c-escuro);background:'+(on?'var(--c-escuro)':'#ffffff')+';color:'+(on?'#ffffff':'var(--c-escuro)')+'">'+esc(o.t)+'</button>';}).join('');
     var docDica=!doc?'Digite só os números.':(docValido?(ehCnpj?'CNPJ válido ✓':'CPF válido ✓'):(doc.length<11?'Faltam números.':'Confira os números.'));
@@ -703,9 +704,9 @@ function sacolaHTML(c){
     var totalBloco='';
     if(tot.algum){
       var linhaDesc='';
-      if(tot.desc>0) linhaDesc='<div style="display:flex;justify-content:space-between;align-items:baseline;padding:0 2px;color:#1b7a4b;font-weight:800;font-size:14px"><span>Desconto '+tot.regra.pct+'% no '+(state.pag==='pix'?'Pix':'dinheiro')+(tot.temAtac?' <small style="font-weight:600">(só nos itens de varejo)</small>':'')+'</span><span>− '+brl(tot.desc)+'</span></div>';
-      else if(tot.regra&&tot.faltaDesc>0&&tot.regra.formas.indexOf(state.pag)>=0) linhaDesc='<p style="margin:0;padding:8px 10px;border-radius:10px;background:#e3f5ea;color:#146b3f;font-size:13px;font-weight:700">Faltam '+brl(tot.faltaDesc)+' para ganhar '+tot.regra.pct+'% de desconto no '+(state.pag==='pix'?'Pix':'dinheiro')+(tot.temAtac?' (itens no preço de atacado não contam)':'')+'.</p>';
-      else if(tot.regra&&tot.temAtac&&tot.base<=0) linhaDesc='<p style="margin:0;padding:8px 10px;border-radius:10px;background:var(--c-fundo2);color:#7a5a12;font-size:13px;font-weight:700">Preço de atacado: sem desconto Pix/dinheiro.</p>';
+      if(tot.desc>0) linhaDesc='<div style="display:flex;justify-content:space-between;align-items:baseline;padding:0 2px;color:#1b7a4b;font-weight:800;font-size:14px"><span>Desconto '+tot.regra.pct+'% no '+(state.pag==='pix'?'Pix':'dinheiro')+''+'</span><span>− '+brl(tot.desc)+'</span></div>';
+      else if(tot.regra&&tot.faltaDesc>0&&tot.regra.formas.indexOf(state.pag)>=0) linhaDesc='<p style="margin:0;padding:8px 10px;border-radius:10px;background:#e3f5ea;color:#146b3f;font-size:13px;font-weight:700">Faltam '+brl(tot.faltaDesc)+' para ganhar '+tot.regra.pct+'% de desconto no '+(state.pag==='pix'?'Pix':'dinheiro')+'.</p>';
+      else if(tot.regra&&tot.temAtac) linhaDesc='<p style="margin:0;padding:8px 10px;border-radius:10px;background:var(--c-fundo2);color:#7a5a12;font-size:13px;font-weight:700">Compra no atacado: já tem o preço de atacado por kg. O desconto de 5% é só para o varejo.</p>';
       else if(tot.regra&&tot.base>=tot.regra.min&&tot.regra.formas.indexOf(state.pag)<0) linhaDesc='<p style="margin:0;padding:8px 10px;border-radius:10px;background:var(--c-fundo2);color:#7a5a12;font-size:13px;font-weight:700">Pagando no Pix ou em dinheiro você economiza '+brl(Math.round(tot.base*tot.regra.pct/100))+'.</p>';
       totalBloco=(tot.desc>0?'<div style="display:flex;justify-content:space-between;align-items:baseline;padding:4px 2px 0;font-size:14px;color:var(--c-mudo);font-weight:700"><span>Subtotal</span><span>'+brl(tot.soma)+'</span></div>':'')
         +linhaDesc
@@ -718,7 +719,8 @@ function sacolaHTML(c){
         +'<a class="btn-wa" href="'+at(mensagemWa(c))+'" data-act="registrar" target="_blank" rel="noopener" style="text-decoration:none;background:'+(state.erroEnvio?'#1b7a4b':'#fff')+';color:'+(state.erroEnvio?'#fff':'#1b7a4b')+';border:2px solid #1b7a4b;font-weight:800;font-size:14px;padding:11px;border-radius:999px;min-height:46px;display:flex;align-items:center;justify-content:center;gap:8px"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.4L3 21l2.1-5.4A8.4 8.4 0 1 1 21 11.5z"></path></svg>'+(state.erroEnvio?'Enviar pelo WhatsApp':'ou enviar pelo WhatsApp')+'</a>');
 
     rodape='<div style="border-top:1px solid var(--c-borda);margin:4px -22px 0;padding:16px 22px 6px;display:flex;flex-direction:column;gap:12px;background:#fff">'
-      +'<div style="display:flex;gap:6px;flex-wrap:wrap" role="group" aria-label="Retirada ou entrega">'+entregas+'</div>'+endBloco
+      +'<div style="display:flex;gap:6px;flex-wrap:wrap" role="group" aria-label="Retirada ou entrega">'+entregas+'</div>'
+      +'<p class="nota-entrega" style="margin:0;font-size:12.5px;line-height:1.45;color:var(--c-mudo)">O frete é por conta do cliente, pelo Uber ou Lalamove. De preferência, chame você mesmo o motorista para buscar aqui na loja; se precisar, a gente chama e envia. O pedido só é entregue a quem vier buscar (você ou o motorista).</p>'+endBloco
       +'<span style="font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--c-mudo)">Precisa de nota fiscal?</span><div style="display:flex;gap:6px;flex-wrap:wrap" role="group" aria-label="Nota fiscal">'+nfOp+'</div>'+nfBloco
       +'<label for="sacolaNome" style="font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--c-mudo)">Seu nome</label><input id="sacolaNome" value="'+at(state.nome)+'" data-act="campo" data-field="nome" autocomplete="name" placeholder="Para a gente identificar o pedido" style="font:inherit;font-size:16px;padding:11px 14px;border-radius:12px;border:1.5px solid var(--c-borda2);background:var(--c-fundo);color:var(--c-escuro)">'
       +'<label for="sacolaFone" style="font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--c-mudo)">Seu WhatsApp</label><input id="sacolaFone" type="tel" value="'+at(state.fone)+'" data-act="campo" data-field="fone" autocomplete="tel" inputmode="tel" placeholder="(11) 90000-0000" style="font:inherit;font-size:16px;padding:11px 14px;border-radius:12px;border:1.5px solid var(--c-borda2);background:var(--c-fundo);color:var(--c-escuro)">'

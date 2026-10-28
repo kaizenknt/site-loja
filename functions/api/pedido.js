@@ -55,8 +55,8 @@ export async function onRequestPost(context) {
   try {
     const cat = await env.LOJA.get('cat:' + (lojaValida(b.loja) || ''), { type: 'json' });
     const r = cat && cat.desconto ? cat.desconto : { ativo: true, pct: 5, min: 10000, formas: ['pix', 'dinheiro'] };
-    // itens no preço de atacado ficam fora do desconto e do mínimo (mesma regra do caixa do Balcão)
-    const base = itens.reduce((s, i) => (i.preco != null && !i.atacado ? s + i.preco * i.quantidade : s), 0);
+    // varejo: 5% a partir do mínimo. Se algum item está no preço de atacado, a compra é de atacado e não tem o desconto.
+    const base = itens.some(i => i.atacado) ? 0 : subtotal;
     if (r.ativo && r.pct > 0 && r.formas.includes(pagamento) && base > 0 && base >= r.min) { descontoPct = r.pct; desconto = Math.round(base * r.pct / 100); }
   } catch (e) { desconto = 0; }
   const total = subtotal - desconto;
@@ -66,7 +66,7 @@ export async function onRequestPost(context) {
     cliente: { nome: texto(c.nome, 80), telefone: soNum(c.telefone).slice(0, 15), doc: soNum(c.doc).slice(0, 14), razao: texto(c.razao, 80) },
     nf: !!b.nf,
     entrega: (function () {
-      const tipo = /entrega/i.test(texto(entrega.tipo, 60)) ? 'entrega' : 'retirada';
+      const tipo = /entrega|uber|lalamove/i.test(texto(entrega.tipo, 60)) ? 'entrega' : 'retirada';
       return { tipo, endereco: tipo === 'entrega' ? texto(entrega.endereco, 300) : '', meio: texto(entrega.meio, 60) || (tipo === 'entrega' ? 'Lalamove ou Uber' : 'Retirar na loja') };
     })(),
     obs: texto(b.obs, 1000),
