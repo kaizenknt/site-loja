@@ -22,8 +22,8 @@ var POR_PAGINA=24;
 var MARCAS_ABA=['Tempera Bem','Jomil'];
 // capa de cada categoria nos círculos (logo da marca ou montagem com produtos da categoria)
 var CAPAS={
-  dlu:{'Tempera Bem':'imagens/capas/logo-tempera-bem.webp','Jomil':'imagens/capas/logo-jomil.webp','Molhos':'imagens/capas/molhos-dlu.webp','Pimentas em conserva':'imagens/capas/conservas-dlu.webp','Mel, dendê e manteiga':'imagens/capas/mel-dlu.webp','Alho':'imagens/dlu/alho-frito.webp'},
-  vks:{'Jomil':'imagens/capas/logo-jomil.webp','Pimentas em conserva':'imagens/capas/conservas-vks.webp','Molhos':'imagens/capas/molhos-vks.webp','Mel, dendê e manteiga':'imagens/vks/jatai.webp?v=2'}
+  dlu:{'Tempera Bem':'imagens/capas/logo-tempera-bem.webp?v=2','Jomil':'imagens/capas/logo-jomil.webp?v=2','Molhos':'imagens/capas/molhos-dlu.webp','Pimentas em conserva':'imagens/capas/conservas-dlu.webp','Mel, dendê e manteiga':'imagens/capas/mel-dlu.webp','Alho':'imagens/dlu/alho-frito.webp'},
+  vks:{'Jomil':'imagens/capas/logo-jomil.webp?v=2','Pimentas em conserva':'imagens/capas/conservas-vks.webp','Molhos':'imagens/capas/molhos-vks.webp','Mel, dendê e manteiga':'imagens/vks/jatai.webp?v=2'}
 };
 var PRECOS = null;         // { itens:{ chave:{kg|op} }, indisponivel:[chaves], _exemplo:bool }
 var PRECOS_CACHE = {};     // preços por loja (cada loja publica os seus pelo Balcão)
