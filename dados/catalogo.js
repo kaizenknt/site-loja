@@ -15,7 +15,7 @@ window.CATALOGO = {
       { nome: 'Canela em pó', fotosT: { dlu: 'imagens/dlu/canela-em-po.webp' }, cat: 'Especiarias', cor: '#9a5a2e', uso: 'Doces, mingau, bolos e bebidas quentes.' },
       { nome: 'Orégano', cat: 'Ervas', cor: '#6e7f3a', uso: 'Pizza, molho de tomate e pão de alho.', fotosT: { vks: 'imagens/vks/oregano.webp?v=2', dlu: 'imagens/dlu/oregano.webp' } },
       { nome: 'Louro em folha', cat: 'Ervas', cor: '#4f6b3a', uso: 'Feijão, ensopados e caldos de cozimento longo.', fotosT: { vks: 'imagens/vks/louro.webp?v=2' } },
-      { nome: 'Alho desidratado', cat: 'Desidratados', cor: '#e6dcc4', uso: 'Praticidade para refogados, pães e temperos secos.' },
+      { nome: 'Alho desidratado', fotosT: { dlu: 'imagens/dlu/alho-desidratado.webp' }, cat: 'Desidratados', cor: '#e6dcc4', uso: 'Alho desidratado granulado. Praticidade para refogados, pães e temperos secos.' },
       { nome: 'Cebola desidratada', fotosT: { dlu: 'imagens/dlu/cebola-desidratada.webp' }, cat: 'Desidratados', cor: '#d9c39a', uso: 'Sopas, molhos e farofas sem precisar picar.' },
       { nome: 'Tempero Ana Maria', queridinho: 1, foto: 'imagens/dlu/ana-maria.jpg', cat: 'Misturas da casa', cor: '#b5651d', uso: 'Ideal para frango e aves. Leva caldo de galinha, tomate, cebola, salsa e pimentão vermelho desidratados, e alho granulado.', top: true, so: 'dlu' },
       { nome: 'Tempero Master Chef', queridinho: 6, foto: 'imagens/dlu/master-chef.jpg', cat: 'Misturas da casa', cor: '#7a3b1f', uso: 'Ideal para carnes. Leva alho frito, cenoura, tomate, salsa e orégano.', so: 'dlu' },
