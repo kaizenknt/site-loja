@@ -940,6 +940,40 @@ function usarQtd(k,inp){
   renderCatalogo(); renderDestaques(); renderFolha(); state.anim='';
   var novo=document.querySelector('[data-qtd="'+(window.CSS&&CSS.escape?CSS.escape(k):k)+'"]'); if(novo&&state.qtdErro[k]){ try{novo.focus();novo.select();}catch(_){} }
 }
+/* ---------- voltar / avançar (botões do navegador e laterais do mouse) ---------- */
+// Cada "lugar" do site (loja, categoria, filtro, produto aberto, sacola, conta) vira um passo no histórico.
+var navAplicando=false;
+function navSnap(){ return {loja:state.loja, cat:state.cat, formato:state.formato||'todos', folha:state.folha?{chave:state.folha.chave,grupo:state.folha.grupo||''}:null, sacola:!!state.sacola, conta:!!state.conta}; }
+function navIgual(a,b){ return !!a&&!!b&&JSON.stringify(a)===JSON.stringify(b); }
+var navPilha=[];   // cópia local do histórico do site, para saber o que há atrás
+function navRegistrar(){
+  if(navAplicando) return;
+  var atual=navSnap(), hs=history.state, h=hs&&hs.site, i=hs&&typeof hs.i==='number'?hs.i:-1;
+  if(navIgual(atual,h)) return;
+  try{
+    if(!h){ navPilha=[atual]; history.replaceState({site:atual,i:0},''); return; }
+    // fechou o que tinha aberto pela própria tela (X, fundo, Esc): equivale a "voltar", sem criar passo novo
+    if(i>0&&navIgual(navPilha[i-1],atual)){ navAplicando=true; history.back(); setTimeout(function(){navAplicando=false;},400); return; }
+    navPilha=navPilha.slice(0,i+1); navPilha.push(atual);
+    history.pushState({site:atual,i:navPilha.length-1},'');
+  }catch(e){}
+}
+function navAplicar(n){
+  if(!n) return;
+  navAplicando=true;
+  var mudouLista=n.loja!==state.loja||n.cat!==state.cat||(n.formato||'todos')!==(state.formato||'todos');
+  if(n.loja!==state.loja){ state.loja=n.loja; state.slide=0; state.busca=''; }
+  state.cat=n.cat; state.formato=n.formato||'todos'; state.limite=POR_PAGINA;
+  state.folha=n.folha?{chave:n.folha.chave,grupo:n.folha.grupo||''}:null;
+  state.sacola=!!n.sacola; state.conta=!!n.conta;
+  renderAll(); renderOverlay(); renderFolha();
+  if(mudouLista&&n.cat!=='Todos'){ var alvo=document.getElementById('produtos'); if(alvo) alvo.scrollIntoView({block:'start'}); }
+  navAplicando=false;
+}
+window.addEventListener('popstate',function(e){ var n=e.state&&e.state.site; if(!n) return; if(typeof e.state.i==='number') navPilha[e.state.i]=n; if(navIgual(n,navSnap())) return; navAplicar(n); });
+// depois de cada clique, tecla ou toque, guarda o lugar atual
+['click','keyup','touchend'].forEach(function(t){ document.addEventListener(t,function(){ setTimeout(navRegistrar,0); },true); });
+
 function onClick(e){
   var t=e.target.closest('[data-act]'); if(!t) return;
   var act=t.getAttribute('data-act');
@@ -1179,6 +1213,7 @@ function init(){
   carregar();
   var app=el('app');
   app.addEventListener('click', onClick);
+  setTimeout(navRegistrar,0);
   ['pointerdown','touchstart','keydown'].forEach(function(t){ document.addEventListener(t,function(){ ultimoToque=Date.now(); },{passive:true,capture:true}); });
   app.addEventListener('input', onInput);
   app.addEventListener('keydown',function(e){ var t=e.target; if(t&&t.getAttribute&&t.getAttribute('data-qtd')&&e.key==='Enter'){ e.preventDefault(); usarQtd(t.getAttribute('data-qtd'),t); if(ehToque()) t.blur(); } });
