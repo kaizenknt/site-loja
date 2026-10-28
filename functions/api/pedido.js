@@ -55,7 +55,9 @@ export async function onRequestPost(context) {
   try {
     const cat = await env.LOJA.get('cat:' + (lojaValida(b.loja) || ''), { type: 'json' });
     const r = cat && cat.desconto ? cat.desconto : { ativo: true, pct: 5, min: 10000, formas: ['pix', 'dinheiro'] };
-    if (r.ativo && r.pct > 0 && r.formas.includes(pagamento) && subtotal >= r.min) { descontoPct = r.pct; desconto = Math.round(subtotal * r.pct / 100); }
+    // itens no preço de atacado ficam fora do desconto e do mínimo (mesma regra do caixa do Balcão)
+    const base = itens.reduce((s, i) => (i.preco != null && !i.atacado ? s + i.preco * i.quantidade : s), 0);
+    if (r.ativo && r.pct > 0 && r.formas.includes(pagamento) && base > 0 && base >= r.min) { descontoPct = r.pct; desconto = Math.round(base * r.pct / 100); }
   } catch (e) { desconto = 0; }
   const total = subtotal - desconto;
 

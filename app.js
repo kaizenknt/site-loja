@@ -615,14 +615,15 @@ function unitItem(x){ return precoUnit({nome:x.nome, marca:x.marca},{r:x.r, g:x.
 function precoItem(x){ var u=unitItem(x); return u?u.c*x.n:null; }
 function totalSacola(loja){
   var itens=state.carrinhos[loja.id]||[];
-  var algum=false, soma=0, falta=false;
-  itens.forEach(function(x){ var c=precoItem(x); if(c!=null){algum=true;soma+=c;} else falta=true; });
+  var algum=false, soma=0, falta=false, base=0, temAtac=false;
+  // itens no preço de atacado não entram no desconto Pix/dinheiro (nem no mínimo): igual ao caixa do Balcão
+  itens.forEach(function(x){ var u=unitItem(x), c=u?u.c*x.n:null; if(c!=null){algum=true;soma+=c; if(u.at) temAtac=true; else base+=c;} else falta=true; });
   var d=regraDesconto(), desc=0, faltaDesc=0;
   if(d&&algum){
-    if(soma>=d.min){ if(d.formas.indexOf(state.pag)>=0) desc=Math.round(soma*d.pct/100); }
-    else faltaDesc=d.min-soma;
+    if(base>0&&base>=d.min){ if(d.formas.indexOf(state.pag)>=0) desc=Math.round(base*d.pct/100); }
+    else if(base>0) faltaDesc=d.min-base;
   }
-  return {algum:algum, soma:soma, falta:falta, desc:desc, total:soma-desc, faltaDesc:faltaDesc, regra:d};
+  return {algum:algum, soma:soma, base:base, temAtac:temAtac, falta:falta, desc:desc, total:soma-desc, faltaDesc:faltaDesc, regra:d};
 }
 function textoDesconto(d){ return d.pct+'% de desconto no '+d.formas.filter(function(f){return f!=='cartao';}).map(function(f){return f==='pix'?'Pix':'dinheiro';}).join(' ou ')+' acima de '+brl(d.min); }
 
@@ -702,9 +703,10 @@ function sacolaHTML(c){
     var totalBloco='';
     if(tot.algum){
       var linhaDesc='';
-      if(tot.desc>0) linhaDesc='<div style="display:flex;justify-content:space-between;align-items:baseline;padding:0 2px;color:#1b7a4b;font-weight:800;font-size:14px"><span>Desconto '+tot.regra.pct+'% no '+(state.pag==='pix'?'Pix':'dinheiro')+'</span><span>− '+brl(tot.desc)+'</span></div>';
-      else if(tot.regra&&tot.faltaDesc>0&&tot.regra.formas.indexOf(state.pag)>=0) linhaDesc='<p style="margin:0;padding:8px 10px;border-radius:10px;background:#e3f5ea;color:#146b3f;font-size:13px;font-weight:700">Faltam '+brl(tot.faltaDesc)+' para ganhar '+tot.regra.pct+'% de desconto no '+(state.pag==='pix'?'Pix':'dinheiro')+'.</p>';
-      else if(tot.regra&&tot.soma>=tot.regra.min&&tot.regra.formas.indexOf(state.pag)<0) linhaDesc='<p style="margin:0;padding:8px 10px;border-radius:10px;background:var(--c-fundo2);color:#7a5a12;font-size:13px;font-weight:700">Pagando no Pix ou em dinheiro você economiza '+brl(Math.round(tot.soma*tot.regra.pct/100))+'.</p>';
+      if(tot.desc>0) linhaDesc='<div style="display:flex;justify-content:space-between;align-items:baseline;padding:0 2px;color:#1b7a4b;font-weight:800;font-size:14px"><span>Desconto '+tot.regra.pct+'% no '+(state.pag==='pix'?'Pix':'dinheiro')+(tot.temAtac?' <small style="font-weight:600">(só nos itens de varejo)</small>':'')+'</span><span>− '+brl(tot.desc)+'</span></div>';
+      else if(tot.regra&&tot.faltaDesc>0&&tot.regra.formas.indexOf(state.pag)>=0) linhaDesc='<p style="margin:0;padding:8px 10px;border-radius:10px;background:#e3f5ea;color:#146b3f;font-size:13px;font-weight:700">Faltam '+brl(tot.faltaDesc)+' para ganhar '+tot.regra.pct+'% de desconto no '+(state.pag==='pix'?'Pix':'dinheiro')+(tot.temAtac?' (itens no preço de atacado não contam)':'')+'.</p>';
+      else if(tot.regra&&tot.temAtac&&tot.base<=0) linhaDesc='<p style="margin:0;padding:8px 10px;border-radius:10px;background:var(--c-fundo2);color:#7a5a12;font-size:13px;font-weight:700">Preço de atacado: sem desconto Pix/dinheiro.</p>';
+      else if(tot.regra&&tot.base>=tot.regra.min&&tot.regra.formas.indexOf(state.pag)<0) linhaDesc='<p style="margin:0;padding:8px 10px;border-radius:10px;background:var(--c-fundo2);color:#7a5a12;font-size:13px;font-weight:700">Pagando no Pix ou em dinheiro você economiza '+brl(Math.round(tot.base*tot.regra.pct/100))+'.</p>';
       totalBloco=(tot.desc>0?'<div style="display:flex;justify-content:space-between;align-items:baseline;padding:4px 2px 0;font-size:14px;color:var(--c-mudo);font-weight:700"><span>Subtotal</span><span>'+brl(tot.soma)+'</span></div>':'')
         +linhaDesc
         +'<div style="display:flex;justify-content:space-between;align-items:baseline;padding:4px 2px"><span style="font-weight:700;color:var(--c-mudo);font-size:14px">Estimativa'+(tot.falta?' (parcial)':'')+'</span><span class="preco" style="font-size:24px">'+brl(tot.total)+'</span></div><p style="margin:-4px 0 0;font-size:12px;color:var(--c-mudo)">Valor final confirmado na pesagem, na loja.</p>';
