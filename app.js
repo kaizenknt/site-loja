@@ -20,6 +20,11 @@ var state = {
 };
 var POR_PAGINA=24;
 var MARCAS_ABA=['Tempera Bem','Jomil'];
+// capa de cada categoria nos círculos (logo da marca ou montagem com produtos da categoria)
+var CAPAS={
+  dlu:{'Tempera Bem':'imagens/capas/logo-tempera-bem.webp','Jomil':'imagens/capas/logo-jomil.webp','Molhos':'imagens/capas/molhos-dlu.webp','Pimentas em conserva':'imagens/capas/conservas-dlu.webp','Mel, dendê e manteiga':'imagens/capas/mel-dlu.webp','Alho':'imagens/dlu/alho-frito.webp'},
+  vks:{'Jomil':'imagens/capas/logo-jomil.webp','Pimentas em conserva':'imagens/capas/conservas-vks.webp','Molhos':'imagens/capas/molhos-vks.webp','Mel, dendê e manteiga':'imagens/vks/jatai.webp?v=2'}
+};
 var PRECOS = null;         // { itens:{ chave:{kg|op} }, indisponivel:[chaves], _exemplo:bool }
 var PRECOS_CACHE = {};     // preços por loja (cada loja publica os seus pelo Balcão)
 var avisoTimer=null, relogio=null, slideTimer=null;
@@ -499,11 +504,11 @@ function fillCorpo(c){
   var cats=c.cats;
   function nCat(cat){return (c.marcas||[]).indexOf(cat)>=0?produtos.filter(function(p){return c.ehDaMarca(p,cat);}):produtos.filter(function(p){return p.cat===cat;});}
   var circ=cats.map(function(cat){
-    var ps=nCat(cat), ehM=(c.marcas||[]).indexOf(cat)>=0; var fc=(ehM?ps.find(function(p){return p.foto&&p.recorte;}):null); fc=(fc||ps.find(function(p){return p.foto&&!p.recorte;})||ps.find(function(p){return p.foto;})||{}).foto||'';
+    var ps=nCat(cat), capa=(CAPAS[c.loja.id]||{})[cat], ehM=!capa&&(c.marcas||[]).indexOf(cat)>=0; var fc=capa||(ehM?ps.find(function(p){return p.foto&&p.recorte;}):null); fc=(fc&&fc.foto?fc.foto:fc)||(ps.find(function(p){return p.foto&&!p.recorte;})||ps.find(function(p){return p.foto;})||{}).foto||'';
     var on=cat===c.sel&&!c.q;
     var borda='border:5px solid '+(on?'var(--c-destaque)':'#ffffff')+';box-shadow:0 0 0 1px var(--c-borda)';
     // círculo com tamanho explícito (padding-top:100%), não aspect-ratio: no Safari do iPhone a <img> com height=150 ficava oval
-    var dot='<span class="dot" aria-hidden="true" style="'+borda+';background:'+(ehM&&fc?'#ffffff':grao((ps[0]||{}).cor||'#cccccc'))+'"><span class="dot-in">'+(fc?'<img src="'+at(fc)+'" alt="" loading="lazy" decoding="async"'+(ehM?' style="object-fit:contain;padding:14%;background:#ffffff"':'')+'>':'')+'</span></span>';
+    var dot='<span class="dot" aria-hidden="true" style="'+borda+';background:'+(ehM&&fc?'#ffffff':grao((ps[0]||{}).cor||'#cccccc'))+'"><span class="dot-in">'+(fc?'<img src="'+at(fc)+'" alt="" loading="lazy" decoding="async"'+((ehM||/\/vks\/jatai/.test(fc))?' style="object-fit:contain;padding:14%;background:#f7f1e6"':'')+'>':'')+'</span></span>';
     return '<a class="circ revela" href="#produtos" data-act="cat" data-cat="'+at(cat)+'" style="text-decoration:none;display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center">'+dot+'<span style="display:flex;flex-direction:column;gap:2px"><span style="font-weight:800;font-size:15px;color:var(--c-escuro);line-height:1.2">'+esc(cat)+'</span><span style="font-size:12px;color:var(--c-mudo)">'+ps.length+(ps.length===1?' produto':' produtos')+'</span></span></a>';
   }).join('');
   // destaques
