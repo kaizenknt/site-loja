@@ -154,6 +154,8 @@ function montarProdutos(loja){
   var wa=function(txt){return 'https://wa.me/'+loja.waNum+'?text='+encodeURIComponent(txt);};
   return CAT.base
     .filter(function(p){ return !p.so || p.so===loja.id; })
+    // texto de uso próprio de uma loja (ex.: ingredientes só na D'Lu)
+    .map(function(p){ var u=p.usoT&&p.usoT[loja.id]; return u?Object.assign({},p,{uso:u}):p; })
     .map(function(p){
       var r=p.fotos&&p.fotos[loja.id], t=p.fotosT&&p.fotosT[loja.id];
       if(r) return Object.assign({},p,{foto:r,recorte:true});
