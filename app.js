@@ -382,12 +382,13 @@ function waGeralDe(loja){ return 'https://wa.me/'+loja.waNum+'?text='+encodeURIC
 
 /* logo de cada loja (a VKS tem a placa verde) */
 var LOGO={dlu:'imagens/logo-dlu.png', vks:'imagens/logo-vks.webp'};
-var ICONE_PADRAO=null;
 function aplicarTemaLoja(id){
   document.documentElement.setAttribute('data-loja', id);
-  var ic=document.querySelector('link[rel=icon]'); if(!ic) return;
-  if(ICONE_PADRAO===null) ICONE_PADRAO=ic.getAttribute('href');
-  ic.setAttribute('href', id==='vks' ? LOGO.vks : ICONE_PADRAO);
+  // ícone da aba do navegador: logo da D'Lu (padrão da página) ou da VKS
+  [].forEach.call(document.querySelectorAll('link[rel=icon],link[rel=apple-touch-icon]'),function(ic){
+    if(!ic.dataset.padrao) ic.dataset.padrao=ic.getAttribute('href');
+    ic.setAttribute('href', id==='vks' ? LOGO.vks : ic.dataset.padrao);
+  });
 }
 function fillTopo(c){
   var loja=c.loja, sit=c.sit;
