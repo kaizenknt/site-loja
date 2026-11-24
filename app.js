@@ -664,15 +664,15 @@ function fillOverlay(c){
 
 function confirmacaoHTML(loja){
   var cod=state.enviado.codigo, st=state.statusPed[cod]||{};
-  var waTxt='Olá, '+loja.nome+'! Acabei de fazer o pedido '+cod+' pelo site.';
+  var env=state.enviado, waLink=env.wa||('https://wa.me/'+loja.waNum+'?text='+encodeURIComponent('Olá, '+loja.nome+'! Acabei de fazer o pedido '+cod+' pelo site.'));
   return '<div style="text-align:center;padding:26px 6px;display:flex;flex-direction:column;align-items:center;gap:14px">'
     +'<span aria-hidden="true" style="width:64px;height:64px;border-radius:50%;background:#e3f5ea;display:flex;align-items:center;justify-content:center"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#1b7a4b" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"></path></svg></span>'
     +'<h3 class="disp" style="margin:0;font-weight:900;font-size:32px;line-height:1">Pedido enviado!</h3>'
-    +'<p style="margin:0;color:var(--c-mudo);max-width:32ch">A '+esc(loja.nome)+' recebeu seu pedido. A gente confere, pesa e avisa você pelo WhatsApp.</p>'
+    +'<p style="margin:0;color:var(--c-mudo);max-width:34ch">A '+esc(loja.nome)+' recebeu seu pedido. '+(env.waAberto?'O WhatsApp abriu com o pedido: toque em enviar por lá também.':'Envie também pelo WhatsApp no botão abaixo, para garantir.')+' A gente confere, pesa e avisa você.</p>'
     +'<div style="display:flex;flex-direction:column;gap:4px;padding:14px 24px;border-radius:18px;background:var(--c-fundo);border:2px dashed var(--c-borda2)"><span style="font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.12em;color:var(--c-mudo)">Código do pedido</span><span class="disp" style="font-weight:900;font-size:40px;letter-spacing:.12em;color:var(--c-escuro)">'+esc(cod)+'</span></div>'
     +'<p role="status" style="margin:0;font-size:15px;font-weight:700;color:var(--c-escuro)">'+esc(st.rotulo||'Recebido, aguardando a loja')+(st.numero?' · nº '+esc(st.numero)+' na loja':'')+'</p>'
     +'<button type="button" data-act="verStatus" data-cod="'+at(cod)+'" data-loja="'+at(loja.id)+'" style="font:inherit;cursor:pointer;border:2px solid var(--c-escuro);background:#fff;color:var(--c-escuro);font-weight:800;font-size:14px;padding:9px 18px;border-radius:999px;min-height:42px">Atualizar situação</button>'
-    +'<a class="btn-wa" href="'+at('https://wa.me/'+loja.waNum+'?text='+encodeURIComponent(waTxt))+'" target="_blank" rel="noopener" style="text-decoration:none;background:#1b7a4b;color:#fff;font-weight:800;font-size:14px;padding:11px 18px;border-radius:999px;min-height:44px;display:inline-flex;align-items:center">Falar com a loja no WhatsApp</a>'
+    +'<a class="btn-wa" href="'+at(waLink)+'" target="_blank" rel="noopener" style="text-decoration:none;background:#1b7a4b;color:#fff;font-weight:800;font-size:'+(env.waAberto?'14':'16')+'px;padding:'+(env.waAberto?'11px 18px':'14px 24px')+';border-radius:999px;min-height:44px;display:inline-flex;align-items:center">'+(env.waAberto?'Abrir o pedido no WhatsApp de novo':'Enviar o pedido no WhatsApp')+'</a>'
     +'<button type="button" data-act="novoPedido" style="font:inherit;cursor:pointer;border:none;background:transparent;color:var(--c-acento);font-weight:700;font-size:14px;padding:6px 10px;min-height:36px">Fazer outro pedido</button>'
   +'</div>';
 }
@@ -730,9 +730,10 @@ function sacolaHTML(c){
     }
     var acao=erro
       ? '<p role="alert" style="margin:0;padding:10px 12px;border-radius:12px;background:#fde6e2;color:#9b2a1c;font-size:14px;font-weight:700">'+esc(erro)+'</p>'
-      : ('<button type="button" data-act="enviarLoja"'+(state.enviando?' disabled aria-busy="true"':'')+' style="font:inherit;cursor:'+(state.enviando?'wait':'pointer')+';border:none;background:var(--c-destaque);color:var(--c-escuro);font-weight:800;font-size:15px;padding:15px;border-radius:999px;min-height:52px;display:flex;align-items:center;justify-content:center;gap:10px"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13"></path><path d="M22 2l-7 20-4-9-9-4 20-7z"></path></svg>'+(state.enviando?'Enviando…':'Enviar pedido para a loja · '+rotItens)+'</button>'
+      : ('<button type="button" data-act="enviarLoja"'+(state.enviando?' disabled aria-busy="true"':'')+' style="font:inherit;cursor:'+(state.enviando?'wait':'pointer')+';border:none;background:var(--c-destaque);color:var(--c-escuro);font-weight:800;font-size:15px;padding:15px;border-radius:999px;min-height:52px;display:flex;align-items:center;justify-content:center;gap:10px"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13"></path><path d="M22 2l-7 20-4-9-9-4 20-7z"></path></svg>'+(state.enviando?'Enviando…':'Enviar pedido · '+rotItens)+'</button>'
+        +'<p style="margin:-4px 0 0;text-align:center;font-size:12.5px;color:var(--c-mudo)">O pedido chega no sistema da loja e o seu WhatsApp abre com ele: é só tocar em enviar.</p>'
         +(state.erroEnvio?'<p role="alert" style="margin:0;padding:10px 12px;border-radius:12px;background:#fde6e2;color:#9b2a1c;font-size:14px;font-weight:700">'+esc(state.erroEnvio)+'</p>':'')
-        +'<a class="btn-wa" href="'+at(mensagemWa(c))+'" data-act="registrar" target="_blank" rel="noopener" style="text-decoration:none;background:'+(state.erroEnvio?'#1b7a4b':'#fff')+';color:'+(state.erroEnvio?'#fff':'#1b7a4b')+';border:2px solid #1b7a4b;font-weight:800;font-size:14px;padding:11px;border-radius:999px;min-height:46px;display:flex;align-items:center;justify-content:center;gap:8px"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.4L3 21l2.1-5.4A8.4 8.4 0 1 1 21 11.5z"></path></svg>'+(state.erroEnvio?'Enviar pelo WhatsApp':'ou enviar pelo WhatsApp')+'</a>');
+        +(!state.erroEnvio?'':'<a class="btn-wa" href="'+at(mensagemWa(c))+'" data-act="registrar" target="_blank" rel="noopener" style="text-decoration:none;background:'+(state.erroEnvio?'#1b7a4b':'#fff')+';color:'+(state.erroEnvio?'#fff':'#1b7a4b')+';border:2px solid #1b7a4b;font-weight:800;font-size:14px;padding:11px;border-radius:999px;min-height:46px;display:flex;align-items:center;justify-content:center;gap:8px"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.4L3 21l2.1-5.4A8.4 8.4 0 1 1 21 11.5z"></path></svg>'+'Enviar pelo WhatsApp</a>'));
 
     rodape='<div style="border-top:1px solid var(--c-borda);margin:4px -22px 0;padding:16px 22px 6px;display:flex;flex-direction:column;gap:12px;background:#fff">'
       +'<div style="display:flex;gap:6px;flex-wrap:wrap" role="group" aria-label="Retirada ou entrega">'+entregas+'</div>'
@@ -750,13 +751,13 @@ function sacolaHTML(c){
   return '<div style="position:fixed;inset:0;z-index:80"><button type="button" class="gaveta-fundo" data-act="fecharSacola" aria-label="Fechar meu pedido" style="position:absolute;inset:0;border:none;padding:0;background:rgba(15,18,38,.55);cursor:pointer"></button><aside class="gaveta" role="dialog" aria-label="Meu pedido" style="position:absolute;top:0;right:0;bottom:0;width:min(440px,100%);background:#fff;display:flex;flex-direction:column;box-shadow:-20px 0 40px -20px rgba(0,0,0,.5)"><div style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:20px 22px;border-bottom:1px solid var(--c-borda)"><div style="display:flex;flex-direction:column;gap:2px"><span class="eyebrow" style="color:var(--c-acento)">'+esc(loja.nome)+'</span><h2 class="disp" style="margin:0;font-weight:900;font-size:34px;line-height:1">Meu pedido</h2></div><button type="button" data-act="fecharSacola" aria-label="Fechar" style="width:44px;height:44px;border-radius:50%;border:1px solid var(--c-borda);background:#fff;color:var(--c-escuro);cursor:pointer;font-size:20px;line-height:1">✕</button></div><div class="gaveta-rolar" style="flex:1;overflow-y:auto;padding:16px 22px 22px;display:flex;flex-direction:column;gap:12px">'+corpo+rodape+'</div></aside></div>';
 }
 
-function mensagemWa(c){
+function mensagemWa(c,codigo){
   var loja=c.loja;
   var itens=state.carrinhos[loja.id]||[];
   var doc=soNum(state.doc), ehCnpj=doc.length>11;
   var querNf=state.nf==='sim', entrega=state.entrega!=='Retirar na loja';
   var tot=totalSacola(loja);
-  var msg='Olá, '+loja.nome+'! Gostaria de fazer um pedido:\n\n'
+  var msg='Olá, '+loja.nome+'! '+(codigo?'Fiz o pedido '+codigo+' pelo site:\n\n':'Gostaria de fazer um pedido:\n\n')
     +itens.map(function(x){var u=unitItem(x);return linhaTxt(x)+(u&&u.at?' (atacado)':'');}).join('\n')
     +'\n\n'+state.entrega
     +(entrega&&state.endereco.trim()?'\nEndereço: '+state.endereco.trim():'')
@@ -1045,13 +1046,7 @@ function onClick(e){
 
   if(act==='apagarDados'){ if(state.apagarOk){ state.nome='';state.fone='';state.doc='';state.razao='';state.endereco='';state.historico=[];state.apagarOk=false; guardarConta(); renderAll(); } else { state.apagarOk=true; renderOverlay(); } return; }
   if(act==='repetir'){ var hi=+t.getAttribute('data-hi'); var hh=(state.historico||[])[hi]; if(hh){ state.carrinhos[hh.loja]=hh.itens.map(function(x){return Object.assign({},x);}); state.loja=hh.loja; state.conta=false; state.sacola=true; state.cat='Todos'; state.busca=''; guardarSacola(); renderAll(); } return; }
-  if(act==='registrar'){ // grava histórico ao enviar (o link abre o whatsapp normalmente)
-    var loja=state.loja;
-    var h={data:Date.now(), loja:loja, itens:(state.carrinhos[loja]||[]).map(function(x){return Object.assign({},x);})};
-    state.historico=[h].concat(state.historico||[]).slice(0,20);
-    guardarConta();
-    return; // não previne o default: o WhatsApp abre
-  }
+  if(act==='registrar'){ registrarHist(); return; } // não previne o default: o WhatsApp abre
 }
 
 /* busca: depois de parar de digitar, desce até os resultados (uma vez por busca).
@@ -1106,6 +1101,12 @@ function patchEnviar(){
 }
 
 /* ---------- envio do pedido direto para a loja (ponte na nuvem) ---------- */
+function registrarHist(){ // grava no histórico do cliente um pedido que foi só pelo WhatsApp
+  var loja=state.loja;
+  var h={data:Date.now(), loja:loja, itens:(state.carrinhos[loja]||[]).map(function(x){return Object.assign({},x);})};
+  state.historico=[h].concat(state.historico||[]).slice(0,20);
+  guardarConta();
+}
 function enviarLoja(){
   var c=ctx(), loja=c.loja, itens=state.carrinhos[loja.id]||[];
   if(!itens.length||state.enviando) return;
@@ -1118,6 +1119,11 @@ function enviarLoja(){
     pagamento:state.pag,
     mensagem:decodeURIComponent((mensagemWa(c).split('?text=')[1])||'')
   };
+  /* O pedido vai pelos dois caminhos: para o sistema da loja (Balcão) e pelo WhatsApp do cliente.
+     A aba do WhatsApp é aberta já no toque (depois de esperar a resposta o navegador bloquearia) e recebe o
+     endereço quando a loja responde: com o código do pedido, ou sem ele se o sistema não respondeu. */
+  var janela=null; try{ janela=window.open('about:blank','_blank'); if(janela) janela.document.write('<meta name="viewport" content="width=device-width"><p style="font:600 18px system-ui;text-align:center;margin-top:40vh;color:#1b7a4b">Abrindo o WhatsApp com o seu pedido…</p>'); }catch(e){}
+  var abrirWa=function(url){ if(janela&&!janela.closed){ try{ janela.location.href=url; return true; }catch(e){} } return false; };
   state.enviando=true; state.erroEnvio=''; renderOverlay();
   fetch('/api/pedido',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(corpo)})
     .then(function(r){ return r.json().then(function(j){ return {ok:r.ok, j:j}; }, function(){ return {ok:false, j:null}; }); })
@@ -1126,16 +1132,21 @@ function enviarLoja(){
       if(x.ok&&x.j&&x.j.codigo){
         var h={data:Date.now(), loja:loja.id, codigo:x.j.codigo, itens:itens.map(function(i){return Object.assign({},i);})};
         state.historico=[h].concat(state.historico||[]).slice(0,20);
+        var waUrl=mensagemWa(c,x.j.codigo), abriu=abrirWa(waUrl);
         state.carrinhos[loja.id]=[]; state.obs='';
-        state.enviado={codigo:x.j.codigo, loja:loja.id};
+        state.enviado={codigo:x.j.codigo, loja:loja.id, wa:waUrl, waAberto:abriu};
         state.statusPed[x.j.codigo]={rotulo:'Recebido, aguardando a loja'};
         guardarConta(); renderAll();
       } else {
-        state.erroEnvio=(x.j&&x.j.mensagem)||'Não consegui enviar agora. Envie pelo WhatsApp abaixo.';
+        // o sistema da loja não aceitou: o pedido segue pelo WhatsApp para não se perder
+        var foi=abrirWa(mensagemWa(c)); if(foi) registrarHist();
+        state.erroEnvio=(x.j&&x.j.mensagem)||'Não consegui registrar no sistema da loja agora.';
+        state.erroEnvio+=foi?' Abrimos o WhatsApp com o pedido: envie a mensagem por lá.':' Envie pelo WhatsApp abaixo.';
         renderOverlay();
       }
     })
-    .catch(function(){ state.enviando=false; state.erroEnvio='Sem conexão com a loja agora. Envie pelo WhatsApp abaixo.'; renderOverlay(); });
+    .catch(function(){ state.enviando=false; var foi=abrirWa(mensagemWa(c)); if(foi) registrarHist();
+      state.erroEnvio='Sem conexão com o sistema da loja agora.'+(foi?' Abrimos o WhatsApp com o pedido: envie a mensagem por lá.':' Envie pelo WhatsApp abaixo.'); renderOverlay(); });
 }
 function verStatus(cod,loja){
   if(!cod) return;
